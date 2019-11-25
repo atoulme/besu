@@ -12,6 +12,7 @@
     "constantinopleBlock": 7280000,
     "constantinopleFixBlock": 7280000,
     "ethash": {
+
     }
   },
   "nonce": "0x42",

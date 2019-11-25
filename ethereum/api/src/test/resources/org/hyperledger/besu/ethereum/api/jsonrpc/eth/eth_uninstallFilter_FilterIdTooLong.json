@@ -3,9 +3,7 @@
     "id": 2,
     "jsonrpc": "2.0",
     "method": "eth_uninstallFilter",
-    "params": [
-      "0x00FFFFFFFFFFFFFFFF"
-    ]
+    "params": ["0x00FFFFFFFFFFFFFFFF"]
   },
   "response": {
     "jsonrpc": "2.0",

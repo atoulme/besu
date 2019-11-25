@@ -15,9 +15,9 @@
   "response": {
     "jsonrpc": "2.0",
     "id": 4,
-    "error": {
-      "code": -32003,
-      "message": "Intrinsic gas exceeds gas limit"
+    "error" : {
+      "code" : -32003,
+      "message" : "Intrinsic gas exceeds gas limit"
     }
   },
   "statusCode": 400
