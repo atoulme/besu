@@ -37,16 +37,17 @@ dependencies {
 
   implementation 'com.fasterxml.jackson.core:jackson-databind'
   implementation 'com.google.guava:guava'
+  implementation 'org.apache.tuweni:tuweni-bytes'
 
   testImplementation project(':crypto')
-  testImplementation project( path: ':ethereum:core', configuration: 'testSupportArtifacts')
+  testImplementation project(path: ':ethereum:core', configuration: 'testSupportArtifacts')
 
   testImplementation 'junit:junit'
   testImplementation "org.assertj:assertj-core"
   testImplementation 'org.mockito:mockito-core'
 }
 configurations { testArtifacts }
-task testJar (type: Jar) {
+task testJar(type: Jar) {
   baseName = "${project.name}-test"
   from sourceSets.test.output
 }

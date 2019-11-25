@@ -99,7 +99,7 @@ public class WorldStateDownloader {
       }
 
       final Hash stateRoot = header.getStateRoot();
-      if (worldStateStorage.isWorldStateAvailable(stateRoot)) {
+      if (worldStateStorage.isWorldStateAvailable(stateRoot.toBytes())) {
         LOG.info(
             "World state already available for block {} ({}). State root {}",
             header.getNumber(),

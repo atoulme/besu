@@ -22,18 +22,19 @@ import org.hyperledger.besu.crypto.SECP256K1.Signature;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Hash;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.tuweni.bytes.Bytes;
+
 public class IbftExtraDataFixture {
 
   public static IbftExtraData createExtraData(
       final BlockHeader header,
-      final BytesValue vanityData,
+      final Bytes vanityData,
       final Optional<Vote> vote,
       final List<Address> validators,
       final List<KeyPair> committerKeyPairs) {
@@ -43,7 +44,7 @@ public class IbftExtraDataFixture {
 
   public static IbftExtraData createExtraData(
       final BlockHeader header,
-      final BytesValue vanityData,
+      final Bytes vanityData,
       final Optional<Vote> vote,
       final List<Address> validators,
       final List<KeyPair> committerKeyPairs,
@@ -55,7 +56,7 @@ public class IbftExtraDataFixture {
 
   public static IbftExtraData createExtraData(
       final BlockHeader header,
-      final BytesValue vanityData,
+      final Bytes vanityData,
       final Optional<Vote> vote,
       final List<Address> validators,
       final List<KeyPair> committerKeyPairs,
@@ -88,7 +89,8 @@ public class IbftExtraDataFixture {
                       IbftBlockHashing.calculateDataHashForCommittedSeal(
                           header, extraDataForCommittedSealCalculation);
 
-                  return SECP256K1.sign(headerHashForCommitters, committerKeyPairs.get(i));
+                  return SECP256K1.sign(
+                      headerHashForCommitters.toBytes(), committerKeyPairs.get(i));
                 })
             .collect(Collectors.toList());
 

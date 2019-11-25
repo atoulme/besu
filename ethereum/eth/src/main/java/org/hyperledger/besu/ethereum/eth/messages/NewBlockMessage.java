@@ -24,8 +24,9 @@ import org.hyperledger.besu.ethereum.rlp.BytesValueRLPOutput;
 import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
+
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class NewBlockMessage extends AbstractMessageData {
 
@@ -33,7 +34,7 @@ public class NewBlockMessage extends AbstractMessageData {
 
   private NewBlockMessageData messageFields = null;
 
-  private NewBlockMessage(final BytesValue data) {
+  private NewBlockMessage(final Bytes data) {
     super(data);
   }
 
@@ -98,7 +99,7 @@ public class NewBlockMessage extends AbstractMessageData {
     public void writeTo(final RLPOutput out) {
       out.startList();
       block.writeTo(out);
-      out.writeUInt256Scalar(totalDifficulty);
+      out.writeBytes(totalDifficulty.toMinimalBytes());
       out.endList();
     }
 

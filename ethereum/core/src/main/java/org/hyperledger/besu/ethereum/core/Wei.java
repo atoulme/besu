@@ -14,32 +14,35 @@
  */
 package org.hyperledger.besu.ethereum.core;
 
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.uint.BaseUInt256Value;
-import org.hyperledger.besu.util.uint.Counter;
-import org.hyperledger.besu.util.uint.UInt256;
+import org.hyperledger.besu.plugin.data.Quantity;
 
 import java.math.BigInteger;
+import java.util.Objects;
+
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /** A particular quantity of Wei, the Ethereum currency. */
-public final class Wei extends BaseUInt256Value<Wei> {
+public final class Wei implements Quantity {
 
   public static final Wei ZERO = of(0);
 
+  private final Bytes32 value;
+
   protected Wei(final Bytes32 bytes) {
-    super(bytes, WeiCounter::new);
+    this.value = bytes;
   }
 
   private Wei(final long v) {
-    super(v, WeiCounter::new);
+    this(UInt256.valueOf(v).toBytes());
   }
 
   private Wei(final BigInteger v) {
-    super(v, WeiCounter::new);
+    this(UInt256.valueOf(v).toBytes());
   }
 
   private Wei(final String hexString) {
-    super(hexString, WeiCounter::new);
+    this(Bytes32.fromHexStringLenient(hexString));
   }
 
   public static Wei of(final long value) {
@@ -51,7 +54,7 @@ public final class Wei extends BaseUInt256Value<Wei> {
   }
 
   public static Wei of(final UInt256 value) {
-    return new Wei(value.getBytes().copy());
+    return new Wei(value.toBytes());
   }
 
   public static Wei wrap(final Bytes32 value) {
@@ -66,9 +69,45 @@ public final class Wei extends BaseUInt256Value<Wei> {
     return Wei.of(BigInteger.valueOf(eth).multiply(BigInteger.TEN.pow(18)));
   }
 
-  private static class WeiCounter extends Counter<Wei> {
-    private WeiCounter() {
-      super(Wei::new);
-    }
+  public Bytes32 toBytes() {
+    return value;
+  }
+
+  @Override
+  public Number getValue() {
+    return value.toUnsignedBigInteger();
+  }
+
+  @Override
+  public byte[] getByteArray() {
+    return value.toArray();
+  }
+
+  @Override
+  public String getHexString() {
+    return value.toHexString();
+  }
+
+  @Override
+  public int size() {
+    return value.size();
+  }
+
+  @Override
+  public String toString() {
+    return getHexString();
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Wei wei = (Wei) o;
+    return Objects.equals(value, wei.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }

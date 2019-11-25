@@ -8,9 +8,9 @@
   "response": {
     "jsonrpc": "2.0",
     "id": 342,
-    "error" : {
-      "code" : -32602,
-      "message" : "Invalid params"
+    "error": {
+      "code": -32602,
+      "message": "Invalid params"
     }
   },
   "statusCode": 400

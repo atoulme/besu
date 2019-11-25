@@ -19,11 +19,11 @@ import java.util.Objects;
 
 public class BannedMethodNegativeCases {
 
-  public void callsObjectsEquals() throws Exception {
-    Objects.equals("1", "1");
-  }
+    public void callsObjectsEquals() throws Exception {
+        Objects.equals("1", "1");
+    }
 
-  public void callsObjectsHashCode() throws Exception {
-    Objects.hash("1", "1");
-  }
+    public void callsObjectsHashCode() throws Exception {
+        Objects.hash("1", "1");
+    }
 }

@@ -16,7 +16,6 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.results;
 
 import org.hyperledger.besu.ethereum.api.query.TransactionWithMetadata;
 import org.hyperledger.besu.ethereum.core.Transaction;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -60,13 +59,13 @@ public class TransactionCompleteResult implements TransactionResult {
     this.blockNumber = Quantity.create(tx.getBlockNumber().get());
     this.from = transaction.getSender().toString();
     this.gas = Quantity.create(transaction.getGasLimit());
-    this.gasPrice = Quantity.create(transaction.getGasPrice());
+    this.gasPrice = Quantity.create(transaction.getGasPrice().toBytes().toArrayUnsafe());
     this.hash = transaction.getHash().toString();
     this.input = transaction.getPayload().toString();
     this.nonce = Quantity.create(transaction.getNonce());
-    this.to = transaction.getTo().map(BytesValue::toString).orElse(null);
+    this.to = transaction.getTo().map(a -> a.toBytes().toHexString()).orElse(null);
     this.transactionIndex = Quantity.create(tx.getTransactionIndex().get());
-    this.value = Quantity.create(transaction.getValue());
+    this.value = Quantity.create(transaction.getValue().toBytes().toArrayUnsafe());
     this.v = Quantity.create(transaction.getV());
     this.r = Quantity.create(transaction.getR());
     this.s = Quantity.create(transaction.getS());

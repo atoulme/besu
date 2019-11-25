@@ -14,16 +14,24 @@
  */
 package org.hyperledger.besu.ethereum.trie;
 
-import org.hyperledger.besu.util.bytes.Bytes32;
-
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.tuweni.bytes.Bytes32;
 
 public class StorageEntriesCollector<V> implements TrieIterator.LeafHandler<V> {
 
   private final Bytes32 startKeyHash;
   private final int limit;
-  private final Map<Bytes32, V> values = new TreeMap<>();
+  private final Map<Bytes32, V> values =
+      new TreeMap<>(
+          new Comparator<Bytes32>() {
+            @Override
+            public int compare(final Bytes32 o1, final Bytes32 o2) {
+              return o1.toUnsignedBigInteger().compareTo(o2.toUnsignedBigInteger());
+            }
+          });
 
   public StorageEntriesCollector(final Bytes32 startKeyHash, final int limit) {
     this.startKeyHash = startKeyHash;
@@ -45,7 +53,7 @@ public class StorageEntriesCollector<V> implements TrieIterator.LeafHandler<V> {
 
   @Override
   public TrieIterator.State onLeaf(final Bytes32 keyHash, final Node<V> node) {
-    if (keyHash.compareTo(startKeyHash) >= 0) {
+    if (keyHash.toUnsignedBigInteger().compareTo(startKeyHash.toUnsignedBigInteger()) >= 0) {
       node.getValue().ifPresent(value -> values.put(keyHash, value));
     }
     return limitReached() ? TrieIterator.State.STOP : TrieIterator.State.CONTINUE;

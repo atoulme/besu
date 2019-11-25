@@ -35,6 +35,7 @@ import java.util.concurrent.CancellationException;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /**
  * Responsible for extracting transactions from PendingTransactions and determining if the
@@ -53,8 +54,8 @@ import com.google.common.collect.Lists;
  *   <li>The amount of gas consumed when executing all transactions.
  * </ul>
  *
- * Once "used" this class must be discarded and another created. This class contains state which is
- * not cleared between executions of buildTransactionListForBlock().
+ * <p>Once "used" this class must be discarded and another created. This class contains state which
+ * is not cleared between executions of buildTransactionListForBlock().
  */
 public class BlockTransactionSelector {
 
@@ -167,7 +168,9 @@ public class BlockTransactionSelector {
 
     // If the gas price specified by the transaction is less than this node is willing to accept,
     // do not include it in the block.
-    if (minTransactionGasPrice.compareTo(transaction.getGasPrice()) > 0) {
+    if (UInt256.fromBytes(minTransactionGasPrice.toBytes())
+            .compareTo(UInt256.fromBytes(transaction.getGasPrice().toBytes()))
+        > 0) {
       return TransactionSelectionResult.DELETE_TRANSACTION_AND_CONTINUE;
     }
 

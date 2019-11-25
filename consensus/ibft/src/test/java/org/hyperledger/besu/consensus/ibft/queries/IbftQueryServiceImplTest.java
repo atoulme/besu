@@ -32,7 +32,6 @@ import org.hyperledger.besu.ethereum.core.BlockHeaderTestFixture;
 import org.hyperledger.besu.ethereum.core.NonBesuBlockHeader;
 import org.hyperledger.besu.ethereum.core.Util;
 import org.hyperledger.besu.plugin.services.query.IbftQueryService;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -41,6 +40,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
+import org.apache.tuweni.bytes.Bytes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +72,7 @@ public class IbftQueryServiceImplTest {
 
     final IbftExtraData unsignedExtraData =
         new IbftExtraData(
-            BytesValue.wrap(new byte[32]),
+            Bytes.wrap(new byte[32]),
             Collections.emptyList(),
             Optional.empty(),
             ROUND_NUMBER_IN_BLOCK,
@@ -90,13 +90,14 @@ public class IbftQueryServiceImplTest {
             .map(
                 keyPair ->
                     SECP256K1.sign(
-                        IbftBlockHashing.calculateDataHashForCommittedSeal(unsignedBlockHeader),
+                        IbftBlockHashing.calculateDataHashForCommittedSeal(unsignedBlockHeader)
+                            .toBytes(),
                         keyPair))
             .collect(Collectors.toList());
 
     signedExtraData =
         new IbftExtraData(
-            BytesValue.wrap(new byte[32]),
+            Bytes.wrap(new byte[32]),
             validatorSignatures,
             Optional.empty(),
             ROUND_NUMBER_IN_BLOCK,

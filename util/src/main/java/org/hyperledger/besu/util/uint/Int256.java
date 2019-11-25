@@ -14,8 +14,8 @@
  */
 package org.hyperledger.besu.util.uint;
 
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.Bytes32Backed;
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /** A signed 256-bits precision number. */
 /*
@@ -23,7 +23,7 @@ import org.hyperledger.besu.util.bytes.Bytes32Backed;
  * operations that are currently needed on signed numbers by the Ethereum VM code. We could (and
  * probably should) extend this with more operations to make this class more reusable.
  */
-public interface Int256 extends Bytes32Backed, Comparable<Int256> {
+public interface Int256 extends Comparable<Int256> {
 
   int SIZE = 32;
 
@@ -49,6 +49,8 @@ public interface Int256 extends Bytes32Backed, Comparable<Int256> {
 
   /** @return A view of the bytes of this number as signed (two's complement). */
   default UInt256 asUnsigned() {
-    return new DefaultUInt256(getBytes());
+    return UInt256.fromBytes(getBytes());
   }
+
+  public Bytes32 getBytes();
 }

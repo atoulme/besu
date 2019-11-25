@@ -17,8 +17,8 @@ package org.hyperledger.besu.ethereum.p2p.peers;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
+import org.hyperledger.besu.util.BytesUtil;
 import org.hyperledger.besu.util.NetworkUtility;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.net.InetAddress;
 import java.net.URI;
@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import com.google.common.net.InetAddresses;
 import com.google.common.primitives.Ints;
+import org.apache.tuweni.bytes.Bytes;
 
 public class EnodeURL {
 
@@ -38,13 +39,13 @@ public class EnodeURL {
       Pattern.compile("^discport=([0-9]{1,5})$");
   private static final Pattern NODE_ID_PATTERN = Pattern.compile("^[0-9a-fA-F]{128}$");
 
-  private final BytesValue nodeId;
+  private final Bytes nodeId;
   private final InetAddress ip;
   private final OptionalInt listeningPort;
   private final OptionalInt discoveryPort;
 
   private EnodeURL(
-      final BytesValue nodeId,
+      final Bytes nodeId,
       final InetAddress address,
       final OptionalInt listeningPort,
       final OptionalInt discoveryPort) {
@@ -93,7 +94,7 @@ public class EnodeURL {
         NODE_ID_PATTERN.matcher(uri.getUserInfo()).matches(),
         "Invalid node ID: node ID must have exactly 128 hexadecimal characters and should not include any '0x' hex prefix.");
 
-    final BytesValue id = BytesValue.fromHexString(uri.getUserInfo());
+    final Bytes id = Bytes.fromHexString(uri.getUserInfo());
     String host = uri.getHost();
     int tcpPort = uri.getPort();
 
@@ -133,7 +134,7 @@ public class EnodeURL {
         && Objects.equals(enodeA.listeningPort, enodeB.listeningPort);
   }
 
-  public static BytesValue parseNodeId(final String nodeId) {
+  public static Bytes parseNodeId(final String nodeId) {
     int expectedSize = EnodeURL.NODE_ID_SIZE * 2;
     if (nodeId.toLowerCase().startsWith("0x")) {
       expectedSize += 2;
@@ -141,14 +142,16 @@ public class EnodeURL {
     checkArgument(
         nodeId.length() == expectedSize,
         "Expected " + EnodeURL.NODE_ID_SIZE + " bytes in " + nodeId);
-    return BytesValue.fromHexString(nodeId, NODE_ID_SIZE);
+    return Bytes.fromHexString(nodeId, NODE_ID_SIZE);
   }
 
   public URI toURI() {
     final String uri =
         String.format(
             "enode://%s@%s:%d",
-            nodeId.toUnprefixedString(), InetAddresses.toUriString(ip), getListeningPortOrZero());
+            BytesUtil.toUnprefixedHexString(nodeId),
+            InetAddresses.toUriString(ip),
+            getListeningPortOrZero());
     final OptionalInt discPort = getDiscPortQueryParam();
     if (discPort.isPresent()) {
       return URI.create(uri + String.format("?discport=%d", discPort.getAsInt()));
@@ -161,7 +164,9 @@ public class EnodeURL {
     final String uri =
         String.format(
             "enode://%s@%s:%d",
-            nodeId.toUnprefixedString(), InetAddresses.toUriString(ip), getListeningPortOrZero());
+            BytesUtil.toUnprefixedHexString(nodeId),
+            InetAddresses.toUriString(ip),
+            getListeningPortOrZero());
 
     return URI.create(uri);
   }
@@ -184,7 +189,7 @@ public class EnodeURL {
     return fromString(url).toURI();
   }
 
-  public BytesValue getNodeId() {
+  public Bytes getNodeId() {
     return nodeId;
   }
 
@@ -247,7 +252,7 @@ public class EnodeURL {
 
   public static class Builder {
 
-    private BytesValue nodeId;
+    private Bytes nodeId;
     private OptionalInt listeningPort;
     private OptionalInt discoveryPort;
     private InetAddress ip;
@@ -273,18 +278,18 @@ public class EnodeURL {
           .ipAddress(enode.getIp());
     }
 
-    public Builder nodeId(final BytesValue nodeId) {
+    public Builder nodeId(final Bytes nodeId) {
       this.nodeId = nodeId;
       return this;
     }
 
     public Builder nodeId(final byte[] nodeId) {
-      this.nodeId = BytesValue.wrap(nodeId);
+      this.nodeId = Bytes.wrap(nodeId);
       return this;
     }
 
     public Builder nodeId(final String nodeId) {
-      this.nodeId = BytesValue.fromHexString(nodeId);
+      this.nodeId = Bytes.fromHexString(nodeId);
       return this;
     }
 

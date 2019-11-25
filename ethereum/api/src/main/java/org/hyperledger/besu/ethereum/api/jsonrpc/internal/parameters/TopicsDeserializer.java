@@ -16,8 +16,6 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.parameters;
 
 import static java.util.Collections.singletonList;
 
-import org.hyperledger.besu.ethereum.core.LogTopic;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -26,8 +24,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.collect.Lists;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
-public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
+public class TopicsDeserializer extends StdDeserializer<List<List<Bytes32>>> {
   public TopicsDeserializer() {
     this(null);
   }
@@ -37,23 +37,31 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
   }
 
   @Override
-  public List<List<LogTopic>> deserialize(
+  public List<List<Bytes32>> deserialize(
       final JsonParser jsonparser, final DeserializationContext context) throws IOException {
     final JsonNode topicsNode = jsonparser.getCodec().readTree(jsonparser);
-    final List<List<LogTopic>> topics = Lists.newArrayList();
+    final List<List<Bytes32>> topics = Lists.newArrayList();
 
     if (!topicsNode.isArray()) {
-      topics.add(singletonList(LogTopic.fromHexString(topicsNode.textValue())));
+      topics.add(singletonList(Bytes32.fromHexStringLenient(topicsNode.textValue())));
     } else {
       for (JsonNode child : topicsNode) {
         if (child.isArray()) {
-          final List<LogTopic> childItems = Lists.newArrayList();
+          final List<Bytes32> childItems = Lists.newArrayList();
           for (JsonNode subChild : child) {
-            childItems.add(LogTopic.fromHexString(subChild.textValue()));
+            if (subChild.isNull()) {
+              childItems.add(null);
+            } else {
+              childItems.add(Bytes32.wrap(Bytes.fromHexStringLenient(subChild.textValue())));
+            }
           }
           topics.add(childItems);
         } else {
-          topics.add(singletonList(LogTopic.fromHexString(child.textValue())));
+          if (child.isNull()) {
+            topics.add(singletonList(null));
+          } else {
+            topics.add(singletonList(Bytes32.wrap(Bytes.fromHexStringLenient(child.textValue()))));
+          }
         }
       }
     }

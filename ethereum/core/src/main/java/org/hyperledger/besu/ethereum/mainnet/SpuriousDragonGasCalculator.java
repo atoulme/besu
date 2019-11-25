@@ -18,7 +18,8 @@ import org.hyperledger.besu.ethereum.core.Account;
 import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
-import org.hyperledger.besu.util.uint.UInt256;
+
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class SpuriousDragonGasCalculator extends TangerineWhistleGasCalculator {
 
@@ -42,11 +43,11 @@ public class SpuriousDragonGasCalculator extends TangerineWhistleGasCalculator {
 
     Gas cost = callOperationBaseGasCost().plus(memoryExpansionCost);
 
-    if (!transferValue.isZero()) {
+    if (!transferValue.toBytes().isZero()) {
       cost = cost.plus(callValueTransferGasCost());
     }
 
-    if ((recipient == null || recipient.isEmpty()) && !transferValue.isZero()) {
+    if ((recipient == null || recipient.isEmpty()) && !transferValue.toBytes().isZero()) {
       cost = cost.plus(newAccountGasCost());
     }
 
@@ -64,7 +65,7 @@ public class SpuriousDragonGasCalculator extends TangerineWhistleGasCalculator {
 
   @Override
   public Gas selfDestructOperationGasCost(final Account recipient, final Wei inheritance) {
-    if ((recipient == null || recipient.isEmpty()) && !inheritance.isZero()) {
+    if ((recipient == null || recipient.isEmpty()) && !inheritance.toBytes().isZero()) {
       return SELFDESTRUCT_OPERATION_CREATES_NEW_ACCOUNT;
     } else {
       return SELFDESTRUCT_OPERATION_GAS_COST;

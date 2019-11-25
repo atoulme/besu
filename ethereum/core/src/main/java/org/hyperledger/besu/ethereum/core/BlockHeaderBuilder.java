@@ -18,11 +18,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
-
 import java.time.Instant;
 import java.util.OptionalLong;
+
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /** A utility class for building block headers. */
 public class BlockHeaderBuilder {
@@ -51,7 +51,7 @@ public class BlockHeaderBuilder {
 
   private long timestamp = -1L;
 
-  private BytesValue extraData;
+  private Bytes extraData;
 
   private Hash mixHash;
 
@@ -73,7 +73,7 @@ public class BlockHeaderBuilder {
         .stateRoot(header.getStateRoot())
         .transactionsRoot(header.getTransactionsRoot())
         .receiptsRoot(header.getReceiptsRoot())
-        .logsBloom(header.getLogsBloom())
+        .logsBloom(new LogsBloomFilter(header.getLogsBloom()))
         .difficulty(header.getDifficulty())
         .number(header.getNumber())
         .gasLimit(header.getGasLimit())
@@ -200,7 +200,7 @@ public class BlockHeaderBuilder {
     stateRoot(sealableBlockHeader.getStateRoot());
     transactionsRoot(sealableBlockHeader.getTransactionsRoot());
     receiptsRoot(sealableBlockHeader.getReceiptsRoot());
-    logsBloom(sealableBlockHeader.getLogsBloom());
+    logsBloom(new LogsBloomFilter(sealableBlockHeader.getLogsBloom()));
     difficulty(sealableBlockHeader.getDifficulty());
     number(sealableBlockHeader.getNumber());
     gasLimit(sealableBlockHeader.getGasLimit());
@@ -282,7 +282,7 @@ public class BlockHeaderBuilder {
     return this;
   }
 
-  public BlockHeaderBuilder extraData(final BytesValue data) {
+  public BlockHeaderBuilder extraData(final Bytes data) {
     checkNotNull(data);
 
     this.extraData = data;

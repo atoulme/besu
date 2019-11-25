@@ -85,7 +85,7 @@ public class EthPeerTest {
   public void getNodeDataStream() throws PeerNotConnected {
     final ResponseStreamSupplier getStream =
         (peer) -> peer.getNodeData(asList(gen.hash(), gen.hash()));
-    final MessageData targetMessage = NodeDataMessage.create(singletonList(gen.bytesValue()));
+    final MessageData targetMessage = NodeDataMessage.create(singletonList(gen.Bytes()));
     final MessageData otherMessage = BlockHeadersMessage.create(asList(gen.header(), gen.header()));
 
     messageStream(getStream, targetMessage, otherMessage);

@@ -15,9 +15,7 @@
 package org.hyperledger.besu.ethereum.api.graphql.internal;
 
 import org.hyperledger.besu.ethereum.core.Address;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
+import org.hyperledger.besu.ethereum.core.Hash;
 
 import graphql.language.IntValue;
 import graphql.language.StringValue;
@@ -26,6 +24,9 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class Scalars {
 
@@ -86,7 +87,7 @@ public class Scalars {
             if (input instanceof StringValue) {
               return UInt256.fromHexString(((StringValue) input).getValue());
             } else if (input instanceof IntValue) {
-              return UInt256.of(((IntValue) input).getValue());
+              return UInt256.valueOf(((IntValue) input).getValue());
             }
           } catch (final IllegalArgumentException e) {
             // fall through
@@ -99,7 +100,7 @@ public class Scalars {
       new Coercing<Object, Object>() {
         @Override
         public String serialize(final Object input) throws CoercingSerializeException {
-          if (input instanceof BytesValue) {
+          if (input instanceof Bytes) {
             return input.toString();
           }
           throw new CoercingSerializeException("Unable to serialize " + input + " as an Bytes");
@@ -107,7 +108,7 @@ public class Scalars {
 
         @Override
         public String parseValue(final Object input) throws CoercingParseValueException {
-          if (input instanceof BytesValue) {
+          if (input instanceof Bytes) {
             return input.toString();
           }
           throw new CoercingParseValueException(
@@ -115,12 +116,12 @@ public class Scalars {
         }
 
         @Override
-        public BytesValue parseLiteral(final Object input) throws CoercingParseLiteralException {
+        public Bytes parseLiteral(final Object input) throws CoercingParseLiteralException {
           if (!(input instanceof StringValue)) {
             throw new CoercingParseLiteralException("Value is not any Bytes : '" + input + "'");
           }
           try {
-            return BytesValue.fromHexString(((StringValue) input).getValue());
+            return Bytes.fromHexStringLenient(((StringValue) input).getValue());
           } catch (final IllegalArgumentException e) {
             throw new CoercingParseLiteralException("Value is not any Bytes : '" + input + "'");
           }
@@ -131,6 +132,9 @@ public class Scalars {
       new Coercing<Object, Object>() {
         @Override
         public String serialize(final Object input) throws CoercingSerializeException {
+          if (input instanceof Hash) {
+            return ((Hash) input).toBytes().toString();
+          }
           if (input instanceof Bytes32) {
             return input.toString();
           }
@@ -152,7 +156,7 @@ public class Scalars {
             throw new CoercingParseLiteralException("Value is not any Bytes32 : '" + input + "'");
           }
           try {
-            return Bytes32.fromHexString(((StringValue) input).getValue());
+            return Bytes32.fromHexStringLenient(((StringValue) input).getValue());
           } catch (final IllegalArgumentException e) {
             throw new CoercingParseLiteralException("Value is not any Bytes32 : '" + input + "'");
           }
@@ -168,7 +172,7 @@ public class Scalars {
           } else if (input instanceof String) {
             final String value = ((String) input).toLowerCase();
             if (value.startsWith("0x")) {
-              return Bytes32.fromHexStringLenient(value).asUInt256().toLong();
+              return Bytes.fromHexStringLenient(value).toLong();
             } else {
               return Long.parseLong(value);
             }
@@ -183,7 +187,7 @@ public class Scalars {
           } else if (input instanceof String) {
             final String value = ((String) input).toLowerCase();
             if (value.startsWith("0x")) {
-              return Bytes32.fromHexStringLenient(value).asUInt256().toLong();
+              return Bytes.fromHexStringLenient(value).toLong();
             } else {
               return Long.parseLong(value);
             }
@@ -200,7 +204,7 @@ public class Scalars {
             } else if (input instanceof StringValue) {
               final String value = ((StringValue) input).getValue().toLowerCase();
               if (value.startsWith("0x")) {
-                return Bytes32.fromHexStringLenient(value).asUInt256().toLong();
+                return Bytes.fromHexStringLenient(value).toLong();
               } else {
                 return Long.parseLong(value);
               }

@@ -22,7 +22,6 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.parameters.TopicsDeserializer;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Log;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogsBloomFilter;
 
 import java.util.Arrays;
@@ -36,11 +35,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Lists;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 public class LogsQuery {
 
   private final List<Address> addresses;
-  private final List<List<LogTopic>> topics;
+  private final List<List<Bytes32>> topics;
   private final List<LogsBloomFilter> addressBlooms;
   private final List<List<LogsBloomFilter>> topicsBlooms;
 
@@ -49,11 +50,13 @@ public class LogsQuery {
       @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY) @JsonProperty("address")
           final List<Address> addresses,
       @JsonDeserialize(using = TopicsDeserializer.class) @JsonProperty("topics")
-          final List<List<LogTopic>> topics) {
+          final List<List<Bytes32>> topics) {
     this.addresses = addresses != null ? addresses : emptyList();
     this.topics = topics != null ? topics : emptyList();
     this.addressBlooms =
-        this.addresses.stream().map(LogsBloomFilter::computeBytes).collect(toUnmodifiableList());
+        this.addresses.stream()
+            .map(a -> LogsBloomFilter.computeBytes(a.toBytes()))
+            .collect(toUnmodifiableList());
     this.topicsBlooms =
         this.topics.stream()
             .map(
@@ -81,14 +84,14 @@ public class LogsQuery {
     return addresses.isEmpty() || addresses.contains(address);
   }
 
-  private boolean matchesTopics(final List<LogTopic> topics) {
+  private boolean matchesTopics(final List<Bytes32> topics) {
     return this.topics.isEmpty()
         || (topics.size() >= this.topics.size()
             && IntStream.range(0, this.topics.size())
                 .allMatch(i -> matchesTopic(topics.get(i), this.topics.get(i))));
   }
 
-  private boolean matchesTopic(final LogTopic topic, final List<LogTopic> matchCriteria) {
+  private boolean matchesTopic(final Bytes topic, final List<Bytes32> matchCriteria) {
     return matchCriteria.contains(null) || matchCriteria.contains(topic);
   }
 
@@ -114,7 +117,7 @@ public class LogsQuery {
 
   public static class Builder {
     private final List<Address> queryAddresses = Lists.newArrayList();
-    private final List<List<LogTopic>> queryTopics = Lists.newArrayList();
+    private final List<List<Bytes32>> queryTopics = Lists.newArrayList();
 
     public Builder address(final Address address) {
       if (address != null) {
@@ -137,7 +140,7 @@ public class LogsQuery {
       return this;
     }
 
-    public Builder topics(final List<List<LogTopic>> topics) {
+    public Builder topics(final List<List<Bytes32>> topics) {
       if (topics != null && !topics.isEmpty()) {
         queryTopics.addAll(topics);
       }

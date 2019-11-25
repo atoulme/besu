@@ -17,16 +17,15 @@ package org.hyperledger.besu.ethereum.api.graphql.internal.pojoadapter;
 import org.hyperledger.besu.ethereum.api.query.BlockchainQueries;
 import org.hyperledger.besu.ethereum.api.query.TransactionWithMetadata;
 import org.hyperledger.besu.ethereum.core.Hash;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 @SuppressWarnings("unused") // reflected by GraphQL
 public class LogAdapter extends AdapterBase {
@@ -41,15 +40,15 @@ public class LogAdapter extends AdapterBase {
   }
 
   public List<Bytes32> getTopics() {
-    final List<LogTopic> topics = logWithMetadata.getTopics();
+    final List<Bytes32> topics = logWithMetadata.getTopics();
     final List<Bytes32> result = new ArrayList<>();
-    for (final LogTopic topic : topics) {
+    for (final Bytes topic : topics) {
       result.add(Bytes32.leftPad(topic));
     }
     return result;
   }
 
-  public Optional<BytesValue> getData() {
+  public Optional<Bytes> getData() {
     return Optional.of(logWithMetadata.getData());
   }
 

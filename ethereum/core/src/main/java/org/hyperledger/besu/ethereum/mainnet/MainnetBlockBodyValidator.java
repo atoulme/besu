@@ -21,7 +21,6 @@ import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.core.LogsBloomFilter;
 import org.hyperledger.besu.ethereum.core.TransactionReceipt;
-import org.hyperledger.besu.util.bytes.Bytes32;
 
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +28,8 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
 
@@ -55,7 +56,8 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
       return false;
     }
 
-    if (!validateStateRoot(block.getHeader().getStateRoot(), worldStateRootHash)) {
+    if (!validateStateRoot(
+        block.getHeader().getStateRoot().toBytes(), worldStateRootHash.toBytes())) {
       return false;
     }
 
@@ -71,13 +73,14 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     final BlockHeader header = block.getHeader();
     final BlockBody body = block.getBody();
 
-    final Bytes32 transactionsRoot = BodyValidation.transactionsRoot(body.getTransactions());
-    if (!validateTransactionsRoot(header.getTransactionsRoot(), transactionsRoot)) {
+    final Bytes32 transactionsRoot =
+        BodyValidation.transactionsRoot(body.getTransactions()).toBytes();
+    if (!validateTransactionsRoot(header.getTransactionsRoot().toBytes(), transactionsRoot)) {
       return false;
     }
 
-    final Bytes32 receiptsRoot = BodyValidation.receiptsRoot(receipts);
-    if (!validateReceiptsRoot(header.getReceiptsRoot(), receiptsRoot)) {
+    final Bytes32 receiptsRoot = BodyValidation.receiptsRoot(receipts).toBytes();
+    if (!validateReceiptsRoot(header.getReceiptsRoot().toBytes(), receiptsRoot)) {
       return false;
     }
 
@@ -108,9 +111,8 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     return true;
   }
 
-  private static boolean validateLogsBloom(
-      final LogsBloomFilter expected, final LogsBloomFilter actual) {
-    if (!expected.equals(actual)) {
+  private static boolean validateLogsBloom(final Bytes expected, final LogsBloomFilter actual) {
+    if (!expected.equals(actual.getBytes())) {
       LOG.warn(
           "Invalid block: logs bloom filter mismatch (expected={}, actual={})", expected, actual);
       return false;
@@ -153,8 +155,8 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     final BlockHeader header = block.getHeader();
     final BlockBody body = block.getBody();
 
-    final Bytes32 ommerHash = BodyValidation.ommersHash(body.getOmmers());
-    if (!validateOmmersHash(header.getOmmersHash(), ommerHash)) {
+    final Bytes32 ommerHash = BodyValidation.ommersHash(body.getOmmers()).toBytes();
+    if (!validateOmmersHash(header.getOmmersHash().toBytes(), ommerHash)) {
       return false;
     }
 

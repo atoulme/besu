@@ -30,7 +30,6 @@ import org.hyperledger.besu.ethereum.mainnet.BodyValidation;
 import org.hyperledger.besu.ethereum.mainnet.ProtocolSchedule;
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.MessageData;
 import org.hyperledger.besu.plugin.services.MetricsSystem;
-import org.hyperledger.besu.util.bytes.Bytes32;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +42,7 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes32;
 
 /**
  * Requests bodies from a peer by header, matches up headers to bodies, and returns blocks.
@@ -144,11 +144,13 @@ public class GetBodiesFromPeerTask<C> extends AbstractPeerRequestTask<List<Block
     }
 
     public BodyIdentifier(final List<Transaction> transactions, final List<BlockHeader> ommers) {
-      this(BodyValidation.transactionsRoot(transactions), BodyValidation.ommersHash(ommers));
+      this(
+          BodyValidation.transactionsRoot(transactions).toBytes(),
+          BodyValidation.ommersHash(ommers).toBytes());
     }
 
     public BodyIdentifier(final BlockHeader header) {
-      this(header.getTransactionsRoot(), header.getOmmersHash());
+      this(header.getTransactionsRoot().toBytes(), header.getOmmersHash().toBytes());
     }
 
     @Override

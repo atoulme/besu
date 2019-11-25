@@ -14,7 +14,7 @@
  */
 package org.hyperledger.besu.ethereum.core;
 
-import org.hyperledger.besu.util.uint.UInt256;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /** A block header capable of being processed. */
 public class ProcessableBlockHeader {

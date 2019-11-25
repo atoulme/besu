@@ -25,7 +25,8 @@ import org.hyperledger.besu.ethereum.api.jsonrpc.internal.response.JsonRpcSucces
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransaction;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransactionHandler;
-import org.hyperledger.besu.util.bytes.BytesValues;
+
+import org.apache.tuweni.bytes.Bytes;
 
 public class PrivDistributeRawTransaction extends AbstractSendTransaction implements JsonRpcMethod {
 
@@ -74,6 +75,6 @@ public class PrivDistributeRawTransaction extends AbstractSendTransaction implem
         () ->
             new JsonRpcSuccessResponse(
                 requestContext.getRequest().getId(),
-                BytesValues.fromBase64(enclaveKey).toString()));
+                Bytes.fromBase64String(enclaveKey).toString()));
   }
 }

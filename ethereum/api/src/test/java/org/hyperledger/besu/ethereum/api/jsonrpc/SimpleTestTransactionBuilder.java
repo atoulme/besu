@@ -21,10 +21,11 @@ import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.Wei;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.math.BigInteger;
 import java.util.Optional;
+
+import org.apache.tuweni.bytes.Bytes;
 
 public class SimpleTestTransactionBuilder {
 
@@ -94,7 +95,7 @@ public class SimpleTestTransactionBuilder {
     return Address.fromHexString(hex);
   }
 
-  private static BytesValue bytes(final String hex) {
-    return BytesValue.fromHexString(hex);
+  private static Bytes bytes(final String hex) {
+    return Bytes.fromHexString(hex);
   }
 }

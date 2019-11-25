@@ -29,12 +29,12 @@ import org.hyperledger.besu.ethereum.api.jsonrpc.internal.exception.InvalidJsonR
 import org.hyperledger.besu.ethereum.api.jsonrpc.websocket.methods.WebSocketRpcRequest;
 import org.hyperledger.besu.ethereum.api.query.LogsQuery;
 import org.hyperledger.besu.ethereum.core.Address;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import io.vertx.core.json.Json;
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -201,7 +201,7 @@ public class SubscriptionRequestMapperTest {
                     .collect(toUnmodifiableList()),
                 singletonList(
                     singletonList(
-                        LogTopic.fromHexString(
+                        Bytes32.fromHexString(
                             "0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902")))),
             null,
             null);
@@ -226,10 +226,10 @@ public class SubscriptionRequestMapperTest {
                 singletonList(Address.fromHexString("0x8320fe7702b96808f7bbc0d4a888ed1468216cfd")),
                 List.of(
                     singletonList(
-                        LogTopic.fromHexString(
+                        Bytes32.fromHexString(
                             "0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab902")),
                     singletonList(
-                        LogTopic.fromHexString(
+                        Bytes32.fromHexString(
                             "0xd78a0cb8bb633d06981248b816e7bd33c2a35a6089241d099fa519e361cab901")))),
             null,
             null);

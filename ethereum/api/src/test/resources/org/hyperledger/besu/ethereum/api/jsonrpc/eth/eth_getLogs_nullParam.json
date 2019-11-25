@@ -3,12 +3,19 @@
     "id": 406,
     "jsonrpc": "2.0",
     "method": "eth_getLogs",
-    "params": [{
-      "fromBlock": "0x20",
-      "toBlock": "0x20",
-      "address": [],
-      "topics": [null, ["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"]]
-    }]
+    "params": [
+      {
+        "fromBlock": "0x20",
+        "toBlock": "0x20",
+        "address": [],
+        "topics": [
+          null,
+          [
+            "0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b"
+          ]
+        ]
+      }
+    ]
   },
   "response": {
     "jsonrpc": "2.0",

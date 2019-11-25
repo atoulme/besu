@@ -50,12 +50,12 @@ import org.hyperledger.besu.ethereum.core.BlockImporter;
 import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
 import org.hyperledger.besu.util.Subscribers;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Optional;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -101,7 +101,7 @@ public class IbftRoundTest {
     when(messageValidator.validateCommit(any())).thenReturn(true);
 
     proposedExtraData =
-        new IbftExtraData(BytesValue.wrap(new byte[32]), emptyList(), empty(), 0, emptyList());
+        new IbftExtraData(Bytes.wrap(new byte[32]), emptyList(), empty(), 0, emptyList());
     final BlockHeaderTestFixture headerTestFixture = new BlockHeaderTestFixture();
     headerTestFixture.extraData(proposedExtraData.encode());
     headerTestFixture.number(1);
@@ -215,7 +215,7 @@ public class IbftRoundTest {
     final Hash commitSealHash =
         IbftBlockHashing.calculateDataHashForCommittedSeal(
             proposedBlock.getHeader(), proposedExtraData);
-    final Signature localCommitSeal = SECP256K1.sign(commitSealHash, localNodeKeys);
+    final Signature localCommitSeal = SECP256K1.sign(commitSealHash.toBytes(), localNodeKeys);
 
     // Receive Proposal Message
     round.handleProposalMessage(
@@ -258,7 +258,7 @@ public class IbftRoundTest {
     final Hash commitSealHash =
         IbftBlockHashing.calculateDataHashForCommittedSeal(
             proposedBlock.getHeader(), proposedExtraData);
-    final Signature localCommitSeal = SECP256K1.sign(commitSealHash, localNodeKeys);
+    final Signature localCommitSeal = SECP256K1.sign(commitSealHash.toBytes(), localNodeKeys);
 
     round.createAndSendProposalMessage(15);
     verify(transmitter, never()).multicastCommit(any(), any(), any());

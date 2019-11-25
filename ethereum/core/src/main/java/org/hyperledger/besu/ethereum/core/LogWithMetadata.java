@@ -16,14 +16,12 @@
  */
 package org.hyperledger.besu.ethereum.core;
 
-import static java.util.stream.Collectors.toUnmodifiableList;
-
-import org.hyperledger.besu.util.bytes.BytesValue;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.MoreObjects;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 public class LogWithMetadata extends Log
     implements org.hyperledger.besu.plugin.data.LogWithMetadata {
@@ -42,8 +40,8 @@ public class LogWithMetadata extends Log
       final Hash transactionHash,
       final int transactionIndex,
       final Address address,
-      final BytesValue data,
-      final List<LogTopic> topics,
+      final Bytes data,
+      final List<Bytes32> topics,
       final boolean removed) {
     super(address, data, topics);
     this.logIndex = logIndex;
@@ -152,8 +150,8 @@ public class LogWithMetadata extends Log
         Hash.fromPlugin(pluginObject.getTransactionHash()),
         pluginObject.getTransactionIndex(),
         Address.fromPlugin(pluginObject.getLogger()),
-        BytesValue.fromPlugin(pluginObject.getData()),
-        pluginObject.getTopics().stream().map(LogTopic::fromPlugin).collect(toUnmodifiableList()),
+        pluginObject.getData(),
+        pluginObject.getTopics(),
         pluginObject.isRemoved());
   }
 }

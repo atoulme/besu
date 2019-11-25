@@ -17,7 +17,6 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.websocket.subscription.pending
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.results.JsonRpcResult;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.results.Quantity;
 import org.hyperledger.besu.ethereum.core.Transaction;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -51,12 +50,12 @@ public class PendingTransactionDetailResult implements JsonRpcResult {
   public PendingTransactionDetailResult(final Transaction tx) {
     this.from = tx.getSender().toString();
     this.gas = Quantity.create(tx.getGasLimit());
-    this.gasPrice = Quantity.create(tx.getGasPrice());
+    this.gasPrice = Quantity.create(tx.getGasPrice().toBytes().toArrayUnsafe());
     this.hash = tx.getHash().toString();
     this.input = tx.getPayload().toString();
     this.nonce = Quantity.create(tx.getNonce());
-    this.to = tx.getTo().map(BytesValue::toString).orElse(null);
-    this.value = Quantity.create(tx.getValue());
+    this.to = tx.getTo().map(a -> a.toBytes().toHexString()).orElse(null);
+    this.value = Quantity.create(tx.getValue().toBytes().toArrayUnsafe());
     this.v = Quantity.create(tx.getV());
     this.r = Quantity.create(tx.getR());
     this.s = Quantity.create(tx.getS());

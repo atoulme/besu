@@ -7,15 +7,15 @@ const localDev = 'http://127.0.0.1:8545';
 const privateKeyProvider = new PrivateKeyProvider(privateKey, localDev);
 
 module.exports = {
-  networks: {
-    development: {
-      host: '127.0.0.1',
-      port: 7545,
-      network_id: '*',
+    networks: {
+        development: {
+            host: '127.0.0.1',
+            port: 7545,
+            network_id: '*',
+        },
+        devwallet: {
+            provider: privateKeyProvider,
+            network_id: '2018',
+        },
     },
-    devwallet: {
-      provider: privateKeyProvider,
-      network_id: '2018',
-    },
-  },
 };

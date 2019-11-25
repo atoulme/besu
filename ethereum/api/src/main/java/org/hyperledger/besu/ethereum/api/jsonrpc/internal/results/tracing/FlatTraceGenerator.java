@@ -20,8 +20,6 @@ import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.debug.TraceFrame;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -38,6 +36,8 @@ import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.Atomics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 public class FlatTraceGenerator {
 
@@ -77,7 +77,7 @@ public class FlatTraceGenerator {
     transactionTrace
         .getTransaction()
         .getInit()
-        .map(BytesValue::getHexString)
+        .map(Bytes::toHexString)
         .ifPresent(firstFlatTraceBuilder.getActionBuilder()::init);
     // set to, input and callType fields if not a smart contract
     transactionTrace
@@ -93,12 +93,8 @@ public class FlatTraceGenerator {
                         transactionTrace
                             .getTransaction()
                             .getData()
-                            .orElse(
-                                transactionTrace
-                                    .getTransaction()
-                                    .getInit()
-                                    .orElse(BytesValue.EMPTY))
-                            .getHexString()));
+                            .orElse(transactionTrace.getTransaction().getInit().orElse(Bytes.EMPTY))
+                            .toHexString()));
     // declare a queue of transactionTrace contexts
     final Deque<FlatTrace.Context> tracesContexts = new ArrayDeque<>();
     // add the first transactionTrace context to the queue of transactionTrace contexts
@@ -283,7 +279,6 @@ public class FlatTraceGenerator {
 
   private static Address toAddress(final Bytes32 value) {
     return Address.wrap(
-        BytesValue.of(
-            Arrays.copyOfRange(value.extractArray(), Bytes32.SIZE - Address.SIZE, Bytes32.SIZE)));
+        Bytes.of(Arrays.copyOfRange(value.toArray(), Bytes32.SIZE - Address.SIZE, Bytes32.SIZE)));
   }
 }

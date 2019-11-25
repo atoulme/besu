@@ -16,13 +16,14 @@ package org.hyperledger.besu.cli.options;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import org.hyperledger.besu.util.uint.UInt256;
+import org.hyperledger.besu.util.BytesUtil;
 
 import java.math.BigInteger;
 import java.util.Iterator;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Range;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class OptionParser {
 
@@ -53,6 +54,6 @@ public class OptionParser {
   }
 
   public static String format(final UInt256 value) {
-    return new BigInteger(value.toUnprefixedHexString(), 16).toString(10);
+    return new BigInteger(BytesUtil.toUnprefixedHexString(value.toBytes()), 16).toString(10);
   }
 }

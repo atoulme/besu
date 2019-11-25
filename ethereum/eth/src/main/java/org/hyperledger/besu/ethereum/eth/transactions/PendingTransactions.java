@@ -275,7 +275,10 @@ public class PendingTransactions {
     return newTransaction
             .getTransaction()
             .getGasPrice()
-            .compareTo(existingTransaction.getTransaction().getGasPrice())
+            .toBytes()
+            .toUnsignedBigInteger()
+            .compareTo(
+                existingTransaction.getTransaction().getGasPrice().toBytes().toUnsignedBigInteger())
         > 0;
   }
 

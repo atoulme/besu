@@ -44,7 +44,7 @@ public class Amount {
   }
 
   public static Amount wei(final Wei wei) {
-    return wei(new BigInteger(wei.toUnprefixedHexString(), 16));
+    return wei(wei.toBytes().toUnsignedBigInteger());
   }
 
   public BigDecimal getValue() {

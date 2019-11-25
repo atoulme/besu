@@ -25,6 +25,8 @@ import org.hyperledger.besu.ethereum.vm.GasCalculator;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import org.apache.tuweni.units.bigints.UInt256;
+
 /**
  * Validates a transaction based on Frontier protocol runtime requirements.
  *
@@ -83,7 +85,9 @@ public class MainnetTransactionValidator implements TransactionValidator {
       senderNonce = sender.getNonce();
     }
 
-    if (transaction.getUpfrontCost().compareTo(senderBalance) > 0) {
+    if (UInt256.fromBytes(transaction.getUpfrontCost().toBytes())
+            .compareTo(UInt256.fromBytes(senderBalance.toBytes()))
+        > 0) {
       return ValidationResult.invalid(
           TransactionInvalidReason.UPFRONT_COST_EXCEEDS_BALANCE,
           String.format(
