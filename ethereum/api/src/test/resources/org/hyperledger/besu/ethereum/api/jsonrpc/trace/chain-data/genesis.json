@@ -1,26 +1,26 @@
 {
-  "config": {
-    "homesteadBlock": 0,
-    "daoForkBlock": 0,
-    "eip150Block": 0,
-    "eip155Block": 0,
-    "eip158Block": 0,
-    "eip160Block": 0,
-    "byzantiumBlock": 0,
-    "constantinopleBlock": 0,
-    "constantinopleFixBlock": 0,
-    "ethash": {
-      "fixeddifficulty": 15
+    "config": {
+        "homesteadBlock": 0,
+        "daoForkBlock": 0,
+        "eip150Block": 0,
+        "eip155Block": 0,
+        "eip158Block": 0,
+        "eip160Block": 0,
+        "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "constantinopleFixBlock": 0,
+        "ethash": {
+            "fixeddifficulty": 15
+        },
+        "chainID": 1982,
+        "networkID": 1982
     },
-    "chainID": 1982,
-    "networkID": 1982
-  },
-  "nonce": "0x0000000000000042",
-  "gasLimit": "0x100000000000",
-  "difficulty": "0xf",
-  "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "coinbase": "0x0000000000000000000000000000000000000000",
-  "alloc": {
+    "nonce": "0x0000000000000042",
+    "gasLimit": "0x100000000000",
+    "difficulty": "0xf",
+    "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "coinbase": "0x0000000000000000000000000000000000000000",
+    "alloc": {
     "0010000000000000000000000000000000000000": {
       "comment": "Add smart contract that will simply set 2 key-value pairs.  Parses tx input into 4 32 byte values: [key1, val1, key2, val2]. Can be used to test constantinople fix.",
       "code": "0x6020356000355560603560403555",
