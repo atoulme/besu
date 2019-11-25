@@ -111,7 +111,7 @@ public class RLPSubCommandTest extends CommandTestAbstract {
     final String expectedRlpString =
         "0xf853a00000000000000000000000000000000000000000000000000000000000000000ea94be068f726a13c8d"
             + "46c44be6ce9d275600e1735a4945ff6f4b66a46a2b2310a6f3a93aaddc0d9a1c193808400000000c0";
-    assertThat(commandOutput.toString().toLowerCase()).contains(expectedRlpString);
+    assertThat(commandOutput.toString()).contains(expectedRlpString);
     assertThat(commandErrorOutput.toString()).isEmpty();
   }
 
@@ -132,7 +132,7 @@ public class RLPSubCommandTest extends CommandTestAbstract {
         "0xf853a00000000000000000000000000000000000000000000000000000000000000000ea94be068f726a13c8d"
             + "46c44be6ce9d275600e1735a4945ff6f4b66a46a2b2310a6f3a93aaddc0d9a1c193808400000000c0";
 
-    assertThat(contentOf(file).toLowerCase()).contains(expectedRlpString);
+    assertThat(contentOf(file)).contains(expectedRlpString);
 
     assertThat(commandOutput.toString()).isEmpty();
     assertThat(commandErrorOutput.toString()).isEmpty();
@@ -155,7 +155,7 @@ public class RLPSubCommandTest extends CommandTestAbstract {
       final String expectedRlpString =
           "0xf853a00000000000000000000000000000000000000000000000000000000000000000ea94be068f726a13c8d"
               + "46c44be6ce9d275600e1735a4945ff6f4b66a46a2b2310a6f3a93aaddc0d9a1c193808400000000c0";
-      assertThat(commandOutput.toString().toLowerCase()).contains(expectedRlpString);
+      assertThat(commandOutput.toString()).contains(expectedRlpString);
       assertThat(commandErrorOutput.toString()).isEmpty();
     }
   }
