@@ -191,7 +191,7 @@ public class PrunerIntegrationTest {
 
   private Set<Bytes> collectWorldStateNodes(final Hash stateRootHash, final Set<Bytes> collector) {
     final List<Hash> storageRoots = new ArrayList<>();
-    final MerklePatriciaTrie<Bytes32, Bytes> stateTrie = createStateTrie(stateRootHash);
+    final MerklePatriciaTrie<Bytes32, Bytes> stateTrie = createStateTrie(stateRootHash.toBytes());
 
     // Collect storage roots and code
     stateTrie
@@ -201,7 +201,7 @@ public class PrunerIntegrationTest {
               final StateTrieAccountValue accountValue =
                   StateTrieAccountValue.readFrom(RLP.input(val));
               stateStorage
-                  .get(accountValue.getCodeHash().toArrayUnsafe())
+                  .get(accountValue.getCodeHash().getByteArray())
                   .ifPresent(v -> collector.add(Bytes.wrap(v)));
               storageRoots.add(accountValue.getStorageRoot());
             });
@@ -210,7 +210,7 @@ public class PrunerIntegrationTest {
     collectTrieNodes(stateTrie, collector);
     // Collect storage nodes
     for (Hash storageRoot : storageRoots) {
-      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie = createStorageTrie(storageRoot);
+      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie = createStorageTrie(storageRoot.toBytes());
       collectTrieNodes(storageTrie, collector);
     }
 
