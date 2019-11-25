@@ -19,6 +19,7 @@ import org.hyperledger.besu.ethereum.vm.AbstractOperation;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
 
+import org.apache.tuweni.bytes.Bytes32;
 import org.apache.tuweni.units.bigints.UInt256;
 
 public class DivOperation extends AbstractOperation {
@@ -37,8 +38,11 @@ public class DivOperation extends AbstractOperation {
     final UInt256 value0 = UInt256.fromBytes(frame.popStackItem());
     final UInt256 value1 = UInt256.fromBytes(frame.popStackItem());
 
-    final UInt256 result = value0.divide(value1);
-
-    frame.pushStackItem(result.toBytes());
+    if (value1.isZero()) {
+      frame.pushStackItem(Bytes32.ZERO);
+    } else {
+      final UInt256 result = value0.divide(value1);
+      frame.pushStackItem(result.toBytes());
+    }
   }
 }

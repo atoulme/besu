@@ -210,7 +210,8 @@ public class PrunerIntegrationTest {
     collectTrieNodes(stateTrie, collector);
     // Collect storage nodes
     for (Hash storageRoot : storageRoots) {
-      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie = createStorageTrie(storageRoot.toBytes());
+      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie =
+          createStorageTrie(storageRoot.toBytes());
       collectTrieNodes(storageTrie, collector);
     }
 

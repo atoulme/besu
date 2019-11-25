@@ -67,7 +67,8 @@ public final class MainnetBlockHeaderValidator {
   }
 
   public static boolean validateHeaderForClassicFork(final BlockHeader header) {
-    return header.getNumber() != 1_920_000 || header.getHash().equals(CLASSIC_FORK_BLOCK_HEADER);
+    return header.getNumber() != 1_920_000
+        || header.getHash().toBytes().equals(CLASSIC_FORK_BLOCK_HEADER);
   }
 
   static BlockHeaderValidator<Void> createOmmerValidator(

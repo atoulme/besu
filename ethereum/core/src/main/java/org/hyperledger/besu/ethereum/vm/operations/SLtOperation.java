@@ -18,7 +18,8 @@ import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.vm.AbstractOperation;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
-import org.hyperledger.besu.util.uint.Int256;
+
+import java.math.BigInteger;
 
 import org.apache.tuweni.bytes.Bytes32;
 import org.apache.tuweni.units.bigints.UInt256;
@@ -36,11 +37,14 @@ public class SLtOperation extends AbstractOperation {
 
   @Override
   public void execute(final MessageFrame frame) {
-    final Int256 value0 = Int256.wrap(frame.popStackItem());
-    final Int256 value1 = Int256.wrap(frame.popStackItem());
+    final Bytes32 value0 = frame.popStackItem();
+    final Bytes32 value1 = frame.popStackItem();
+
+    BigInteger b0 = value0.toBigInteger();
+    BigInteger b1 = value1.toBigInteger();
 
     final Bytes32 result =
-        value0.compareTo(value1) < 0 ? UInt256.valueOf(1).toBytes() : UInt256.valueOf(0).toBytes();
+        b0.compareTo(b1) < 0 ? UInt256.valueOf(1).toBytes() : UInt256.valueOf(0).toBytes();
 
     frame.pushStackItem(result);
   }
