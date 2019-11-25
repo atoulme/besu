@@ -25,7 +25,7 @@ import java.math.BigInteger;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-public class  Amount {
+public class Amount {
 
   private BigDecimal value;
   private Unit unit;
