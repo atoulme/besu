@@ -17,8 +17,6 @@ package org.hyperledger.besu.tests.acceptance.dsl.blockchain;
 import static org.web3j.utils.Convert.Unit.ETHER;
 import static org.web3j.utils.Convert.Unit.WEI;
 
-import org.hyperledger.besu.ethereum.core.Wei;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
