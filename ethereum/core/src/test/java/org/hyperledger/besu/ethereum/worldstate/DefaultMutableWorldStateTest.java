@@ -34,7 +34,6 @@ import org.hyperledger.besu.plugin.services.storage.KeyValueStorage;
 import org.hyperledger.besu.services.kvstore.InMemoryKeyValueStorage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -651,8 +650,7 @@ public class DefaultMutableWorldStateTest {
     initialSetOfEntries.add(AccountStorageEntry.forKeyAndValue(UInt256.ONE, UInt256.valueOf(2)));
     initialSetOfEntries.add(
         AccountStorageEntry.forKeyAndValue(UInt256.valueOf(2), UInt256.valueOf(5)));
-    final Map<Bytes32, AccountStorageEntry> initialEntries =
-        new TreeMap<>(Comparator.comparing(Bytes::toUnsignedBigInteger));
+    final Map<Bytes32, AccountStorageEntry> initialEntries = new TreeMap<>();
     initialSetOfEntries.forEach(entry -> initialEntries.put(entry.getKeyHash(), entry));
 
     updater = worldState.updater();
@@ -666,8 +664,7 @@ public class DefaultMutableWorldStateTest {
         AccountStorageEntry.forKeyAndValue(UInt256.valueOf(2), UInt256.valueOf(5)));
     finalSetOfEntries.add(
         AccountStorageEntry.forKeyAndValue(UInt256.valueOf(3), UInt256.valueOf(6)));
-    final Map<Bytes32, AccountStorageEntry> finalEntries =
-        new TreeMap<>(Comparator.comparing(Bytes32::toUnsignedBigInteger));
+    final Map<Bytes32, AccountStorageEntry> finalEntries = new TreeMap<>();
     finalSetOfEntries.forEach(entry -> finalEntries.put(entry.getKeyHash(), entry));
 
     assertThat(account.storageEntriesFrom(Hash.ZERO.toBytes(), 10)).isEqualTo(finalEntries);

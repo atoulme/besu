@@ -32,7 +32,6 @@ import org.hyperledger.besu.ethereum.trie.StoredMerklePatriciaTrie;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -306,8 +305,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
     @Override
     public NavigableMap<Bytes32, AccountStorageEntry> storageEntriesFrom(
         final Bytes32 startKeyHash, final int limit) {
-      final NavigableMap<Bytes32, AccountStorageEntry> storageEntries =
-          new TreeMap<>(Comparator.comparing(Bytes::toUnsignedBigInteger));
+      final NavigableMap<Bytes32, AccountStorageEntry> storageEntries = new TreeMap<>();
       storageTrie()
           .entriesFrom(startKeyHash, limit)
           .forEach(

@@ -39,8 +39,7 @@ public class RetryingGetNodeDataFromPeerTaskTest extends RetryingMessageTaskTest
 
   @Override
   protected Map<Hash, Bytes> generateDataToBeRequested() {
-    final Map<Hash, Bytes> requestedData =
-        new TreeMap<>(Comparator.comparing(o -> o.toBytes().toUnsignedBigInteger()));
+    final Map<Hash, Bytes> requestedData = new TreeMap<>(Comparator.comparing(o -> o.toBytes()));
     for (int i = 0; i < 3; i++) {
       final BlockHeader blockHeader = blockchain.getBlockHeader(10 + i).get();
       requestedData.put(

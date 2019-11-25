@@ -143,7 +143,7 @@ public class DebugStorageRangeAtTest {
     assertThat(result).isNotNull();
     assertThat(result.getNextKey()).isNull();
 
-    entries.sort(Comparator.comparing(entry -> entry.getKeyHash().toUnsignedBigInteger()));
+    entries.sort(Comparator.comparing(entry -> entry.getKeyHash()));
     assertThat(result.getStorage())
         .containsExactly(
             entry(

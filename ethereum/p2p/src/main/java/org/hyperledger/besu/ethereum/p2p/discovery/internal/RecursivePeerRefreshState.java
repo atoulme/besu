@@ -17,7 +17,6 @@ package org.hyperledger.besu.ethereum.p2p.discovery.internal;
 import org.hyperledger.besu.ethereum.p2p.discovery.DiscoveryPeer;
 import org.hyperledger.besu.ethereum.p2p.discovery.PeerDiscoveryStatus;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,8 +47,7 @@ public class RecursivePeerRefreshState {
   private final int maxRounds;
   private int currentRound;
 
-  private final SortedMap<Bytes, MetadataPeer> oneTrueMap =
-      new TreeMap<>(Comparator.comparing(Bytes::toUnsignedBigInteger));
+  private final SortedMap<Bytes, MetadataPeer> oneTrueMap = new TreeMap<>();
 
   private final TimerUtil timerUtil;
   private final int timeoutPeriodInSeconds;
