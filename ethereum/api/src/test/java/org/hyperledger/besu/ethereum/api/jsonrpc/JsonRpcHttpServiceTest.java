@@ -668,7 +668,7 @@ public class JsonRpcHttpServiceTest {
       testHelper.assertValidJsonRpcResult(json, id);
       // Check result
       final String result = json.getString("result");
-      assertThat(result).isEqualTo("0x");
+      assertThat(result).isEqualTo("0x0");
     }
   }
 
