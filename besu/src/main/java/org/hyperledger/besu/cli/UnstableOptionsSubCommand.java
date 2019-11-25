@@ -32,9 +32,9 @@ import picocli.CommandLine;
  *   <li>Having their first option name start with <code>--X</code>
  * </ul>
  *
- * <p>There is no stability or compatibility guarantee for options marked as unstable between
- * releases. They can be added and removed without announcement and their meaning and values can
- * similarly change without announcement or warning.
+ * There is no stability or compatibility guarantee for options marked as unstable between releases.
+ * They can be added and removed without announcement and their meaning and values can similarly
+ * change without announcement or warning.
  */
 @CommandLine.Command(
     name = COMMAND_NAME,

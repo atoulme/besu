@@ -25,7 +25,7 @@ import java.math.BigInteger;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
 
-public class Amount {
+public class  Amount {
 
   private BigDecimal value;
   private Unit unit;
@@ -41,10 +41,6 @@ public class Amount {
 
   public static Amount wei(final BigInteger value) {
     return new Amount(new BigDecimal(value), WEI);
-  }
-
-  public static Amount wei(final Wei wei) {
-    return wei(wei.toBytes().toUnsignedBigInteger());
   }
 
   public BigDecimal getValue() {

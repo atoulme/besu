@@ -1,4 +1,4 @@
-RunnerTest.java# Checkout code and build it
+# Checkout code and build it
 
 ## Prerequisites
 
