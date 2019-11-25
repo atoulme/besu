@@ -16,13 +16,13 @@ package org.hyperledger.besu.ethereum.core;
 
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.google.common.base.Suppliers;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /** A mined Ethereum block header. */
 public class BlockHeader extends SealableBlockHeader
@@ -53,7 +53,7 @@ public class BlockHeader extends SealableBlockHeader
       final long gasLimit,
       final long gasUsed,
       final long timestamp,
-      final BytesValue extraData,
+      final Bytes extraData,
       final Hash mixHash,
       final long nonce,
       final BlockHeaderFunctions blockHeaderFunctions) {
@@ -96,6 +96,7 @@ public class BlockHeader extends SealableBlockHeader
   public long getNonce() {
     return nonce;
   }
+
   /**
    * Returns the block extra data field, as parsed by the {@link BlockHeaderFunctions}.
    *
@@ -127,20 +128,20 @@ public class BlockHeader extends SealableBlockHeader
   public void writeTo(final RLPOutput out) {
     out.startList();
 
-    out.writeBytesValue(parentHash);
-    out.writeBytesValue(ommersHash);
-    out.writeBytesValue(coinbase);
-    out.writeBytesValue(stateRoot);
-    out.writeBytesValue(transactionsRoot);
-    out.writeBytesValue(receiptsRoot);
-    out.writeBytesValue(logsBloom.getBytes());
-    out.writeUInt256Scalar(difficulty);
+    out.writeBytes(parentHash.toBytes());
+    out.writeBytes(ommersHash.toBytes());
+    out.writeBytes(coinbase.toBytes());
+    out.writeBytes(stateRoot.toBytes());
+    out.writeBytes(transactionsRoot.toBytes());
+    out.writeBytes(receiptsRoot.toBytes());
+    out.writeBytes(logsBloom.getBytes());
+    out.writeBytes(difficulty.toMinimalBytes());
     out.writeLongScalar(number);
     out.writeLongScalar(gasLimit);
     out.writeLongScalar(gasUsed);
     out.writeLongScalar(timestamp);
-    out.writeBytesValue(extraData);
-    out.writeBytesValue(mixHash);
+    out.writeBytes(extraData);
+    out.writeBytes(mixHash.toBytes());
     out.writeLong(nonce);
 
     out.endList();
@@ -163,7 +164,7 @@ public class BlockHeader extends SealableBlockHeader
             input.readLongScalar(),
             input.readLongScalar(),
             input.readLongScalar(),
-            input.readBytesValue(),
+            input.readBytes(),
             Hash.wrap(input.readBytes32()),
             input.readLong(),
             blockHeaderFunctions);
@@ -222,13 +223,13 @@ public class BlockHeader extends SealableBlockHeader
         Hash.fromHexString(pluginBlockHeader.getStateRoot().getHexString()),
         Hash.fromHexString(pluginBlockHeader.getTransactionsRoot().getHexString()),
         Hash.fromHexString(pluginBlockHeader.getReceiptsRoot().getHexString()),
-        LogsBloomFilter.fromHexString(pluginBlockHeader.getLogsBloom().getHexString()),
-        UInt256.fromHexString(pluginBlockHeader.getDifficulty().getHexString()),
+        LogsBloomFilter.fromHexString(pluginBlockHeader.getLogsBloom().toHexString()),
+        UInt256.fromHexString(pluginBlockHeader.getDifficulty().toHexString()),
         pluginBlockHeader.getNumber(),
         pluginBlockHeader.getGasLimit(),
         pluginBlockHeader.getGasUsed(),
         pluginBlockHeader.getTimestamp(),
-        BytesValue.wrap(pluginBlockHeader.getExtraData().getByteArray()),
+        pluginBlockHeader.getExtraData(),
         Hash.fromHexString(pluginBlockHeader.getMixHash().getHexString()),
         pluginBlockHeader.getNonce(),
         blockHeaderFunctions);

@@ -16,12 +16,14 @@ package org.hyperledger.besu.plugin.data;
 
 import org.hyperledger.besu.plugin.Unstable;
 
+import org.apache.tuweni.bytes.Bytes;
+
 /**
- * An interface to mark the {@link BinaryData} that also represents a disceete quantity, such as an
+ * An interface to mark the {@link Bytes} that also represents a disceete quantity, such as an
  * unsigned integer value.
  */
 @Unstable
-public interface Quantity extends BinaryData {
+public interface Quantity extends UnformattedData {
 
   /**
    * Returns the numeric value of the quantity.

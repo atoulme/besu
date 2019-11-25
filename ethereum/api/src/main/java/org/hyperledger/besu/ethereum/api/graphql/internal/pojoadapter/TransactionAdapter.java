@@ -23,14 +23,14 @@ import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.TransactionReceipt;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import graphql.schema.DataFetchingEnvironment;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.units.bigints.UInt256;
 
 @SuppressWarnings("unused") // reflected by GraphQL
 public class TransactionAdapter extends AdapterBase {
@@ -87,18 +87,20 @@ public class TransactionAdapter extends AdapterBase {
   }
 
   public Optional<UInt256> getValue() {
-    return Optional.of(transactionWithMetadata.getTransaction().getValue().asUInt256());
+    return Optional.of(
+        UInt256.fromBytes(transactionWithMetadata.getTransaction().getValue().toBytes()));
   }
 
   public Optional<UInt256> getGasPrice() {
-    return Optional.of(transactionWithMetadata.getTransaction().getGasPrice().asUInt256());
+    return Optional.of(
+        UInt256.fromBytes(transactionWithMetadata.getTransaction().getGasPrice().toBytes()));
   }
 
   public Optional<Long> getGas() {
     return Optional.of(transactionWithMetadata.getTransaction().getGasLimit());
   }
 
-  public Optional<BytesValue> getInputData() {
+  public Optional<Bytes> getInputData() {
     return Optional.of(transactionWithMetadata.getTransaction().getPayload());
   }
 

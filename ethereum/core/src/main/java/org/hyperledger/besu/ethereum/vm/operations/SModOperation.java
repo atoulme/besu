@@ -33,8 +33,8 @@ public class SModOperation extends AbstractOperation {
 
   @Override
   public void execute(final MessageFrame frame) {
-    final Int256 value0 = frame.popStackItem().asInt256();
-    final Int256 value1 = frame.popStackItem().asInt256();
+    final Int256 value0 = Int256.wrap(frame.popStackItem());
+    final Int256 value1 = Int256.wrap(frame.popStackItem());
 
     final Int256 result = value0.mod(value1);
 

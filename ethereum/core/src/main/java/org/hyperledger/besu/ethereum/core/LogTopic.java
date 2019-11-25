@@ -18,34 +18,35 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
-import org.hyperledger.besu.plugin.data.UnformattedData;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.bytes.DelegatingBytesValue;
 
-public class LogTopic extends DelegatingBytesValue {
+import org.apache.tuweni.bytes.Bytes;
+
+public class LogTopic {
 
   public static final int SIZE = 32;
 
-  private LogTopic(final BytesValue bytes) {
-    super(bytes);
+  private final Bytes value;
+
+  private LogTopic(final Bytes bytes) {
+    this.value = bytes;
     checkArgument(
         bytes.size() == SIZE, "A log topic must be be %s bytes long, got %s", SIZE, bytes.size());
   }
 
-  public static LogTopic create(final BytesValue bytes) {
+  public static LogTopic create(final Bytes bytes) {
     return new LogTopic(bytes);
   }
 
-  public static LogTopic wrap(final BytesValue bytes) {
+  public static LogTopic wrap(final Bytes bytes) {
     return new LogTopic(bytes);
   }
 
-  public static LogTopic of(final BytesValue bytes) {
+  public static LogTopic of(final Bytes bytes) {
     return new LogTopic(bytes.copy());
   }
 
   public static LogTopic fromHexString(final String str) {
-    return str == null ? null : LogTopic.create(BytesValue.fromHexString(str));
+    return str == null ? null : LogTopic.create(Bytes.fromHexString(str));
   }
 
   /**
@@ -55,11 +56,7 @@ public class LogTopic extends DelegatingBytesValue {
    * @return the read log topic.
    */
   public static LogTopic readFrom(final RLPInput in) {
-    return new LogTopic(in.readBytesValue());
-  }
-
-  public static LogTopic fromPlugin(final UnformattedData data) {
-    return data instanceof LogTopic ? (LogTopic) data : wrap(BytesValue.fromPlugin(data));
+    return new LogTopic(in.readBytes());
   }
 
   /**
@@ -68,6 +65,10 @@ public class LogTopic extends DelegatingBytesValue {
    * @param out the output in which to encode the log topic.
    */
   public void writeTo(final RLPOutput out) {
-    out.writeBytesValue(this);
+    out.writeBytes(this.value);
+  }
+
+  public Bytes toBytes() {
+    return value;
   }
 }

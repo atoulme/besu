@@ -14,7 +14,6 @@
  */
 package org.hyperledger.besu.ethereum.rlp;
 
-import java.util.function.IntUnaryOperator;
 import java.util.function.LongUnaryOperator;
 
 /**
@@ -57,11 +56,11 @@ class RLPDecodingHelpers {
   }
 
   /** Read from the provided offset a size of the provided length, assuming this is enough bytes. */
-  static int extractSize(final IntUnaryOperator getter, final int offset, final int sizeLength) {
-    int res = 0;
+  static long extractSize(final LongUnaryOperator getter, final long offset, final int sizeLength) {
+    long res = 0;
     int shift = 0;
     for (int i = 0; i < sizeLength; i++) {
-      res |= (getter.applyAsInt(offset + (sizeLength - 1) - i) & 0xFF) << shift;
+      res |= (getter.applyAsLong(offset + (sizeLength - 1) - i) & 0xFF) << shift;
       shift += 8;
     }
     return res;

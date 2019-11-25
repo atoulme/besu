@@ -110,7 +110,7 @@ public class IbftBlockCreator extends AbstractBlockCreator<IbftContext> {
     return new IbftExtraData(
         extraData.getVanityData(),
         extraData.getSeals(),
-        SECP256K1.sign(hashToSign, nodeKeys),
+        SECP256K1.sign(hashToSign.toBytes(), nodeKeys),
         extraData.getValidators());
   }
 }

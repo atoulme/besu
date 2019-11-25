@@ -43,7 +43,6 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.wire.Capability;
 import org.hyperledger.besu.ethereum.p2p.rlpx.wire.messages.DisconnectMessage.DisconnectReason;
 import org.hyperledger.besu.nat.upnp.UpnpNatManager;
 import org.hyperledger.besu.plugin.services.MetricsSystem;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -65,6 +64,7 @@ import com.google.common.annotations.VisibleForTesting;
 import io.vertx.core.Vertx;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
 
 /**
  * The peer network service (defunct PeerNetworkingService) is the entrypoint to the peer-to-peer
@@ -76,26 +76,26 @@ import org.apache.logging.log4j.Logger;
  *
  * <h2>Peer Discovery</h2>
  *
- * Ethereum nodes discover one another via a simple UDP protocol that follows some of the techniques
- * described in the Kademlia DHT paper. Particularly nodes are classified in a k-bucket table
- * composed of 256 buckets, where each bucket contains at most 16 peers whose <i>XOR(SHA3(x))</i>
- * distance from us is equal to the index of the bucket. The value <i>x</i> in the distance function
- * corresponds to our node ID (public key).
+ * <p>Ethereum nodes discover one another via a simple UDP protocol that follows some of the
+ * techniques described in the Kademlia DHT paper. Particularly nodes are classified in a k-bucket
+ * table composed of 256 buckets, where each bucket contains at most 16 peers whose
+ * <i>XOR(SHA3(x))</i> distance from us is equal to the index of the bucket. The value <i>x</i> in
+ * the distance function corresponds to our node ID (public key).
  *
  * <p>Upper layers in the stack subscribe to events from the peer discovery layer and initiate/drop
  * connections accordingly.
  *
  * <h2>RLPx Wire Protocol</h2>
  *
- * The RLPx wire protocol is responsible for selecting peers to engage with, authenticating and
+ * <p>The RLPx wire protocol is responsible for selecting peers to engage with, authenticating and
  * encrypting communications with peers, multiplexing subprotocols, framing messages, controlling
  * legality of messages, keeping connections alive, and keeping track of peer reputation.
  *
  * <h2>Subprotocols</h2>
  *
- * Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific set
- * of messages. Each subprotocol has a 3-char ASCII denominator and a version number, and statically
- * defines a count of messages it can handle.
+ * <p>Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific
+ * set of messages. Each subprotocol has a 3-char ASCII denominator and a version number, and
+ * statically defines a count of messages it can handle.
  *
  * <p>The RLPx wire protocol dispatches messages to subprotocols based on the capabilities agreed by
  * each of the two peers during the protocol handshake.
@@ -117,7 +117,7 @@ public class DefaultP2PNetwork implements P2PNetwork {
 
   private final NetworkingConfiguration config;
 
-  private final BytesValue nodeId;
+  private final Bytes nodeId;
   private final MutableLocalNode localNode;
 
   private final PeerPermissions peerPermissions;

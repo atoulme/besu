@@ -43,10 +43,6 @@ public class Amount {
     return new Amount(new BigDecimal(value), WEI);
   }
 
-  public static Amount wei(final Wei wei) {
-    return wei(new BigInteger(wei.toUnprefixedHexString(), 16));
-  }
-
   public BigDecimal getValue() {
     return value;
   }

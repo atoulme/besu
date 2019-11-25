@@ -71,7 +71,7 @@ public class ChainHeadTracker implements ConnectCallback {
     GetHeadersFromPeerByHashTask.forSingleHash(
             protocolSchedule,
             ethContext,
-            Hash.wrap(peer.chainState().getBestBlock().getHash()),
+            Hash.wrap(peer.chainState().getBestBlock().getHash().toBytes()),
             0,
             metricsSystem)
         .assignPeer(peer)

@@ -35,6 +35,7 @@ dependencies {
   implementation project(':metrics:core')
 
   implementation 'com.google.guava:guava'
+  implementation 'org.apache.tuweni:tuweni-bytes'
   implementation 'org.apache.tuweni:tuweni-toml'
   implementation 'org.apache.logging.log4j:log4j-api'
 

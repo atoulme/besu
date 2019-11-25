@@ -14,6 +14,7 @@
  */
 package org.hyperledger.besu.ethereum.api.jsonrpc.internal.privacy.methods.priv;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 import org.hyperledger.besu.enclave.Enclave;
@@ -40,15 +41,14 @@ import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransaction;
 import org.hyperledger.besu.ethereum.rlp.BytesValueRLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLP;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.bytes.BytesValues;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 public class PrivGetTransactionReceipt implements JsonRpcMethod {
 
@@ -96,10 +96,11 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
       final ReceiveResponse receiveResponse = getReceiveResponseFromEnclave(transaction, publicKey);
       LOG.trace("Received transaction information from Enclave");
 
-      final BytesValueRLPInput bytesValueRLPInput =
-          new BytesValueRLPInput(BytesValues.fromBase64(receiveResponse.getPayload()), false);
+      final BytesValueRLPInput input =
+          new BytesValueRLPInput(
+              Bytes.fromBase64String(new String(receiveResponse.getPayload(), UTF_8)), false);
 
-      privateTransaction = PrivateTransaction.readFrom(bytesValueRLPInput);
+      privateTransaction = PrivateTransaction.readFrom(input);
       privacyGroupId = receiveResponse.getPrivacyGroupId();
     } catch (final EnclaveException e) {
       if (JsonRpcEnclaveErrorConverter.convertEnclaveInvalidReason(e.getMessage())
@@ -114,13 +115,13 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
             ? Address.privateContractAddress(
                     privateTransaction.getSender(),
                     privateTransaction.getNonce(),
-                    BytesValues.fromBase64(privacyGroupId))
+                    Bytes.fromBase64String(privacyGroupId))
                 .toString()
             : null;
 
     LOG.trace("Calculated contractAddress: {}", contractAddress);
 
-    final BytesValue rlpEncoded = RLP.encode(privateTransaction::writeTo);
+    final Bytes rlpEncoded = RLP.encode(privateTransaction::writeTo);
     final Bytes32 txHash = org.hyperledger.besu.crypto.Hash.keccak256(rlpEncoded);
 
     LOG.trace("Calculated private transaction hash: {}", txHash);
@@ -133,22 +134,22 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
 
     LOG.trace("Processed private transaction events");
 
-    final BytesValue transactionOutput =
+    final Bytes transactionOutput =
         privacyParameters
             .getPrivateStateStorage()
             .getTransactionOutput(txHash)
-            .orElse(BytesValue.wrap(new byte[0]));
+            .orElse(Bytes.wrap(new byte[0]));
 
-    final BytesValue revertReason =
+    final Bytes revertReason =
         privacyParameters.getPrivateStateStorage().getRevertReason(txHash).orElse(null);
 
     final String transactionStatus =
         Quantity.create(
-            BytesValues.asUnsignedBigInteger(
-                privacyParameters
-                    .getPrivateStateStorage()
-                    .getStatus(txHash)
-                    .orElse(BytesValue.wrap(new byte[0]))));
+            privacyParameters
+                .getPrivateStateStorage()
+                .getStatus(txHash)
+                .orElse(Bytes.wrap(new byte[0]))
+                .toUnsignedBigInteger());
 
     LOG.trace("Processed private transaction output");
 
@@ -179,7 +180,7 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
       final Transaction transaction, final String publicKey) {
     LOG.trace("Fetching transaction information from Enclave");
     final ReceiveRequest enclaveRequest =
-        new ReceiveRequest(BytesValues.asBase64String(transaction.getPayload()), publicKey);
+        new ReceiveRequest(transaction.getPayload().toBase64String(), publicKey);
     final ReceiveResponse enclaveResponse = enclave.receive(enclaveRequest);
     LOG.trace("Received transaction information from Enclave");
     return enclaveResponse;

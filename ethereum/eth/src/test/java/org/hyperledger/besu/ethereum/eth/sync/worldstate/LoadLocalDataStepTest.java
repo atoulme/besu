@@ -25,16 +25,16 @@ import org.hyperledger.besu.ethereum.worldstate.WorldStateStorage;
 import org.hyperledger.besu.metrics.noop.NoOpMetricsSystem;
 import org.hyperledger.besu.services.pipeline.Pipe;
 import org.hyperledger.besu.services.tasks.Task;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.junit.Test;
 
 public class LoadLocalDataStepTest {
 
-  private static final BytesValue DATA = BytesValue.of(1, 2, 3);
+  private static final Bytes DATA = Bytes.of(1, 2, 3);
   private static final Hash HASH = Hash.hash(DATA);
   private final WorldStateStorage worldStateStorage = mock(WorldStateStorage.class);
   private final WorldStateStorage.Updater updater = mock(WorldStateStorage.Updater.class);
@@ -58,7 +58,7 @@ public class LoadLocalDataStepTest {
 
   @Test
   public void shouldReturnEmptyStreamAndSendTaskToCompletedPipeWhenDataIsPresent() {
-    when(worldStateStorage.getCode(HASH)).thenReturn(Optional.of(DATA));
+    when(worldStateStorage.getCode(HASH.toBytes())).thenReturn(Optional.of(DATA));
 
     final Stream<Task<NodeDataRequest>> output =
         loadLocalDataStep.loadLocalData(task, completedTasks);

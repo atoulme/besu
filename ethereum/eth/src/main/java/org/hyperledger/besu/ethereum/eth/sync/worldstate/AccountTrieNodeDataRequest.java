@@ -20,10 +20,11 @@ import org.hyperledger.besu.ethereum.trie.MerklePatriciaTrie;
 import org.hyperledger.besu.ethereum.worldstate.StateTrieAccountValue;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateStorage;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateStorage.Updater;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.apache.tuweni.bytes.Bytes;
 
 class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
 
@@ -33,12 +34,12 @@ class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
 
   @Override
   protected void doPersist(final Updater updater) {
-    updater.putAccountStateTrieNode(getHash(), getData());
+    updater.putAccountStateTrieNode(getHash().toBytes(), getData());
   }
 
   @Override
-  public Optional<BytesValue> getExistingData(final WorldStateStorage worldStateStorage) {
-    return worldStateStorage.getAccountStateTrieNode(getHash());
+  public Optional<Bytes> getExistingData(final WorldStateStorage worldStateStorage) {
+    return worldStateStorage.getAccountStateTrieNode(getHash().toBytes());
   }
 
   @Override
@@ -47,7 +48,7 @@ class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
   }
 
   @Override
-  protected Stream<NodeDataRequest> getRequestsFromTrieNodeValue(final BytesValue value) {
+  protected Stream<NodeDataRequest> getRequestsFromTrieNodeValue(final Bytes value) {
     final Stream.Builder<NodeDataRequest> builder = Stream.builder();
     final StateTrieAccountValue accountValue = StateTrieAccountValue.readFrom(RLP.input(value));
     // Add code, if appropriate
@@ -55,7 +56,7 @@ class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
       builder.add(createCodeRequest(accountValue.getCodeHash()));
     }
     // Add storage, if appropriate
-    if (!accountValue.getStorageRoot().equals(MerklePatriciaTrie.EMPTY_TRIE_NODE_HASH)) {
+    if (!accountValue.getStorageRoot().toBytes().equals(MerklePatriciaTrie.EMPTY_TRIE_NODE_HASH)) {
       // If storage is non-empty queue download
       final NodeDataRequest storageNode = createStorageDataRequest(accountValue.getStorageRoot());
       builder.add(storageNode);

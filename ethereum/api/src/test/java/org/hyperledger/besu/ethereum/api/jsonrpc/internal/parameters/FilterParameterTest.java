@@ -22,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.JsonRpcRequest;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.JsonRpcRequestContext;
 import org.hyperledger.besu.ethereum.core.Address;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +31,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Test;
 
 public class FilterParameterTest {
@@ -150,11 +150,11 @@ public class FilterParameterTest {
     assertThat(filter.getTopics())
         .containsExactly(
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0xce8688f853ffa65c042b72302433c25d7a230c322caba0901587534b6551091d")),
             singletonList(null),
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0x000000000000000000000000244a53ab66ea8901c25efc48c8ab84662643cc74")));
   }
 
@@ -172,11 +172,11 @@ public class FilterParameterTest {
     assertThat(filter.getTopics())
         .containsExactly(
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0xce8688f853ffa65c042b72302433c25d7a230c322caba0901587534b6551091d")),
             singletonList(null),
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0x000000000000000000000000244a53ab66ea8901c25efc48c8ab84662643cc74")));
   }
 
@@ -193,11 +193,11 @@ public class FilterParameterTest {
     assertThat(filter.getTopics())
         .containsExactly(
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0xce8688f853ffa65c042b72302433c25d7a230c322caba0901587534b6551091d")),
             singletonList(null),
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0x000000000000000000000000244a53ab66ea8901c25efc48c8ab84662643cc74")));
   }
 
@@ -219,7 +219,7 @@ public class FilterParameterTest {
     assertThat(filter.getTopics())
         .containsExactly(
             singletonList(
-                LogTopic.fromHexString(
+                Bytes32.fromHexString(
                     "0xce8688f853ffa65c042b72302433c25d7a230c322caba0901587534b6551091d")),
             emptyList());
   }
@@ -249,15 +249,15 @@ public class FilterParameterTest {
         "latest",
         singletonList(Address.fromHexString(address)),
         singletonList(
-            Arrays.stream(topics).map(LogTopic::fromHexString).collect(toUnmodifiableList())),
+            Arrays.stream(topics).map(Bytes32::fromHexString).collect(toUnmodifiableList())),
         null);
   }
 
   private FilterParameter filterParameterWithAddressAndMultipleListOfTopics(
       final String address, final String... topics) {
-    List<LogTopic> topicsList =
-        Arrays.stream(topics).map(LogTopic::fromHexString).collect(toUnmodifiableList());
-    List<List<LogTopic>> topicsListList = Arrays.asList(topicsList, topicsList);
+    List<Bytes32> topicsList =
+        Arrays.stream(topics).map(Bytes32::fromHexString).collect(toUnmodifiableList());
+    List<List<Bytes32>> topicsListList = Arrays.asList(topicsList, topicsList);
     return new FilterParameter(
         "latest", "latest", singletonList(Address.fromHexString(address)), topicsListList, null);
   }

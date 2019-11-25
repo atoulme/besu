@@ -31,7 +31,6 @@ import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
 import org.hyperledger.besu.ethereum.core.Account;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Synchronizer;
@@ -44,9 +43,6 @@ import org.hyperledger.besu.ethereum.p2p.rlpx.wire.Capability;
 import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPException;
 import org.hyperledger.besu.plugin.data.SyncStatus;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +50,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 import graphql.schema.DataFetcher;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class GraphQLDataFetchers {
   public GraphQLDataFetchers(final Set<Capability> supportedCapabilities) {
@@ -80,13 +78,13 @@ public class GraphQLDataFetchers {
       try {
         final TransactionPool transactionPool =
             ((GraphQLDataFetcherContext) dataFetchingEnvironment.getContext()).getTransactionPool();
-        final BytesValue rawTran = dataFetchingEnvironment.getArgument("data");
+        final Bytes rawTran = dataFetchingEnvironment.getArgument("data");
 
         final Transaction transaction = Transaction.readFrom(RLP.input(rawTran));
         final ValidationResult<TransactionInvalidReason> validationResult =
             transactionPool.addLocalTransaction(transaction);
         if (validationResult.isValid()) {
-          return Optional.of(transaction.getHash());
+          return Optional.of(transaction.getHash().toBytes());
         } else {
           throw new GraphQLException(GraphQLError.of(validationResult.getInvalidReason()));
         }
@@ -118,7 +116,8 @@ public class GraphQLDataFetchers {
       final MiningCoordinator miningCoordinator =
           ((GraphQLDataFetcherContext) dataFetchingEnvironment.getContext()).getMiningCoordinator();
 
-      return Optional.of(miningCoordinator.getMinTransactionGasPrice().asUInt256());
+      return Optional.of(
+          UInt256.fromBytes(miningCoordinator.getMinTransactionGasPrice().toBytes()));
     };
   }
 
@@ -230,13 +229,7 @@ public class GraphQLDataFetchers {
       @SuppressWarnings("unchecked")
       final List<List<Bytes32>> topics = (List<List<Bytes32>>) filter.get("topics");
 
-      final List<List<LogTopic>> transformedTopics = new ArrayList<>();
-      for (final List<Bytes32> topic : topics) {
-        transformedTopics.add(topic.stream().map(LogTopic::of).collect(Collectors.toList()));
-      }
-
-      final LogsQuery query =
-          new LogsQuery.Builder().addresses(addrs).topics(transformedTopics).build();
+      final LogsQuery query = new LogsQuery.Builder().addresses(addrs).topics(topics).build();
 
       final List<LogWithMetadata> logs = blockchainQuery.matchingLogs(fromBlock, toBlock, query);
       final List<LogAdapter> results = new ArrayList<>();

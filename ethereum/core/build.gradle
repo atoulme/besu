@@ -37,6 +37,8 @@ dependencies {
   implementation project(':plugin-api')
   implementation project(':services:kvstore')
 
+  implementation 'org.apache.tuweni:tuweni-bytes'
+  implementation 'org.apache.tuweni:tuweni-units'
   implementation 'com.fasterxml.jackson.core:jackson-databind'
   implementation 'com.google.guava:guava'
   implementation 'io.vertx:vertx-core'
@@ -45,12 +47,14 @@ dependencies {
   runtime 'org.apache.logging.log4j:log4j-core'
 
   testImplementation project(path: ':config', configuration: 'testSupportArtifacts')
-  testImplementation project(path:':ethereum:referencetests', configuration: 'testOutput')
+  testImplementation project(path: ':ethereum:referencetests', configuration: 'testOutput')
   testImplementation project(':testutil')
 
   testImplementation 'junit:junit'
   testImplementation 'org.assertj:assertj-core'
   testImplementation 'org.mockito:mockito-core'
+  testImplementation 'org.apache.tuweni:tuweni-bytes'
+  testImplementation 'org.apache.tuweni:tuweni-units'
 
   integrationTestImplementation project(path: ':config', configuration: 'testSupportArtifacts')
 
@@ -84,7 +88,7 @@ dependencies {
 }
 
 configurations { testArtifacts }
-task testJar (type: Jar) {
+task testJar(type: Jar) {
   baseName = "${project.name}-test"
   from sourceSets.test.output
 }
@@ -108,9 +112,9 @@ def generateTestFiles(FileTree jsonPath, File templateFile, String pathstrip, St
       if (!testJsonFile.getName().toString().startsWith(".")) {
         String parentDirectory = testJsonFile.getParentFile().getName()
         String testFile = testJsonFile.getName()
-        if(testJsonFile.getParentFile().getName() == pathstrip) {
+        if (testJsonFile.getParentFile().getName() == pathstrip) {
           paths << pathstrip + "/" + testFile
-        } else if(testJsonFile.getParentFile().getParentFile().getName() != pathstrip) {
+        } else if (testJsonFile.getParentFile().getParentFile().getName() != pathstrip) {
           paths << pathstrip + "/" + testJsonFile.getParentFile().getParentFile().getName() + "/" + parentDirectory + "/" + testFile
         } else {
           paths << pathstrip + "/" + parentDirectory + "/" + testFile
@@ -164,7 +168,9 @@ task cleanupReferenceTests(type: Delete) {
     include("**/GeneralStateReferenceTest*.java")
     include("**/GeneralStateRegressionReferenceTest*.java")
   }
-  delete fileTree("./src/test/java/org/hyperledger/besu/ethereum/vm/blockchain/") { include("**/BlockchainReferenceTest*.java") }
+  delete fileTree("./src/test/java/org/hyperledger/besu/ethereum/vm/blockchain/") {
+    include("**/BlockchainReferenceTest*.java")
+  }
 }
 
 clean.dependsOn(cleanupReferenceTests)

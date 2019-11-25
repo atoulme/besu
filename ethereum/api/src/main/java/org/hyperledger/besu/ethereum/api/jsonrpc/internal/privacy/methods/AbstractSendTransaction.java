@@ -26,10 +26,10 @@ import org.hyperledger.besu.ethereum.privacy.PrivateTransactionHandler;
 import org.hyperledger.besu.ethereum.privacy.Restriction;
 import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPException;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
 
 public class AbstractSendTransaction {
 
@@ -59,7 +59,7 @@ public class AbstractSendTransaction {
       throw new ErrorResponseException(
           new JsonRpcErrorResponse(request.getRequest().getId(), JsonRpcError.DECODE_ERROR));
     }
-    if (!privateTransaction.getValue().isZero()) {
+    if (!privateTransaction.getValue().toBytes().isZero()) {
       throw new ErrorResponseException(
           new JsonRpcErrorResponse(request.getRequest().getId(), JsonRpcError.VALUE_NOT_ZERO));
     }
@@ -89,7 +89,7 @@ public class AbstractSendTransaction {
   private PrivateTransaction decodeRawTransaction(final String hash)
       throws InvalidJsonRpcRequestException {
     try {
-      return PrivateTransaction.readFrom(RLP.input(BytesValue.fromHexString(hash)));
+      return PrivateTransaction.readFrom(RLP.input(Bytes.fromHexString(hash)));
     } catch (final IllegalArgumentException | RLPException e) {
       LOG.debug(e);
       throw new InvalidJsonRpcRequestException("Invalid raw private transaction hex", e);

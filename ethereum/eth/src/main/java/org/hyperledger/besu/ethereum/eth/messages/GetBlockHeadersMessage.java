@@ -23,10 +23,11 @@ import org.hyperledger.besu.ethereum.rlp.BytesValueRLPOutput;
 import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
-import org.hyperledger.besu.util.bytes.BytesValue;
 
 import java.util.Optional;
 import java.util.OptionalLong;
+
+import org.apache.tuweni.bytes.Bytes;
 
 /** PV62 GetBlockHeaders Message. */
 public final class GetBlockHeadersMessage extends AbstractMessageData {
@@ -63,7 +64,7 @@ public final class GetBlockHeadersMessage extends AbstractMessageData {
     return new GetBlockHeadersMessage(tmp.encoded());
   }
 
-  private GetBlockHeadersMessage(final BytesValue data) {
+  private GetBlockHeadersMessage(final Bytes data) {
     super(data);
   }
 
@@ -145,7 +146,7 @@ public final class GetBlockHeadersMessage extends AbstractMessageData {
 
       final Optional<Hash> blockHash;
       final OptionalLong blockNumber;
-      if (input.nextSize() == Hash.SIZE) {
+      if (input.nextSize() == 32) {
         blockHash = Optional.of(Hash.wrap(input.readBytes32()));
         blockNumber = OptionalLong.empty();
       } else {
@@ -183,7 +184,7 @@ public final class GetBlockHeadersMessage extends AbstractMessageData {
       out.startList();
 
       if (blockHash.isPresent()) {
-        out.writeBytesValue(blockHash.get());
+        out.writeBytes(blockHash.get().toBytes());
       } else {
         out.writeLongScalar(blockNumber.getAsLong());
       }

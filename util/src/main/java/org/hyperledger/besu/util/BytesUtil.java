@@ -12,22 +12,24 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package org.hyperledger.besu.ethereum.vm;
+package org.hyperledger.besu.util;
 
-import org.hyperledger.besu.ethereum.core.Address;
+import java.io.IOException;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import org.apache.tuweni.bytes.Bytes;
 
-/** A AccountAddress mock for testing. */
-public class AddressMock extends Address {
+/**
+ * Utilities when Bytes fall short.
+ *
+ * <p>To be eventually integrated into the Bytes library.
+ */
+public class BytesUtil {
 
-  /**
-   * Public constructor.
-   *
-   * @param value The value the AccountAddress represents.
-   */
-  @JsonCreator
-  public AddressMock(final String value) {
-    super(Address.fromHexString(value));
+  public static String toUnprefixedHexString(final Bytes bytes) {
+    try {
+      return bytes.appendHexTo(new StringBuilder()).toString();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

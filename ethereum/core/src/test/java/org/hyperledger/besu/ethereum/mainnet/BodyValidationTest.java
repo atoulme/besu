@@ -16,11 +16,11 @@ package org.hyperledger.besu.ethereum.mainnet;
 
 import org.hyperledger.besu.ethereum.core.BlockBody;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
-import org.hyperledger.besu.util.bytes.Bytes32;
 
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.apache.tuweni.bytes.Bytes32;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -32,8 +32,9 @@ public final class BodyValidationTest {
     for (final int block : Arrays.asList(300006, 4400002)) {
       final BlockHeader header = ValidationTestUtils.readHeader(block);
       final BlockBody body = ValidationTestUtils.readBody(block);
-      final Bytes32 transactionRoot = BodyValidation.transactionsRoot(body.getTransactions());
-      Assertions.assertThat(header.getTransactionsRoot()).isEqualTo(transactionRoot);
+      final Bytes32 transactionRoot =
+          BodyValidation.transactionsRoot(body.getTransactions()).toBytes();
+      Assertions.assertThat(header.getTransactionsRoot().toBytes()).isEqualTo(transactionRoot);
     }
   }
 
@@ -42,8 +43,8 @@ public final class BodyValidationTest {
     for (final int block : Arrays.asList(300006, 4400002)) {
       final BlockHeader header = ValidationTestUtils.readHeader(block);
       final BlockBody body = ValidationTestUtils.readBody(block);
-      final Bytes32 ommersHash = BodyValidation.ommersHash(body.getOmmers());
-      Assertions.assertThat(header.getOmmersHash()).isEqualTo(ommersHash);
+      final Bytes32 ommersHash = BodyValidation.ommersHash(body.getOmmers()).toBytes();
+      Assertions.assertThat(header.getOmmersHash().toBytes()).isEqualTo(ommersHash);
     }
   }
 }

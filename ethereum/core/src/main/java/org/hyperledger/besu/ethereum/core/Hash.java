@@ -17,14 +17,15 @@ package org.hyperledger.besu.ethereum.core;
 import static org.hyperledger.besu.crypto.Hash.keccak256;
 
 import org.hyperledger.besu.ethereum.rlp.RLP;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.bytes.DelegatingBytes32;
+
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 
 /** A 32-bytes hash value as used in Ethereum blocks, that is the result of the KEC algorithm. */
-public class Hash extends DelegatingBytes32 implements org.hyperledger.besu.plugin.data.Hash {
+public class Hash implements org.hyperledger.besu.plugin.data.Hash {
 
   public static final Hash ZERO = new Hash(Bytes32.ZERO);
 
@@ -32,13 +33,14 @@ public class Hash extends DelegatingBytes32 implements org.hyperledger.besu.plug
 
   public static final Hash EMPTY_LIST_HASH = Hash.hash(RLP.EMPTY_LIST);
 
-  public static final Hash EMPTY = hash(BytesValue.EMPTY);
+  public static final Hash EMPTY = hash(Bytes.EMPTY);
+  private final Bytes32 value;
 
   private Hash(final Bytes32 bytes) {
-    super(bytes);
+    this.value = bytes;
   }
 
-  public static Hash hash(final BytesValue value) {
+  public static Hash hash(final Bytes value) {
     return new Hash(keccak256(value));
   }
 
@@ -69,16 +71,45 @@ public class Hash extends DelegatingBytes32 implements org.hyperledger.besu.plug
   }
 
   public static Hash fromPlugin(final org.hyperledger.besu.plugin.data.Hash blockHash) {
-    return blockHash instanceof Hash ? (Hash) blockHash : wrap(Bytes32.fromPlugin(blockHash));
+    return blockHash instanceof Hash
+        ? (Hash) blockHash
+        : wrap(Bytes32.wrap(blockHash.getByteArray()));
   }
 
   @Override
   public byte[] getByteArray() {
-    return super.getByteArray();
+    return value.toArrayUnsafe();
   }
 
   @Override
   public String getHexString() {
-    return super.getHexString();
+    return value.toHexString();
+  }
+
+  @Override
+  public int size() {
+    return value.size();
+  }
+
+  public Bytes32 toBytes() {
+    return value;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Hash hash = (Hash) o;
+    return Objects.equals(value, hash.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
+  }
+
+  @Override
+  public String toString() {
+    return getHexString();
   }
 }

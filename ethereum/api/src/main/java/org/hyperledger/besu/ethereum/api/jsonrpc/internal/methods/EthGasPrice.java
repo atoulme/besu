@@ -41,7 +41,7 @@ public class EthGasPrice implements JsonRpcMethod {
     Object result = null;
     gasPrice = miningCoordinator.getMinTransactionGasPrice();
     if (gasPrice != null) {
-      result = Quantity.create(gasPrice.toLong());
+      result = Quantity.create(gasPrice.toBytes().toUnsignedBigInteger());
     }
     return new JsonRpcSuccessResponse(requestContext.getRequest().getId(), result);
   }

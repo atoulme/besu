@@ -35,10 +35,10 @@ import org.hyperledger.besu.ethereum.mainnet.IstanbulGasCalculator;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
 import org.hyperledger.besu.ethereum.vm.Words;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
 
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 import org.junit.Test;
 
 public class ExtCodeHashOperationTest {
@@ -75,7 +75,7 @@ public class ExtCodeHashOperationTest {
   @Test
   public void shouldReturnHashOfEmptyDataWhenAccountExistsButDoesNotHaveCode() {
     worldStateUpdater.getOrCreate(REQUESTED_ADDRESS).getMutable().setBalance(Wei.of(1));
-    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.EMPTY);
+    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.EMPTY.toBytes());
   }
 
   @Test
@@ -93,33 +93,32 @@ public class ExtCodeHashOperationTest {
   public void shouldReturnEmptyCodeHashWhenPrecompileHasBalance() {
     // Sending money to a precompile causes it to exist in the world state archive.
     worldStateUpdater.getOrCreate(Address.ECREC).getMutable().setBalance(Wei.of(10));
-    assertThat(executeOperation(Address.ECREC)).isEqualTo(Hash.EMPTY);
+    assertThat(executeOperation(Address.ECREC)).isEqualTo(Hash.EMPTY.toBytes());
   }
 
   @Test
   public void shouldGetHashOfAccountCodeWhenCodeIsPresent() {
-    final BytesValue code = BytesValue.fromHexString("0xabcdef");
+    final Bytes code = Bytes.fromHexString("0xabcdef");
     final MutableAccount account = worldStateUpdater.getOrCreate(REQUESTED_ADDRESS).getMutable();
     account.setCode(code);
     account.setVersion(Account.DEFAULT_VERSION);
-    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.hash(code));
+    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.hash(code).toBytes());
   }
 
   @Test
   public void shouldZeroOutLeftMostBitsToGetAddress() {
     // If EXTCODEHASH of A is X, then EXTCODEHASH of A + 2**160 is X.
-    final BytesValue code = BytesValue.fromHexString("0xabcdef");
+    final Bytes code = Bytes.fromHexString("0xabcdef");
     final MutableAccount account = worldStateUpdater.getOrCreate(REQUESTED_ADDRESS).getMutable();
     account.setCode(code);
     account.setVersion(Account.DEFAULT_VERSION);
     final Bytes32 value =
-        Words.fromAddress(REQUESTED_ADDRESS)
-            .asUInt256()
-            .plus(UInt256.of(2).pow(UInt256.of(160)))
-            .getBytes();
+        UInt256.fromBytes(Words.fromAddress(REQUESTED_ADDRESS))
+            .add(UInt256.valueOf(2).pow(UInt256.valueOf(160)))
+            .toBytes();
     final MessageFrame frame = createMessageFrame(value);
     operation.execute(frame);
-    assertThat(frame.getStackItem(0)).isEqualTo(Hash.hash(code));
+    assertThat(frame.getStackItem(0)).isEqualTo(Hash.hash(code).toBytes());
   }
 
   private Bytes32 executeOperation(final Address requestedAddress) {

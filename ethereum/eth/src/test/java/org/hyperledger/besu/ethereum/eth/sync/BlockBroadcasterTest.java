@@ -29,11 +29,11 @@ import org.hyperledger.besu.ethereum.eth.manager.EthPeer;
 import org.hyperledger.besu.ethereum.eth.manager.EthPeers;
 import org.hyperledger.besu.ethereum.eth.messages.NewBlockMessage;
 import org.hyperledger.besu.ethereum.p2p.rlpx.connections.PeerConnection;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import org.apache.tuweni.units.bigints.UInt256;
 import org.junit.Test;
 
 public class BlockBroadcasterTest {

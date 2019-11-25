@@ -27,8 +27,8 @@ import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
 import org.hyperledger.besu.ethereum.mainnet.ValidationResult;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransaction;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransactionHandler;
-import org.hyperledger.besu.util.bytes.BytesValues;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,7 +79,7 @@ public class PrivDistributeRawTransactionTest {
 
     final JsonRpcResponse expectedResponse =
         new JsonRpcSuccessResponse(
-            request.getRequest().getId(), BytesValues.fromBase64(MOCK_ORION_KEY).toString());
+            request.getRequest().getId(), Bytes.fromBase64String(MOCK_ORION_KEY).toString());
 
     final JsonRpcResponse actualResponse = method.response(request);
 

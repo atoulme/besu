@@ -120,7 +120,7 @@ public class MessageValidatorTest {
 
     final Commit commit =
         messageFactory.createCommit(
-            roundIdentifier, block.getHash(), SECP256K1.sign(block.getHash(), keyPair));
+            roundIdentifier, block.getHash(), SECP256K1.sign(block.getHash().toBytes(), keyPair));
 
     assertThat(messageValidator.validateProposal(proposal)).isTrue();
     verify(signedDataValidator, times(1)).validateProposal(proposal.getSignedPayload());

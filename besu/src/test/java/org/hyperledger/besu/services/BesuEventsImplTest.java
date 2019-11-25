@@ -55,7 +55,6 @@ import org.hyperledger.besu.plugin.data.SyncStatus;
 import org.hyperledger.besu.plugin.data.Transaction;
 import org.hyperledger.besu.services.kvstore.InMemoryKeyValueStorage;
 import org.hyperledger.besu.testutil.TestClock;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +63,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import org.apache.tuweni.units.bigints.UInt256;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -182,11 +182,11 @@ public class BesuEventsImplTest {
     serviceImpl.addBlockPropagatedListener(result::set);
     final Block block = generateBlock();
     assertThat(result.get()).isNull();
-    blockBroadcaster.propagate(block, UInt256.of(1));
+    blockBroadcaster.propagate(block, UInt256.valueOf(1));
 
     assertThat(result.get()).isNotNull();
     assertThat(result.get().getBlockHeader()).isEqualTo(block.getHeader());
-    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.of(1));
+    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.valueOf(1));
   }
 
   @Test
@@ -196,21 +196,21 @@ public class BesuEventsImplTest {
 
     assertThat(result.get()).isNull();
     final Block block = generateBlock();
-    blockBroadcaster.propagate(block, UInt256.of(2));
+    blockBroadcaster.propagate(block, UInt256.valueOf(2));
 
     assertThat(result.get()).isNotNull();
     assertThat(result.get().getBlockHeader()).isEqualTo(block.getHeader());
-    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.of(2));
+    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.valueOf(2));
     serviceImpl.removeBlockPropagatedListener(id);
     result.set(null);
 
-    blockBroadcaster.propagate(generateBlock(), UInt256.of(1));
+    blockBroadcaster.propagate(generateBlock(), UInt256.valueOf(1));
     assertThat(result.get()).isNull();
   }
 
   @Test
   public void propagationWithoutSubscriptionsCompletes() {
-    blockBroadcaster.propagate(generateBlock(), UInt256.of(1));
+    blockBroadcaster.propagate(generateBlock(), UInt256.valueOf(1));
   }
 
   @Test

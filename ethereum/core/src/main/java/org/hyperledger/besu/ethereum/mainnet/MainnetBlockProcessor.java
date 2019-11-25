@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public class MainnetBlockProcessor extends AbstractBlockProcessor {
 
@@ -50,10 +51,12 @@ public class MainnetBlockProcessor extends AbstractBlockProcessor {
       final ProcessableBlockHeader header,
       final List<BlockHeader> ommers,
       final boolean skipZeroBlockRewards) {
-    if (skipZeroBlockRewards && blockReward.isZero()) {
+    if (skipZeroBlockRewards && blockReward.toBytes().isZero()) {
       return true;
     }
-    final Wei coinbaseReward = blockReward.plus(blockReward.times(ommers.size()).dividedBy(32));
+    final UInt256 reward = UInt256.fromBytes(blockReward.toBytes());
+
+    final Wei coinbaseReward = Wei.of(reward.add(reward.multiply(ommers.size()).divide(32)));
     final WorldUpdater updater = worldState.updater();
     final MutableAccount coinbase = updater.getOrCreate(header.getCoinbase()).getMutable();
 
@@ -71,7 +74,7 @@ public class MainnetBlockProcessor extends AbstractBlockProcessor {
       final MutableAccount ommerCoinbase =
           updater.getOrCreate(ommerHeader.getCoinbase()).getMutable();
       final long distance = header.getNumber() - ommerHeader.getNumber();
-      final Wei ommerReward = blockReward.minus(blockReward.times(distance).dividedBy(8));
+      final Wei ommerReward = Wei.of(reward.subtract(reward.multiply(distance).divide(8)));
       ommerCoinbase.incrementBalance(ommerReward);
     }
 

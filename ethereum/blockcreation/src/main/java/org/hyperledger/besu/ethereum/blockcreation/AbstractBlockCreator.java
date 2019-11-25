@@ -37,8 +37,6 @@ import org.hyperledger.besu.ethereum.mainnet.ProtocolSchedule;
 import org.hyperledger.besu.ethereum.mainnet.ProtocolSpec;
 import org.hyperledger.besu.ethereum.mainnet.ScheduleBasedBlockHeaderFunctions;
 import org.hyperledger.besu.ethereum.mainnet.TransactionProcessor;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -50,12 +48,14 @@ import java.util.function.Function;
 import com.google.common.collect.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.units.bigints.UInt256;
 
 public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
   public interface ExtraDataCalculator {
 
-    BytesValue get(final BlockHeader parent);
+    Bytes get(final BlockHeader parent);
   }
 
   private static final Logger LOG = LogManager.getLogger();
@@ -256,7 +256,7 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
     return BlockHeaderBuilder.create()
         .parentHash(parentHeader.getHash())
         .coinbase(coinbase)
-        .difficulty(UInt256.of(difficulty))
+        .difficulty(UInt256.valueOf(difficulty))
         .number(newBlockNumber)
         .gasLimit(gasLimit)
         .timestamp(timestamp)
@@ -289,14 +289,16 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
     // TODO(tmm): Added to make this work, should come from blockProcessor.
     final int MAX_GENERATION = 6;
-    if (skipZeroBlockRewards && blockReward.isZero()) {
+    UInt256 reward = UInt256.fromBytes(blockReward.toBytes());
+    if (skipZeroBlockRewards && reward.isZero()) {
       return true;
     }
-    final Wei coinbaseReward = blockReward.plus(blockReward.times(ommers.size()).dividedBy(32));
+    final UInt256 coinbaseReward =
+        reward.add(reward.multiply(ommers.size()).divide(UInt256.valueOf(32)));
     final WorldUpdater updater = worldState.updater();
     final DefaultEvmAccount beneficiary = updater.getOrCreate(miningBeneficiary);
 
-    beneficiary.getMutable().incrementBalance(coinbaseReward);
+    beneficiary.getMutable().incrementBalance(Wei.of(coinbaseReward));
     for (final BlockHeader ommerHeader : ommers) {
       if (ommerHeader.getNumber() - header.getNumber() > MAX_GENERATION) {
         LOG.trace(
@@ -309,7 +311,9 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
       final DefaultEvmAccount ommerCoinbase = updater.getOrCreate(ommerHeader.getCoinbase());
       final long distance = header.getNumber() - ommerHeader.getNumber();
-      final Wei ommerReward = blockReward.minus(blockReward.times(distance).dividedBy(8));
+      final UInt256 bReward = UInt256.fromBytes(blockReward.toBytes());
+      final Wei ommerReward =
+          Wei.of(bReward.subtract(bReward.multiply(distance).divide(UInt256.valueOf(8))));
       ommerCoinbase.getMutable().incrementBalance(ommerReward);
     }
 

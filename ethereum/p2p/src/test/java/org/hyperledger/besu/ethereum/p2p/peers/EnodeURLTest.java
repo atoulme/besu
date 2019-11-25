@@ -18,11 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import org.hyperledger.besu.util.bytes.BytesValue;
+import org.hyperledger.besu.util.BytesUtil;
 
 import java.net.URI;
 import java.util.OptionalInt;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.junit.Test;
 
 public class EnodeURLTest {
@@ -152,7 +153,7 @@ public class EnodeURLTest {
         "enode://" + VALID_NODE_ID + "@" + IPV6_COMPACT_ADDRESS + ":" + P2P_PORT + "?" + query;
 
     EnodeURL enodeURL = EnodeURL.fromString(enodeURLString);
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat("[" + enodeURL.getIpAsString() + "]").isEqualTo(IPV6_FULL_ADDRESS);
     assertThat(enodeURL.getListeningPort()).isEqualTo(OptionalInt.of(P2P_PORT));
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -167,7 +168,7 @@ public class EnodeURLTest {
     final String enodeURLString = "enode://" + VALID_NODE_ID + "@" + IPV4_ADDRESS + ":" + 0;
 
     EnodeURL enodeURL = EnodeURL.fromString(enodeURLString);
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -184,7 +185,7 @@ public class EnodeURLTest {
         "enode://" + VALID_NODE_ID + "@" + IPV4_ADDRESS + ":" + 0 + "?" + query;
 
     EnodeURL enodeURL = EnodeURL.fromString(enodeURLString);
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -409,7 +410,7 @@ public class EnodeURLTest {
             .discoveryPort(DISCOVERY_PORT)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(P2P_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(DISCOVERY_PORT);
@@ -426,7 +427,7 @@ public class EnodeURLTest {
             .discoveryAndListeningPorts(P2P_PORT)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(P2P_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(P2P_PORT);
@@ -439,7 +440,7 @@ public class EnodeURLTest {
     final EnodeURL enodeURL =
         EnodeURL.builder().nodeId(VALID_NODE_ID).ipAddress(IPV4_ADDRESS).useDefaultPorts().build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(EnodeURL.DEFAULT_LISTENING_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(EnodeURL.DEFAULT_LISTENING_PORT);
@@ -457,7 +458,7 @@ public class EnodeURLTest {
             .disableDiscovery()
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(P2P_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -475,7 +476,7 @@ public class EnodeURLTest {
             .disableListening()
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(P2P_PORT);
@@ -493,7 +494,7 @@ public class EnodeURLTest {
             .disableListening()
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -510,7 +511,7 @@ public class EnodeURLTest {
             .discoveryAndListeningPorts(0)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -528,7 +529,7 @@ public class EnodeURLTest {
             .listeningPort(P2P_PORT)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(P2P_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -546,7 +547,7 @@ public class EnodeURLTest {
             .listeningPort(0)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(P2P_PORT);
@@ -564,7 +565,7 @@ public class EnodeURLTest {
             .listeningPort(P2P_PORT)
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(P2P_PORT);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(0);
@@ -582,7 +583,7 @@ public class EnodeURLTest {
             .listeningPort(OptionalInt.empty())
             .build();
 
-    assertThat(enodeURL.getNodeId().toUnprefixedString()).isEqualTo(VALID_NODE_ID);
+    assertThat(BytesUtil.toUnprefixedHexString(enodeURL.getNodeId())).isEqualTo(VALID_NODE_ID);
     assertThat(enodeURL.getIpAsString()).isEqualTo(IPV4_ADDRESS);
     assertThat(enodeURL.getListeningPortOrZero()).isEqualTo(0);
     assertThat(enodeURL.getDiscoveryPortOrZero()).isEqualTo(P2P_PORT);
@@ -741,8 +742,8 @@ public class EnodeURLTest {
   @Test
   public void parseNodeId_valid() {
     final String validId = VALID_NODE_ID;
-    final BytesValue nodeId = EnodeURL.parseNodeId(validId);
+    final Bytes nodeId = EnodeURL.parseNodeId(validId);
     assertThat(nodeId.size()).isEqualTo(EnodeURL.NODE_ID_SIZE);
-    assertThat(nodeId.toUnprefixedString()).isEqualTo(validId);
+    assertThat(BytesUtil.toUnprefixedHexString(nodeId)).isEqualTo(validId);
   }
 }

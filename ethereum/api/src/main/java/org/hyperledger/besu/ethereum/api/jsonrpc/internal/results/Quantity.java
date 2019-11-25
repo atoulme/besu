@@ -14,15 +14,13 @@
  */
 package org.hyperledger.besu.ethereum.api.jsonrpc.internal.results;
 
-import org.hyperledger.besu.util.bytes.Bytes32;
-import org.hyperledger.besu.util.bytes.BytesValue;
-import org.hyperledger.besu.util.uint.UInt256;
-import org.hyperledger.besu.util.uint.UInt256Value;
-
 import java.math.BigInteger;
 import java.util.Objects;
 
 import com.google.common.base.Strings;
+import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.units.bigints.UInt256;
 
 /**
  * Utility for formatting "quantity" fields and results to be returned. Quantity fields are
@@ -36,28 +34,24 @@ public class Quantity {
 
   private Quantity() {}
 
-  public static String create(final UInt256Value<?> value) {
-    return uint256ToHex(value.asUInt256());
-  }
-
   public static String create(final UInt256 value) {
     return uint256ToHex(value);
   }
 
   public static String create(final int value) {
-    return uint256ToHex(UInt256.of(value));
+    return uint256ToHex(UInt256.valueOf(value));
   }
 
   public static String create(final long value) {
-    return uint256ToHex(UInt256.of(value));
+    return uint256ToHex(UInt256.valueOf(value));
   }
 
   public static String create(final byte[] value) {
-    return uint256ToHex(UInt256.wrap(Bytes32.leftPad(BytesValue.wrap(value))));
+    return uint256ToHex(UInt256.fromBytes(Bytes32.leftPad(Bytes.wrap(value))));
   }
 
   public static String create(final BigInteger value) {
-    return uint256ToHex(UInt256.of(value));
+    return uint256ToHex(UInt256.valueOf(value));
   }
 
   public static String create(final byte value) {
@@ -79,7 +73,7 @@ public class Quantity {
   }
 
   private static String uint256ToHex(final UInt256 value) {
-    return value == null ? null : formatMinimalValue(value.toShortHexString());
+    return value == null ? null : formatMinimalValue(value.toMinimalBytes().toShortHexString());
   }
 
   private static String formatMinimalValue(final String hexValue) {
