@@ -17,6 +17,7 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.methods;
 import org.hyperledger.besu.ethereum.api.jsonrpc.RpcMethod;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.JsonRpcRequestContext;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.parameters.BlockParameter;
+import org.hyperledger.besu.ethereum.api.jsonrpc.internal.results.Quantity;
 import org.hyperledger.besu.ethereum.api.query.BlockchainQueries;
 import org.hyperledger.besu.ethereum.core.Address;
 
@@ -50,7 +51,7 @@ public class EthGetBalance extends AbstractBlockParameterMethod {
     final Address address = request.getRequiredParameter(0, Address.class);
     return getBlockchainQueries()
         .accountBalance(address, blockNumber)
-        .map(a -> a.isZero() ? "0x0" : a.toShortHexString())
+        .map(Quantity::create)
         .orElse(null);
   }
 }

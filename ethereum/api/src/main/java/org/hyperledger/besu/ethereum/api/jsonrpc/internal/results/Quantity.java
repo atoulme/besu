@@ -46,6 +46,10 @@ public class Quantity {
     return uint256ToHex(UInt256.valueOf(value));
   }
 
+  public static String create(final Bytes value) {
+    return create(value.toArrayUnsafe());
+  }
+
   public static String create(final byte[] value) {
     return uint256ToHex(UInt256.fromBytes(Bytes32.leftPad(Bytes.wrap(value))));
   }
