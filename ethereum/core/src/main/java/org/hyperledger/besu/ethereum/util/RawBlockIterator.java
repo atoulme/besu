@@ -49,7 +49,7 @@ public final class RawBlockIterator implements Iterator<Block>, Closeable {
       throws IOException {
     fileChannel = FileChannel.open(file);
     this.headerReader = headerReader;
-    this.readBuffer = ByteBuffer.allocate(initialCapacity);
+    readBuffer = ByteBuffer.allocate(initialCapacity);
     nextBlock();
   }
 

@@ -76,7 +76,7 @@ import org.apache.tuweni.bytes.Bytes;
  *
  * <h2>Peer Discovery</h2>
  *
- * <p>Ethereum nodes discover one another via a simple UDP protocol that follows some of the
+ * Ethereum nodes discover one another via a simple UDP protocol that follows some of the
  * techniques described in the Kademlia DHT paper. Particularly nodes are classified in a k-bucket
  * table composed of 256 buckets, where each bucket contains at most 16 peers whose
  * <i>XOR(SHA3(x))</i> distance from us is equal to the index of the bucket. The value <i>x</i> in
@@ -87,13 +87,13 @@ import org.apache.tuweni.bytes.Bytes;
  *
  * <h2>RLPx Wire Protocol</h2>
  *
- * <p>The RLPx wire protocol is responsible for selecting peers to engage with, authenticating and
+ * The RLPx wire protocol is responsible for selecting peers to engage with, authenticating and
  * encrypting communications with peers, multiplexing subprotocols, framing messages, controlling
  * legality of messages, keeping connections alive, and keeping track of peer reputation.
  *
  * <h2>Subprotocols</h2>
  *
- * <p>Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific
+ * Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific
  * set of messages. Each subprotocol has a 3-char ASCII denominator and a version number, and
  * statically defines a count of messages it can handle.
  *

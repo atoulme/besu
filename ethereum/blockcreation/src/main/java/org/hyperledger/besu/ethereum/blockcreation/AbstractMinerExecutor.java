@@ -36,7 +36,6 @@ import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.units.bigints.UInt256;
 
 public abstract class AbstractMinerExecutor<
     C, M extends BlockMiner<C, ? extends AbstractBlockCreator<C>>> {

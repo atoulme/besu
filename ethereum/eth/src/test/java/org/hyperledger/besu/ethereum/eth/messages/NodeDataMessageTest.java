@@ -35,7 +35,7 @@ public final class NodeDataMessageTest {
     final List<Bytes> nodeData = new ArrayList<>();
     final int nodeCount = 20;
     for (int i = 0; i < nodeCount; ++i) {
-      nodeData.add(gen.Bytes());
+      nodeData.add(gen.byteValues());
     }
 
     // Perform round-trip transformation
