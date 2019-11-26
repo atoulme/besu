@@ -76,11 +76,11 @@ import org.apache.tuweni.bytes.Bytes;
  *
  * <h2>Peer Discovery</h2>
  *
- * Ethereum nodes discover one another via a simple UDP protocol that follows some of the
- * techniques described in the Kademlia DHT paper. Particularly nodes are classified in a k-bucket
- * table composed of 256 buckets, where each bucket contains at most 16 peers whose
- * <i>XOR(SHA3(x))</i> distance from us is equal to the index of the bucket. The value <i>x</i> in
- * the distance function corresponds to our node ID (public key).
+ * Ethereum nodes discover one another via a simple UDP protocol that follows some of the techniques
+ * described in the Kademlia DHT paper. Particularly nodes are classified in a k-bucket table
+ * composed of 256 buckets, where each bucket contains at most 16 peers whose <i>XOR(SHA3(x))</i>
+ * distance from us is equal to the index of the bucket. The value <i>x</i> in the distance function
+ * corresponds to our node ID (public key).
  *
  * <p>Upper layers in the stack subscribe to events from the peer discovery layer and initiate/drop
  * connections accordingly.
@@ -93,9 +93,9 @@ import org.apache.tuweni.bytes.Bytes;
  *
  * <h2>Subprotocols</h2>
  *
- * Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific
- * set of messages. Each subprotocol has a 3-char ASCII denominator and a version number, and
- * statically defines a count of messages it can handle.
+ * Subprotocols are pluggable elements on top of the RLPx framework, which can handle a specific set
+ * of messages. Each subprotocol has a 3-char ASCII denominator and a version number, and statically
+ * defines a count of messages it can handle.
  *
  * <p>The RLPx wire protocol dispatches messages to subprotocols based on the capabilities agreed by
  * each of the two peers during the protocol handshake.

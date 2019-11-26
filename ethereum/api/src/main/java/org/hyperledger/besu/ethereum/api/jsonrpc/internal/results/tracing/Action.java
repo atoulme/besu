@@ -23,13 +23,13 @@ import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.debug.TraceFrame;
-import org.hyperledger.besu.util.BytesUtil;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 
 @JsonInclude(NON_NULL)
@@ -103,7 +103,7 @@ public class Action {
                 "0x"
                     .concat(
                         Arrays.stream(element)
-                            .map(BytesUtil::toUnprefixedHexString)
+                            .map(Bytes::toUnprefixedHexString)
                             .collect(Collectors.joining())))
         .orElse("");
   }

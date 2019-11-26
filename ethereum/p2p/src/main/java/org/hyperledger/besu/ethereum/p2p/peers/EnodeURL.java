@@ -17,7 +17,6 @@ package org.hyperledger.besu.ethereum.p2p.peers;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
-import org.hyperledger.besu.util.BytesUtil;
 import org.hyperledger.besu.util.NetworkUtility;
 
 import java.net.InetAddress;
@@ -149,7 +148,7 @@ public class EnodeURL {
     final String uri =
         String.format(
             "enode://%s@%s:%d",
-            BytesUtil.toUnprefixedHexString(nodeId),
+            nodeId.toUnprefixedHexString(),
             InetAddresses.toUriString(ip),
             getListeningPortOrZero());
     final OptionalInt discPort = getDiscPortQueryParam();
@@ -164,7 +163,7 @@ public class EnodeURL {
     final String uri =
         String.format(
             "enode://%s@%s:%d",
-            BytesUtil.toUnprefixedHexString(nodeId),
+            nodeId.toUnprefixedHexString(),
             InetAddresses.toUriString(ip),
             getListeningPortOrZero());
 
