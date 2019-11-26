@@ -132,7 +132,7 @@ public abstract class CommandTestAbstract {
   @Mock protected Logger mockLogger;
   @Mock protected BesuPluginContextImpl mockBesuPluginContext;
 
-  @Captor protected ArgumentCaptor<Collection<Bytes>> BytesCollectionCollector;
+  @Captor protected ArgumentCaptor<Collection<Bytes>> bytesCollectionCollector;
   @Captor protected ArgumentCaptor<Path> pathArgumentCaptor;
   @Captor protected ArgumentCaptor<File> fileArgumentCaptor;
   @Captor protected ArgumentCaptor<String> stringArgumentCaptor;

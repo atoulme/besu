@@ -1170,10 +1170,10 @@ public class BesuCommandTest extends CommandTestAbstract {
         Arrays.stream(nodes).map(Bytes::toShortHexString).collect(Collectors.joining(","));
     parseCommand("--banned-node-ids", nodeIdsArg);
 
-    verify(mockRunnerBuilder).bannedNodeIds(BytesCollectionCollector.capture());
+    verify(mockRunnerBuilder).bannedNodeIds(bytesCollectionCollector.capture());
     verify(mockRunnerBuilder).build();
 
-    assertThat(BytesCollectionCollector.getValue().toArray()).isEqualTo(nodes);
+    assertThat(bytesCollectionCollector.getValue().toArray()).isEqualTo(nodes);
 
     assertThat(commandOutput.toString()).isEmpty();
     assertThat(commandErrorOutput.toString()).isEmpty();
