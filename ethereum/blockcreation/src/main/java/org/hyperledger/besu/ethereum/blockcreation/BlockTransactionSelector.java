@@ -54,7 +54,7 @@ import org.apache.tuweni.units.bigints.UInt256;
  *   <li>The amount of gas consumed when executing all transactions.
  * </ul>
  *
- * <p>Once "used" this class must be discarded and another created. This class contains state which
+ * Once "used" this class must be discarded and another created. This class contains state which
  * is not cleared between executions of buildTransactionListForBlock().
  */
 public class BlockTransactionSelector {
