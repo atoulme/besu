@@ -81,7 +81,7 @@ public class SignedDataValidatorTest {
   public void receivingACommitMessageBeforeProposalFails() {
     final Commit commitMsg =
         proposerMessageFactory.createCommit(
-            roundIdentifier, Hash.ZERO, SECP256K1.sign(block.getHash().toBytes(), proposerKey));
+            roundIdentifier, Hash.ZERO, SECP256K1.sign(block.getHash(), proposerKey));
 
     assertThat(validator.validateCommit(commitMsg.getSignedPayload())).isFalse();
   }
@@ -131,9 +131,7 @@ public class SignedDataValidatorTest {
         validatorMessageFactory.createPrepare(invalidRoundIdentifier, block.getHash());
     final Commit commitMsg =
         validatorMessageFactory.createCommit(
-            invalidRoundIdentifier,
-            block.getHash(),
-            SECP256K1.sign(block.getHash().toBytes(), proposerKey));
+            invalidRoundIdentifier, block.getHash(), SECP256K1.sign(block.getHash(), proposerKey));
 
     assertThat(validator.validateProposal(proposalMsg.getSignedPayload())).isTrue();
     assertThat(validator.validatePrepare(prepareMsg.getSignedPayload())).isFalse();
@@ -158,9 +156,7 @@ public class SignedDataValidatorTest {
 
     final Commit commitMsg =
         proposerMessageFactory.createCommit(
-            roundIdentifier,
-            block.getHash(),
-            SECP256K1.sign(block.getHash().toBytes(), nonValidatorKey));
+            roundIdentifier, block.getHash(), SECP256K1.sign(block.getHash(), nonValidatorKey));
 
     assertThat(validator.validateProposal(proposalMsg.getSignedPayload())).isTrue();
     assertThat(validator.validateCommit(commitMsg.getSignedPayload())).isFalse();
@@ -173,15 +169,11 @@ public class SignedDataValidatorTest {
 
     final Commit proposerCommitMsg =
         proposerMessageFactory.createCommit(
-            roundIdentifier,
-            block.getHash(),
-            SECP256K1.sign(block.getHash().toBytes(), proposerKey));
+            roundIdentifier, block.getHash(), SECP256K1.sign(block.getHash(), proposerKey));
 
     final Commit validatorCommitMsg =
         validatorMessageFactory.createCommit(
-            roundIdentifier,
-            block.getHash(),
-            SECP256K1.sign(block.getHash().toBytes(), validatorKey));
+            roundIdentifier, block.getHash(), SECP256K1.sign(block.getHash(), validatorKey));
 
     assertThat(validator.validateProposal(proposalMsg.getSignedPayload())).isTrue();
     assertThat(validator.validateCommit(proposerCommitMsg.getSignedPayload())).isTrue();

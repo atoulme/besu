@@ -32,9 +32,8 @@ public final class BodyValidationTest {
     for (final int block : Arrays.asList(300006, 4400002)) {
       final BlockHeader header = ValidationTestUtils.readHeader(block);
       final BlockBody body = ValidationTestUtils.readBody(block);
-      final Bytes32 transactionRoot =
-          BodyValidation.transactionsRoot(body.getTransactions()).toBytes();
-      Assertions.assertThat(header.getTransactionsRoot().toBytes()).isEqualTo(transactionRoot);
+      final Bytes32 transactionRoot = BodyValidation.transactionsRoot(body.getTransactions());
+      Assertions.assertThat(header.getTransactionsRoot()).isEqualTo(transactionRoot);
     }
   }
 
@@ -43,8 +42,8 @@ public final class BodyValidationTest {
     for (final int block : Arrays.asList(300006, 4400002)) {
       final BlockHeader header = ValidationTestUtils.readHeader(block);
       final BlockBody body = ValidationTestUtils.readBody(block);
-      final Bytes32 ommersHash = BodyValidation.ommersHash(body.getOmmers()).toBytes();
-      Assertions.assertThat(header.getOmmersHash().toBytes()).isEqualTo(ommersHash);
+      final Bytes32 ommersHash = BodyValidation.ommersHash(body.getOmmers());
+      Assertions.assertThat(header.getOmmersHash()).isEqualTo(ommersHash);
     }
   }
 }

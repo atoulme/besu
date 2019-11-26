@@ -97,11 +97,11 @@ public class ValidatorPeer {
   }
 
   public Signature getBlockSignature(final Hash digest) {
-    return SECP256K1.sign(digest.toBytes(), nodeKeys);
+    return SECP256K1.sign(digest, nodeKeys);
   }
 
   public Commit injectCommit(final ConsensusRoundIdentifier rId, final Hash digest) {
-    final Signature commitSeal = SECP256K1.sign(digest.toBytes(), nodeKeys);
+    final Signature commitSeal = SECP256K1.sign(digest, nodeKeys);
 
     return injectCommit(rId, digest, commitSeal);
   }

@@ -80,12 +80,7 @@ public abstract class TransactionReceiptResult {
             receiptWithMetadata.getBlockHash(),
             receiptWithMetadata.getTransactionIndex());
     this.logsBloom = receipt.getBloomFilter().toString();
-    this.to =
-        receiptWithMetadata
-            .getTransaction()
-            .getTo()
-            .map(a -> a.toBytes().toHexString())
-            .orElse(null);
+    this.to = receiptWithMetadata.getTransaction().getTo().map(a -> a.toHexString()).orElse(null);
     this.transactionHash = receiptWithMetadata.getTransaction().getHash().toString();
     this.transactionIndex = Quantity.create(receiptWithMetadata.getTransactionIndex());
     this.revertReason = receipt.getRevertReason().map(Bytes::toString).orElse(null);

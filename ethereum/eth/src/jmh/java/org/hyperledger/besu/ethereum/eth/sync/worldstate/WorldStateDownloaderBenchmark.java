@@ -152,8 +152,7 @@ public class WorldStateDownloaderBenchmark {
     }
     peer.respondWhileOtherThreadsWork(responder, () -> !result.isDone());
     result.getNow(null);
-    final Optional<Bytes> rootData =
-        worldStateStorage.getNodeData(blockHeader.getStateRoot().toBytes());
+    final Optional<Bytes> rootData = worldStateStorage.getNodeData(blockHeader.getStateRoot());
     if (!rootData.isPresent()) {
       throw new IllegalStateException("World state download did not complete.");
     }

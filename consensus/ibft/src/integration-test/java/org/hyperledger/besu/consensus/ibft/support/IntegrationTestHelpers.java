@@ -39,8 +39,7 @@ public class IntegrationTestHelpers {
 
     final Signature commitSeal =
         SECP256K1.sign(
-            IbftBlockHashing.calculateDataHashForCommittedSeal(block.getHeader(), extraData)
-                .toBytes(),
+            IbftBlockHashing.calculateDataHashForCommittedSeal(block.getHeader(), extraData),
             signingKeyPair);
 
     final MessageFactory messageFactory = new MessageFactory(signingKeyPair);

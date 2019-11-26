@@ -52,7 +52,7 @@ abstract class TrieNodeDataRequest extends NodeDataRequest {
   }
 
   private boolean nodeIsHashReferencedDescendant(final Node<Bytes> node) {
-    return !Objects.equals(node.getHash(), getHash().toBytes()) && node.isReferencedByHash();
+    return !Objects.equals(node.getHash(), getHash()) && node.isReferencedByHash();
   }
 
   protected abstract NodeDataRequest createChildNodeDataRequest(final Hash childHash);

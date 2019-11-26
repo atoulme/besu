@@ -107,7 +107,7 @@ public abstract class AbstractMinerExecutor<
   }
 
   public void setMinTransactionGasPrice(final Wei minTransactionGasPrice) {
-    this.minTransactionGasPrice = Wei.of(UInt256.fromBytes(minTransactionGasPrice.toBytes()));
+    this.minTransactionGasPrice = Wei.of(UInt256.fromBytes(minTransactionGasPrice));
   }
 
   public Wei getMinTransactionGasPrice() {

@@ -53,7 +53,7 @@ public class CommitPayload implements Payload {
   public void writeTo(final RLPOutput rlpOutput) {
     rlpOutput.startList();
     roundIdentifier.writeTo(rlpOutput);
-    rlpOutput.writeBytes(digest.toBytes());
+    rlpOutput.writeBytes(digest);
     rlpOutput.writeBytes(commitSeal.encodedBytes());
     rlpOutput.endList();
   }

@@ -45,12 +45,12 @@ public class WorldStateProofProvider {
       final Address accountAddress,
       final List<UInt256> accountStorageKeys) {
 
-    if (!worldStateStorage.isWorldStateAvailable(worldStateRoot.toBytes())) {
+    if (!worldStateStorage.isWorldStateAvailable(worldStateRoot)) {
       return Optional.empty();
     } else {
-      final Hash addressHash = Hash.hash(accountAddress.toBytes());
+      final Hash addressHash = Hash.hash(accountAddress);
       final Proof<Bytes> accountProof =
-          newAccountStateTrie(worldStateRoot.toBytes()).getValueWithProof(addressHash.toBytes());
+          newAccountStateTrie(worldStateRoot).getValueWithProof(addressHash);
 
       return accountProof
           .getValue()
@@ -68,12 +68,10 @@ public class WorldStateProofProvider {
   private SortedMap<UInt256, Proof<Bytes>> getStorageProofs(
       final StateTrieAccountValue account, final List<UInt256> accountStorageKeys) {
     final MerklePatriciaTrie<Bytes32, Bytes> storageTrie =
-        newAccountStorageTrie(account.getStorageRoot().toBytes());
+        newAccountStorageTrie(account.getStorageRoot());
     final SortedMap<UInt256, Proof<Bytes>> storageProofs = new TreeMap<>();
     accountStorageKeys.forEach(
-        key ->
-            storageProofs.put(
-                key, storageTrie.getValueWithProof(Hash.hash(key.toBytes()).toBytes())));
+        key -> storageProofs.put(key, storageTrie.getValueWithProof(Hash.hash(key.toBytes()))));
     return storageProofs;
   }
 

@@ -88,8 +88,7 @@ public class CallOperation extends AbstractCallOperation {
 
   @Override
   public Gas gasAvailableForChildCall(final MessageFrame frame) {
-    return gasCalculator()
-        .gasAvailableForChildCall(frame, gas(frame), !value(frame).toBytes().isZero());
+    return gasCalculator().gasAvailableForChildCall(frame, gas(frame), !value(frame).isZero());
   }
 
   @Override
@@ -123,7 +122,7 @@ public class CallOperation extends AbstractCallOperation {
       final MessageFrame frame,
       final EnumSet<ExceptionalHaltReason> previousReasons,
       final EVM evm) {
-    return frame.isStatic() && !value(frame).toBytes().isZero()
+    return frame.isStatic() && !value(frame).isZero()
         ? Optional.of(ExceptionalHaltReason.ILLEGAL_STATE_CHANGE)
         : Optional.empty();
   }

@@ -40,7 +40,7 @@ public class WorldStateKeyValueStorage implements WorldStateStorage {
 
   @Override
   public Optional<Bytes> getCode(final Bytes32 codeHash) {
-    if (codeHash.equals(Hash.EMPTY.toBytes())) {
+    if (codeHash.equals(Hash.EMPTY)) {
       return Optional.of(Bytes.EMPTY);
     } else {
       return keyValueStorage.get(codeHash.toArrayUnsafe()).map(Bytes::wrap);
@@ -69,7 +69,7 @@ public class WorldStateKeyValueStorage implements WorldStateStorage {
   public Optional<Bytes> getNodeData(final Bytes32 hash) {
     if (hash.equals(MerklePatriciaTrie.EMPTY_TRIE_NODE_HASH)) {
       return Optional.of(MerklePatriciaTrie.EMPTY_TRIE_NODE);
-    } else if (hash.equals(Hash.EMPTY.toBytes())) {
+    } else if (hash.equals(Hash.EMPTY)) {
       return Optional.of(Bytes.EMPTY);
     } else {
       return keyValueStorage.get(hash.toArrayUnsafe()).map(Bytes::wrap);

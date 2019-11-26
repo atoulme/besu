@@ -46,7 +46,7 @@ public final class NewBlockHashesMessage extends AbstractMessageData {
     tmp.startList();
     for (final NewBlockHashesMessage.NewBlockHash hash : hashes) {
       tmp.startList();
-      tmp.writeBytes(hash.hash().toBytes());
+      tmp.writeBytes(hash.hash());
       tmp.writeLongScalar(hash.number());
       tmp.endList();
     }

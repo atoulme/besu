@@ -289,7 +289,7 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
     // TODO(tmm): Added to make this work, should come from blockProcessor.
     final int MAX_GENERATION = 6;
-    UInt256 reward = UInt256.fromBytes(blockReward.toBytes());
+    UInt256 reward = UInt256.fromBytes(blockReward);
     if (skipZeroBlockRewards && reward.isZero()) {
       return true;
     }
@@ -311,7 +311,7 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
       final DefaultEvmAccount ommerCoinbase = updater.getOrCreate(ommerHeader.getCoinbase());
       final long distance = header.getNumber() - ommerHeader.getNumber();
-      final UInt256 bReward = UInt256.fromBytes(blockReward.toBytes());
+      final UInt256 bReward = UInt256.fromBytes(blockReward);
       final Wei ommerReward =
           Wei.of(bReward.subtract(bReward.multiply(distance).divide(UInt256.valueOf(8))));
       ommerCoinbase.getMutable().incrementBalance(ommerReward);

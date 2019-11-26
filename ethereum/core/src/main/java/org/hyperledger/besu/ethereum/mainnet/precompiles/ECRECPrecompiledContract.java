@@ -77,7 +77,7 @@ public class ECRECPrecompiledContract extends AbstractPrecompiledContract {
         return Bytes.EMPTY;
       }
 
-      final Bytes32 hashed = Hash.hash(recovered.get().getEncodedBytes()).toBytes();
+      final Bytes32 hashed = Hash.hash(recovered.get().getEncodedBytes());
       final MutableBytes32 result = MutableBytes32.create();
       hashed.slice(12).copyTo(result, 12);
       return result;

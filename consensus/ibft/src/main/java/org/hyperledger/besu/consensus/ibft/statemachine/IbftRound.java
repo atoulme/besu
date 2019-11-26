@@ -229,7 +229,7 @@ public class IbftRound {
     final IbftExtraData extraData = IbftExtraData.decode(proposedHeader);
     final Hash commitHash =
         IbftBlockHashing.calculateDataHashForCommittedSeal(proposedHeader, extraData);
-    return SECP256K1.sign(commitHash.toBytes(), nodeKeys);
+    return SECP256K1.sign(commitHash, nodeKeys);
   }
 
   private void notifyNewBlockListeners(final Block block) {

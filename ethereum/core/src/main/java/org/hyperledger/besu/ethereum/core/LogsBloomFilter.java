@@ -136,7 +136,7 @@ public class LogsBloomFilter implements UnformattedData {
   }
 
   public void insertLog(final Log log) {
-    insertBytes(log.getLogger().toBytes());
+    insertBytes(log.getLogger());
 
     for (final Bytes topic : log.getTopics()) {
       insertBytes(topic);

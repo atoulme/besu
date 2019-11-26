@@ -184,7 +184,7 @@ public final class GetBlockHeadersMessage extends AbstractMessageData {
       out.startList();
 
       if (blockHash.isPresent()) {
-        out.writeBytes(blockHash.get().toBytes());
+        out.writeBytes(blockHash.get());
       } else {
         out.writeLongScalar(blockNumber.getAsLong());
       }

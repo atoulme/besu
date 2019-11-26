@@ -135,7 +135,7 @@ public class IbftBlockHeaderValidationRulesetFactoryTest {
     final Hash proposerSealHash =
         IbftBlockHashing.calculateDataHashForProposerSeal(parentHeader, initialIbftExtraData);
 
-    final Signature proposerSignature = SECP256K1.sign(proposerSealHash.toBytes(), proposerKeyPair);
+    final Signature proposerSignature = SECP256K1.sign(proposerSealHash, proposerKeyPair);
 
     final IbftExtraData proposedData =
         new IbftExtraData(
@@ -147,7 +147,7 @@ public class IbftBlockHeaderValidationRulesetFactoryTest {
     final Hash headerHashForCommitters =
         IbftBlockHashing.calculateDataHashForCommittedSeal(parentHeader, proposedData);
     final Signature proposerAsCommitterSignature =
-        SECP256K1.sign(headerHashForCommitters.toBytes(), proposerKeyPair);
+        SECP256K1.sign(headerHashForCommitters, proposerKeyPair);
 
     final IbftExtraData sealedData =
         new IbftExtraData(

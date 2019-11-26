@@ -42,7 +42,7 @@ public class ExtCodeHashOperation extends AbstractOperation {
     if (account == null || account.isEmpty()) {
       frame.pushStackItem(Bytes32.ZERO);
     } else {
-      frame.pushStackItem(account.getCodeHash().toBytes());
+      frame.pushStackItem(account.getCodeHash());
     }
   }
 }

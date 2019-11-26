@@ -31,7 +31,7 @@ class CodeNodeDataRequest extends NodeDataRequest {
 
   @Override
   protected void doPersist(final Updater updater) {
-    updater.putCode(getHash().toBytes(), getData());
+    updater.putCode(getHash(), getData());
   }
 
   @Override
@@ -42,6 +42,6 @@ class CodeNodeDataRequest extends NodeDataRequest {
 
   @Override
   public Optional<Bytes> getExistingData(final WorldStateStorage worldStateStorage) {
-    return worldStateStorage.getCode(getHash().toBytes());
+    return worldStateStorage.getCode(getHash());
   }
 }

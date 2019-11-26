@@ -81,7 +81,7 @@ public class IbftBlockHashingTest {
 
     List<Signature> commitSeals =
         COMMITTERS_KEY_PAIRS.stream()
-            .map(keyPair -> SECP256K1.sign(dataHahsForCommittedSeal.toBytes(), keyPair))
+            .map(keyPair -> SECP256K1.sign(dataHahsForCommittedSeal, keyPair))
             .collect(Collectors.toList());
 
     IbftExtraData extraDataWithCommitSeals =
@@ -154,8 +154,7 @@ public class IbftBlockHashingTest {
         COMMITTERS_KEY_PAIRS.stream()
             .map(
                 keyPair ->
-                    SECP256K1.sign(
-                        Hash.hash(rlpForHeaderFroCommittersSigning.encoded()).toBytes(), keyPair))
+                    SECP256K1.sign(Hash.hash(rlpForHeaderFroCommittersSigning.encoded()), keyPair))
             .collect(Collectors.toList());
 
     IbftExtraData extraDataWithCommitSeals =

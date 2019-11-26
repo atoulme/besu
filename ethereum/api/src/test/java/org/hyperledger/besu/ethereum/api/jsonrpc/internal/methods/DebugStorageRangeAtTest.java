@@ -122,9 +122,7 @@ public class DebugStorageRangeAtTest {
         AccountStorageEntry.forKeyAndValue(UInt256.fromHexString("0x44"), UInt256.valueOf(7)));
     entries.add(
         AccountStorageEntry.create(
-            UInt256.valueOf(7),
-            Hash.hash(Bytes32.fromHexString("0x45")).toBytes(),
-            Optional.empty()));
+            UInt256.valueOf(7), Hash.hash(Bytes32.fromHexString("0x45")), Optional.empty()));
     final NavigableMap<Bytes32, AccountStorageEntry> rawEntries =
         new TreeMap<>(
             new Comparator<Bytes32>() {

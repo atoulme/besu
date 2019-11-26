@@ -43,6 +43,6 @@ public class Sha3Operation extends AbstractOperation {
     final UInt256 length = UInt256.fromBytes(frame.popStackItem());
 
     final Bytes bytes = frame.readMemory(from, length);
-    frame.pushStackItem(Hash.hash(bytes).toBytes());
+    frame.pushStackItem(Hash.hash(bytes));
   }
 }

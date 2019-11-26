@@ -133,7 +133,7 @@ public class Scalars {
         @Override
         public String serialize(final Object input) throws CoercingSerializeException {
           if (input instanceof Hash) {
-            return ((Hash) input).toBytes().toString();
+            return ((Hash) input).toString();
           }
           if (input instanceof Bytes32) {
             return input.toString();

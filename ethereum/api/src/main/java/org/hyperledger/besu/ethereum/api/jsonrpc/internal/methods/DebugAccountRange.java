@@ -88,7 +88,7 @@ public class DebugAccountRange implements JsonRpcMethod {
               .collect(Collectors.toList());
       Bytes32 nextKey = Bytes32.ZERO;
       if (accounts.size() == maxResults + 1) {
-        nextKey = accounts.get(maxResults).getAddressHash().toBytes();
+        nextKey = accounts.get(maxResults).getAddressHash();
         accounts.remove(maxResults);
       }
 

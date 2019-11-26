@@ -71,8 +71,8 @@ public class PersistDataStepTest {
         persistDataStep.persist(tasks, blockHeader, downloadState);
     assertThat(result).isSameAs(tasks);
 
-    assertThat(worldStateStorage.contains(withData.getData().getHash().toBytes())).isTrue();
-    assertThat(worldStateStorage.contains(withoutData.getData().getHash().toBytes())).isFalse();
+    assertThat(worldStateStorage.contains(withData.getData().getHash())).isTrue();
+    assertThat(worldStateStorage.contains(withoutData.getData().getHash())).isFalse();
   }
 
   @Test
@@ -83,7 +83,7 @@ public class PersistDataStepTest {
         persistDataStep.persist(tasks, blockHeader, downloadState);
     assertThat(result).isSameAs(tasks);
 
-    assertThat(worldStateStorage.contains(rootNode.getData().getHash().toBytes())).isFalse();
+    assertThat(worldStateStorage.contains(rootNode.getData().getHash())).isFalse();
     verify(downloadState).setRootNodeData(rootNode.getData().getData());
   }
 
@@ -110,7 +110,7 @@ public class PersistDataStepTest {
   private void assertDataPersisted(final List<Task<NodeDataRequest>> tasks) {
     tasks.forEach(
         task ->
-            assertThat(worldStateStorage.getNodeData(task.getData().getHash().toBytes()))
+            assertThat(worldStateStorage.getNodeData(task.getData().getHash()))
                 .isEqualTo(Optional.of(task.getData().getData())));
   }
 }

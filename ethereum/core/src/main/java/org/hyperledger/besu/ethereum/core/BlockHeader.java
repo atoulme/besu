@@ -128,12 +128,12 @@ public class BlockHeader extends SealableBlockHeader
   public void writeTo(final RLPOutput out) {
     out.startList();
 
-    out.writeBytes(parentHash.toBytes());
-    out.writeBytes(ommersHash.toBytes());
-    out.writeBytes(coinbase.toBytes());
-    out.writeBytes(stateRoot.toBytes());
-    out.writeBytes(transactionsRoot.toBytes());
-    out.writeBytes(receiptsRoot.toBytes());
+    out.writeBytes(parentHash);
+    out.writeBytes(ommersHash);
+    out.writeBytes(coinbase);
+    out.writeBytes(stateRoot);
+    out.writeBytes(transactionsRoot);
+    out.writeBytes(receiptsRoot);
     out.writeBytes(logsBloom.getBytes());
     out.writeBytes(difficulty.toMinimalBytes());
     out.writeLongScalar(number);
@@ -141,7 +141,7 @@ public class BlockHeader extends SealableBlockHeader
     out.writeLongScalar(gasUsed);
     out.writeLongScalar(timestamp);
     out.writeBytes(extraData);
-    out.writeBytes(mixHash.toBytes());
+    out.writeBytes(mixHash);
     out.writeLong(nonce);
 
     out.endList();

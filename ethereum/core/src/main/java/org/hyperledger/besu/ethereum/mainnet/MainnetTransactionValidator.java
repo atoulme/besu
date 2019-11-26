@@ -85,8 +85,7 @@ public class MainnetTransactionValidator implements TransactionValidator {
       senderNonce = sender.getNonce();
     }
 
-    if (UInt256.fromBytes(transaction.getUpfrontCost().toBytes())
-            .compareTo(UInt256.fromBytes(senderBalance.toBytes()))
+    if (UInt256.fromBytes(transaction.getUpfrontCost()).compareTo(UInt256.fromBytes(senderBalance))
         > 0) {
       return ValidationResult.invalid(
           TransactionInvalidReason.UPFRONT_COST_EXCEEDS_BALANCE,

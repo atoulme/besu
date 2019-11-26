@@ -129,7 +129,7 @@ public class MarkSweepPrunerTest {
     // Collect state roots we expect to be swept first
     final List<Bytes32> stateRoots = new ArrayList<>();
     for (int i = markBlockNumber - 1; i >= 0; i--) {
-      stateRoots.add(blockchain.getBlockHeader(i).get().getStateRoot().toBytes());
+      stateRoots.add(blockchain.getBlockHeader(i).get().getStateRoot());
     }
 
     // Mark and sweep
@@ -160,14 +160,14 @@ public class MarkSweepPrunerTest {
     // Collect state roots we expect to be swept first
     final List<Bytes32> stateRoots = new ArrayList<>();
     for (int i = markBlockNumber - 1; i >= 0; i--) {
-      stateRoots.add(blockchain.getBlockHeader(i).get().getStateRoot().toBytes());
+      stateRoots.add(blockchain.getBlockHeader(i).get().getStateRoot());
     }
 
     // Mark
     pruner.mark(markBlock.getStateRoot());
     // Mark an extra state root
     Hash markedRoot = Hash.wrap(stateRoots.remove(stateRoots.size() / 2));
-    pruner.markNode(markedRoot.toBytes());
+    pruner.markNode(markedRoot);
     // Sweep
     pruner.sweepBefore(markBlock.getNumber());
 
@@ -209,7 +209,7 @@ public class MarkSweepPrunerTest {
 
   private Set<Bytes> collectWorldStateNodes(final Hash stateRootHash, final Set<Bytes> collector) {
     final List<Hash> storageRoots = new ArrayList<>();
-    final MerklePatriciaTrie<Bytes32, Bytes> stateTrie = createStateTrie(stateRootHash.toBytes());
+    final MerklePatriciaTrie<Bytes32, Bytes> stateTrie = createStateTrie(stateRootHash);
 
     // Collect storage roots and code
     stateTrie
@@ -228,8 +228,7 @@ public class MarkSweepPrunerTest {
     collectTrieNodes(stateTrie, collector);
     // Collect storage nodes
     for (Hash storageRoot : storageRoots) {
-      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie =
-          createStorageTrie(storageRoot.toBytes());
+      final MerklePatriciaTrie<Bytes32, Bytes> storageTrie = createStorageTrie(storageRoot);
       collectTrieNodes(storageTrie, collector);
     }
 

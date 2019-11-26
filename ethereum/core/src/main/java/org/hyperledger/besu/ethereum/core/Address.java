@@ -21,13 +21,12 @@ import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPException;
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.DelegatingBytes;
 
 /** A 160-bits account address. */
-public class Address implements org.hyperledger.besu.plugin.data.Address, Comparable<Address> {
+public class Address extends DelegatingBytes implements org.hyperledger.besu.plugin.data.Address {
 
   public static final int SIZE = 20;
 
@@ -49,18 +48,16 @@ public class Address implements org.hyperledger.besu.plugin.data.Address, Compar
 
   public static final Address ZERO = Address.fromHexString("0x0");
 
-  private final Bytes value;
-
   protected Address(final Bytes bytes) {
-    this.value = bytes;
-    checkArgument(
-        bytes.size() == SIZE,
-        "An account address must be be %s bytes long, got %s",
-        SIZE,
-        bytes.size());
+    super(bytes);
   }
 
   public static Address wrap(final Bytes value) {
+    checkArgument(
+        value.size() == SIZE,
+        "An account address must be be %s bytes long, got %s",
+        SIZE,
+        value.size());
     return new Address(value);
   }
 
@@ -86,7 +83,7 @@ public class Address implements org.hyperledger.besu.plugin.data.Address, Compar
    * @return The ethereum address from the provided hash.
    */
   public static Address extract(final Hash hash) {
-    return wrap(hash.toBytes().slice(12, 20));
+    return wrap(hash.slice(12, 20));
   }
 
   public static Address extract(final PublicKey publicKey) {
@@ -151,7 +148,7 @@ public class Address implements org.hyperledger.besu.plugin.data.Address, Compar
             RLP.encode(
                 out -> {
                   out.startList();
-                  out.writeBytes(senderAddress.toBytes());
+                  out.writeBytes(senderAddress);
                   out.writeLongScalar(nonce);
                   out.endList();
                 })));
@@ -172,7 +169,7 @@ public class Address implements org.hyperledger.besu.plugin.data.Address, Compar
             RLP.encode(
                 out -> {
                   out.startList();
-                  out.writeBytes(senderAddress.toBytes());
+                  out.writeBytes(senderAddress);
                   out.writeLongScalar(nonce);
                   out.writeBytes(privacyGroupId);
                   out.endList();
@@ -183,50 +180,17 @@ public class Address implements org.hyperledger.besu.plugin.data.Address, Compar
     return logger instanceof Address ? (Address) logger : wrap(Bytes.wrap(logger.getByteArray()));
   }
 
-  public Address copy() {
-    final Bytes copiedStorage = value.copy();
-    return Address.wrap(copiedStorage);
-  }
-
-  @Override
-  public int size() {
-    return value.size();
-  }
-
   public Bytes toBytes() {
-    return value;
+    return copy();
   }
 
   @Override
   public byte[] getByteArray() {
-    return value.toArray();
+    return toArrayUnsafe();
   }
 
   @Override
   public String getHexString() {
-    return value.toHexString();
-  }
-
-  @Override
-  public String toString() {
-    return getHexString();
-  }
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Address address = (Address) o;
-    return Objects.equals(value, address.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
-
-  @Override
-  public int compareTo(final Address o) {
-    return value.toUnsignedBigInteger().compareTo(o.value.toUnsignedBigInteger());
+    return toHexString();
   }
 }

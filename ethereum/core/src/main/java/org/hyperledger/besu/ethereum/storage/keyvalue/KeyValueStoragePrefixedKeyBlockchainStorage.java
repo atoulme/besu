@@ -73,20 +73,19 @@ public class KeyValueStoragePrefixedKeyBlockchainStorage implements BlockchainSt
 
   @Override
   public Optional<BlockHeader> getBlockHeader(final Hash blockHash) {
-    return get(BLOCK_HEADER_PREFIX, blockHash.toBytes())
+    return get(BLOCK_HEADER_PREFIX, blockHash)
         .map(b -> BlockHeader.readFrom(RLP.input(b), blockHeaderFunctions));
   }
 
   @Override
   public Optional<BlockBody> getBlockBody(final Hash blockHash) {
-    return get(BLOCK_BODY_PREFIX, blockHash.toBytes())
+    return get(BLOCK_BODY_PREFIX, blockHash)
         .map(bytes -> BlockBody.readFrom(RLP.input(bytes), blockHeaderFunctions));
   }
 
   @Override
   public Optional<List<TransactionReceipt>> getTransactionReceipts(final Hash blockHash) {
-    return get(TRANSACTION_RECEIPTS_PREFIX, blockHash.toBytes())
-        .map(this::rlpDecodeTransactionReceipts);
+    return get(TRANSACTION_RECEIPTS_PREFIX, blockHash).map(this::rlpDecodeTransactionReceipts);
   }
 
   @Override
@@ -96,13 +95,12 @@ public class KeyValueStoragePrefixedKeyBlockchainStorage implements BlockchainSt
 
   @Override
   public Optional<UInt256> getTotalDifficulty(final Hash blockHash) {
-    return get(TOTAL_DIFFICULTY_PREFIX, blockHash.toBytes())
-        .map(b -> UInt256.fromBytes(Bytes32.wrap(b, 0)));
+    return get(TOTAL_DIFFICULTY_PREFIX, blockHash).map(b -> UInt256.fromBytes(Bytes32.wrap(b, 0)));
   }
 
   @Override
   public Optional<TransactionLocation> getTransactionLocation(final Hash transactionHash) {
-    return get(TRANSACTION_LOCATION_PREFIX, transactionHash.toBytes())
+    return get(TRANSACTION_LOCATION_PREFIX, transactionHash)
         .map(bytes -> TransactionLocation.readFrom(RLP.input(bytes)));
   }
 
@@ -133,48 +131,45 @@ public class KeyValueStoragePrefixedKeyBlockchainStorage implements BlockchainSt
 
     @Override
     public void putBlockHeader(final Hash blockHash, final BlockHeader blockHeader) {
-      set(BLOCK_HEADER_PREFIX, blockHash.toBytes(), RLP.encode(blockHeader::writeTo));
+      set(BLOCK_HEADER_PREFIX, blockHash, RLP.encode(blockHeader::writeTo));
     }
 
     @Override
     public void putBlockBody(final Hash blockHash, final BlockBody blockBody) {
-      set(BLOCK_BODY_PREFIX, blockHash.toBytes(), RLP.encode(blockBody::writeTo));
+      set(BLOCK_BODY_PREFIX, blockHash, RLP.encode(blockBody::writeTo));
     }
 
     @Override
     public void putTransactionLocation(
         final Hash transactionHash, final TransactionLocation transactionLocation) {
-      set(
-          TRANSACTION_LOCATION_PREFIX,
-          transactionHash.toBytes(),
-          RLP.encode(transactionLocation::writeTo));
+      set(TRANSACTION_LOCATION_PREFIX, transactionHash, RLP.encode(transactionLocation::writeTo));
     }
 
     @Override
     public void putTransactionReceipts(
         final Hash blockHash, final List<TransactionReceipt> transactionReceipts) {
-      set(TRANSACTION_RECEIPTS_PREFIX, blockHash.toBytes(), rlpEncode(transactionReceipts));
+      set(TRANSACTION_RECEIPTS_PREFIX, blockHash, rlpEncode(transactionReceipts));
     }
 
     @Override
     public void putBlockHash(final long blockNumber, final Hash blockHash) {
-      set(BLOCK_HASH_PREFIX, UInt256.valueOf(blockNumber).toBytes(), blockHash.toBytes());
+      set(BLOCK_HASH_PREFIX, UInt256.valueOf(blockNumber).toBytes(), blockHash);
     }
 
     @Override
     public void putTotalDifficulty(final Hash blockHash, final UInt256 totalDifficulty) {
-      set(TOTAL_DIFFICULTY_PREFIX, blockHash.toBytes(), totalDifficulty.toBytes());
+      set(TOTAL_DIFFICULTY_PREFIX, blockHash, totalDifficulty.toBytes());
     }
 
     @Override
     public void setChainHead(final Hash blockHash) {
-      set(CONSTANTS_PREFIX, CHAIN_HEAD_KEY, blockHash.toBytes());
+      set(CONSTANTS_PREFIX, CHAIN_HEAD_KEY, blockHash);
     }
 
     @Override
     public void setForkHeads(final Collection<Hash> forkHeadHashes) {
       final Bytes data =
-          RLP.encode(o -> o.writeList(forkHeadHashes, (val, out) -> out.writeBytes(val.toBytes())));
+          RLP.encode(o -> o.writeList(forkHeadHashes, (val, out) -> out.writeBytes(val)));
       set(CONSTANTS_PREFIX, FORK_HEADS_KEY, data);
     }
 
@@ -185,7 +180,7 @@ public class KeyValueStoragePrefixedKeyBlockchainStorage implements BlockchainSt
 
     @Override
     public void removeTransactionLocation(final Hash transactionHash) {
-      remove(TRANSACTION_LOCATION_PREFIX, transactionHash.toBytes());
+      remove(TRANSACTION_LOCATION_PREFIX, transactionHash);
     }
 
     @Override

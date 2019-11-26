@@ -18,14 +18,13 @@ import static org.hyperledger.besu.crypto.Hash.keccak256;
 
 import org.hyperledger.besu.ethereum.rlp.RLP;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.bytes.DelegatingBytes32;
 
 /** A 32-bytes hash value as used in Ethereum blocks, that is the result of the KEC algorithm. */
-public class Hash implements org.hyperledger.besu.plugin.data.Hash {
+public class Hash extends DelegatingBytes32 implements org.hyperledger.besu.plugin.data.Hash {
 
   public static final Hash ZERO = new Hash(Bytes32.ZERO);
 
@@ -34,10 +33,9 @@ public class Hash implements org.hyperledger.besu.plugin.data.Hash {
   public static final Hash EMPTY_LIST_HASH = Hash.hash(RLP.EMPTY_LIST);
 
   public static final Hash EMPTY = hash(Bytes.EMPTY);
-  private final Bytes32 value;
 
   private Hash(final Bytes32 bytes) {
-    this.value = bytes;
+    super(bytes);
   }
 
   public static Hash hash(final Bytes value) {
@@ -78,38 +76,20 @@ public class Hash implements org.hyperledger.besu.plugin.data.Hash {
 
   @Override
   public byte[] getByteArray() {
-    return value.toArrayUnsafe();
+    return toArrayUnsafe();
   }
 
   @Override
   public String getHexString() {
-    return value.toHexString();
+    return toHexString();
+  }
+
+  public Bytes32 toBytes() {
+    return copy();
   }
 
   @Override
   public int size() {
-    return value.size();
-  }
-
-  public Bytes32 toBytes() {
-    return value;
-  }
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Hash hash = (Hash) o;
-    return Objects.equals(value, hash.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
-  }
-
-  @Override
-  public String toString() {
-    return getHexString();
+    return super.size();
   }
 }

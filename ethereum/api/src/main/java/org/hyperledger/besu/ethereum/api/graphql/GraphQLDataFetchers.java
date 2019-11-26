@@ -84,7 +84,7 @@ public class GraphQLDataFetchers {
         final ValidationResult<TransactionInvalidReason> validationResult =
             transactionPool.addLocalTransaction(transaction);
         if (validationResult.isValid()) {
-          return Optional.of(transaction.getHash().toBytes());
+          return Optional.of(transaction.getHash());
         } else {
           throw new GraphQLException(GraphQLError.of(validationResult.getInvalidReason()));
         }
@@ -116,8 +116,7 @@ public class GraphQLDataFetchers {
       final MiningCoordinator miningCoordinator =
           ((GraphQLDataFetcherContext) dataFetchingEnvironment.getContext()).getMiningCoordinator();
 
-      return Optional.of(
-          UInt256.fromBytes(miningCoordinator.getMinTransactionGasPrice().toBytes()));
+      return Optional.of(UInt256.fromBytes(miningCoordinator.getMinTransactionGasPrice()));
     };
   }
 

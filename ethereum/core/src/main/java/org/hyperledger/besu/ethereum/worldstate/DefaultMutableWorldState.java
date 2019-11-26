@@ -102,14 +102,14 @@ public class DefaultMutableWorldState implements MutableWorldState {
 
   @Override
   public MutableWorldState copy() {
-    return new DefaultMutableWorldState(rootHash().toBytes(), worldStateStorage, preimageStorage);
+    return new DefaultMutableWorldState(rootHash(), worldStateStorage, preimageStorage);
   }
 
   @Override
   public Account get(final Address address) {
-    final Hash addressHash = Hash.hash(address.toBytes());
+    final Hash addressHash = Hash.hash(address);
     return accountStateTrie
-        .get(Hash.hash(address.toBytes()).toBytes())
+        .get(Hash.hash(address))
         .map(bytes -> deserializeAccount(address, addressHash, bytes))
         .orElse(null);
   }
@@ -230,7 +230,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
         storageTrie = updatedTrie;
       }
       if (storageTrie == null) {
-        storageTrie = newAccountStorageTrie(getStorageRoot().toBytes());
+        storageTrie = newAccountStorageTrie(getStorageRoot());
       }
       return storageTrie;
     }
@@ -270,7 +270,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
       if (codeHash.equals(Hash.EMPTY)) {
         return Bytes.EMPTY;
       }
-      return worldStateStorage.getCode(codeHash.toBytes()).orElse(Bytes.EMPTY);
+      return worldStateStorage.getCode(codeHash).orElse(Bytes.EMPTY);
     }
 
     @Override
@@ -290,7 +290,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
 
     @Override
     public UInt256 getStorageValue(final UInt256 key) {
-      final Optional<Bytes> val = storageTrie().get(Hash.hash(key.toBytes()).toBytes());
+      final Optional<Bytes> val = storageTrie().get(Hash.hash(key.toBytes()));
       if (!val.isPresent()) {
         return UInt256.ZERO;
       }
@@ -349,10 +349,10 @@ public class DefaultMutableWorldState implements MutableWorldState {
     @Override
     protected WorldStateAccount getForMutation(final Address address) {
       final DefaultMutableWorldState wrapped = wrappedWorldView();
-      final Hash addressHash = Hash.hash(address.toBytes());
+      final Hash addressHash = Hash.hash(address);
       return wrapped
           .accountStateTrie
-          .get(addressHash.toBytes())
+          .get(addressHash)
           .map(bytes -> wrapped.deserializeAccount(address, addressHash, bytes))
           .orElse(null);
     }
@@ -373,8 +373,8 @@ public class DefaultMutableWorldState implements MutableWorldState {
       final DefaultMutableWorldState wrapped = wrappedWorldView();
 
       for (final Address address : deletedAccounts()) {
-        final Hash addressHash = Hash.hash(address.toBytes());
-        wrapped.accountStateTrie.remove(addressHash.toBytes());
+        final Hash addressHash = Hash.hash(address);
+        wrapped.accountStateTrie.remove(addressHash);
         wrapped.updatedStorageTries.remove(address);
         wrapped.updatedAccountCode.remove(address);
       }
@@ -399,27 +399,25 @@ public class DefaultMutableWorldState implements MutableWorldState {
           // Apply any storage updates
           final MerklePatriciaTrie<Bytes32, Bytes> storageTrie =
               freshState
-                  ? wrapped.newAccountStorageTrie(Hash.EMPTY_TRIE_HASH.toBytes())
+                  ? wrapped.newAccountStorageTrie(Hash.EMPTY_TRIE_HASH)
                   : origin.storageTrie();
           wrapped.updatedStorageTries.put(updated.getAddress(), storageTrie);
           for (final Map.Entry<UInt256, UInt256> entry : updatedStorage.entrySet()) {
             final UInt256 value = entry.getValue();
             final Hash keyHash = Hash.hash(entry.getKey().toBytes());
             if (value.isZero()) {
-              storageTrie.remove(keyHash.toBytes());
+              storageTrie.remove(keyHash);
             } else {
-              wrapped.newStorageKeyPreimages.put(keyHash.toBytes(), entry.getKey());
+              wrapped.newStorageKeyPreimages.put(keyHash, entry.getKey());
               storageTrie.put(
-                  keyHash.toBytes(),
-                  RLP.encode(out -> out.writeBytes(entry.getValue().toMinimalBytes())));
+                  keyHash, RLP.encode(out -> out.writeBytes(entry.getValue().toMinimalBytes())));
             }
           }
           storageRoot = Hash.wrap(storageTrie.getRootHash());
         }
 
         // Save address preimage
-        wrapped.newAccountKeyPreimages.put(
-            updated.getAddressHash().toBytes(), updated.getAddress());
+        wrapped.newAccountKeyPreimages.put(updated.getAddressHash(), updated.getAddress());
         // Lastly, save the new account.
         final Bytes account =
             serializeAccount(
@@ -429,7 +427,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
                 codeHash,
                 updated.getVersion());
 
-        wrapped.accountStateTrie.put(updated.getAddressHash().toBytes(), account);
+        wrapped.accountStateTrie.put(updated.getAddressHash(), account);
       }
     }
   }

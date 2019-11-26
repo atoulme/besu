@@ -250,7 +250,7 @@ public class FrontierGasCalculator implements GasCalculator {
 
     Gas cost = callOperationBaseGasCost().plus(stipend).plus(memoryExpansionCost);
 
-    if (!transferValue.toBytes().isZero()) {
+    if (!transferValue.isZero()) {
       cost = cost.plus(callValueTransferGasCost());
     }
 

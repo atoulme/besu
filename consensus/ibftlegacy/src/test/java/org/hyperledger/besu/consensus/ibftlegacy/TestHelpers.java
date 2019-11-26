@@ -42,7 +42,7 @@ public class TestHelpers {
         IbftBlockHashing.calculateDataHashForProposerSeal(
             blockHeaderBuilder.buildHeader(), unsignedExtraData);
 
-    final Signature proposerSignature = SECP256K1.sign(signingHash.toBytes(), signer);
+    final Signature proposerSignature = SECP256K1.sign(signingHash, signer);
 
     final IbftExtraData signedExtraData =
         new IbftExtraData(

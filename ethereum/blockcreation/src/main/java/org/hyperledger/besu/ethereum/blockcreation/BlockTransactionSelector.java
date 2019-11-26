@@ -168,8 +168,8 @@ public class BlockTransactionSelector {
 
     // If the gas price specified by the transaction is less than this node is willing to accept,
     // do not include it in the block.
-    if (UInt256.fromBytes(minTransactionGasPrice.toBytes())
-            .compareTo(UInt256.fromBytes(transaction.getGasPrice().toBytes()))
+    if (UInt256.fromBytes(minTransactionGasPrice)
+            .compareTo(UInt256.fromBytes(transaction.getGasPrice()))
         > 0) {
       return TransactionSelectionResult.DELETE_TRANSACTION_AND_CONTINUE;
     }

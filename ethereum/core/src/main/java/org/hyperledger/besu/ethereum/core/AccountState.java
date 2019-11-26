@@ -131,7 +131,7 @@ public interface AccountState {
    *     otherwise.
    */
   default boolean isEmpty() {
-    return getNonce() == 0 && getBalance().toBytes().isZero() && !hasCode();
+    return getNonce() == 0 && getBalance().isZero() && !hasCode();
   }
 
   /**

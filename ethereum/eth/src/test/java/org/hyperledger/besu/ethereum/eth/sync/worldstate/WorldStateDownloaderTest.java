@@ -302,7 +302,7 @@ public class WorldStateDownloaderTest {
 
     // Seed local storage with some contract values
     final Map<Bytes32, Bytes> knownCode = new HashMap<>();
-    accounts.subList(0, 5).forEach(a -> knownCode.put(a.getCodeHash().toBytes(), a.getCode()));
+    accounts.subList(0, 5).forEach(a -> knownCode.put(a.getCodeHash(), a.getCode()));
     final Updater localStorageUpdater = localStorage.updater();
     knownCode.forEach(localStorageUpdater::putCode);
     localStorageUpdater.commit();
@@ -327,7 +327,6 @@ public class WorldStateDownloaderTest {
             .filter(m -> m.getCode() == EthPV63.GET_NODE_DATA)
             .map(GetNodeDataMessage::readFrom)
             .flatMap(m -> StreamSupport.stream(m.hashes().spliterator(), true))
-            .map(Hash::toBytes)
             .collect(Collectors.toList());
     assertThat(requestedHashes.size()).isGreaterThan(0);
     assertThat(Collections.disjoint(requestedHashes, knownCode.keySet())).isTrue();
@@ -422,7 +421,7 @@ public class WorldStateDownloaderTest {
     verify(taskCollection, never()).remove();
     verify(taskCollection, never()).add(any(NodeDataRequest.class));
     // Target world state should not be available
-    assertThat(localStorage.isWorldStateAvailable(header.getStateRoot().toBytes())).isFalse();
+    assertThat(localStorage.isWorldStateAvailable(header.getStateRoot())).isFalse();
   }
 
   @Test
@@ -455,8 +454,7 @@ public class WorldStateDownloaderTest {
 
     // Seed local storage with some trie node values
     final Map<Bytes32, Bytes> allNodes =
-        collectTrieNodesToBeRequestedAfterRoot(
-            remoteStorage, remoteWorldState.rootHash().toBytes(), 5);
+        collectTrieNodesToBeRequestedAfterRoot(remoteStorage, remoteWorldState.rootHash(), 5);
     final Set<Bytes32> knownNodes = new HashSet<>();
     final Set<Bytes32> unknownNodes = new HashSet<>();
     assertThat(allNodes.size()).isGreaterThan(0); // Sanity check
@@ -494,7 +492,6 @@ public class WorldStateDownloaderTest {
             .filter(m -> m.getCode() == EthPV63.GET_NODE_DATA)
             .map(GetNodeDataMessage::readFrom)
             .flatMap(m -> StreamSupport.stream(m.hashes().spliterator(), true))
-            .map(Hash::toBytes)
             .collect(Collectors.toList());
     assertThat(requestedHashes.size()).isGreaterThan(0);
     assertThat(requestedHashes).containsAll(unknownNodes);
@@ -540,14 +537,13 @@ public class WorldStateDownloaderTest {
     final List<Bytes32> storageRootHashes =
         new StoredMerklePatriciaTrie<>(
                 remoteStorage::getNodeData,
-                remoteWorldState.rootHash().toBytes(),
+                remoteWorldState.rootHash(),
                 Function.identity(),
                 Function.identity())
             .entriesFrom(Bytes32.ZERO, 5).values().stream()
                 .map(RLP::input)
                 .map(StateTrieAccountValue::readFrom)
                 .map(StateTrieAccountValue::getStorageRoot)
-                .map(Hash::toBytes)
                 .collect(Collectors.toList());
     final Map<Bytes32, Bytes> allTrieNodes = new HashMap<>();
     final Set<Bytes32> knownNodes = new HashSet<>();
@@ -586,7 +582,7 @@ public class WorldStateDownloaderTest {
 
     respondUntilDone(peers, responder, result);
     // World state should be available by the time the result is complete
-    assertThat(localStorage.isWorldStateAvailable(stateRoot.toBytes())).isTrue();
+    assertThat(localStorage.isWorldStateAvailable(stateRoot)).isTrue();
 
     // Check that unknown trie nodes were requested
     final List<Bytes32> requestedHashes =
@@ -594,7 +590,6 @@ public class WorldStateDownloaderTest {
             .filter(m -> m.getCode() == EthPV63.GET_NODE_DATA)
             .map(GetNodeDataMessage::readFrom)
             .flatMap(m -> StreamSupport.stream(m.hashes().spliterator(), true))
-            .map(Hash::toBytes)
             .collect(Collectors.toList());
     assertThat(requestedHashes.size()).isGreaterThan(0);
     assertThat(requestedHashes).containsAll(unknownNodes);
@@ -682,7 +677,7 @@ public class WorldStateDownloaderTest {
     // Add some nodes to the taskCollection
     final CachingTaskCollection<NodeDataRequest> taskCollection =
         spy(new CachingTaskCollection<>(new InMemoryTaskQueue<>()));
-    List<Bytes32> queuedHashes = getFirstSetOfChildNodeRequests(remoteStorage, stateRoot.toBytes());
+    List<Bytes32> queuedHashes = getFirstSetOfChildNodeRequests(remoteStorage, stateRoot);
     assertThat(queuedHashes.size()).isGreaterThan(0); // Sanity check
     for (Bytes32 bytes32 : queuedHashes) {
       taskCollection.add(new AccountTrieNodeDataRequest(Hash.wrap(bytes32)));
@@ -713,7 +708,7 @@ public class WorldStateDownloaderTest {
 
     CompletableFuture<Void> result = downloader.run(header);
     peer.respondWhileOtherThreadsWork(responder, () -> !result.isDone());
-    assertThat(localStorage.isWorldStateAvailable(stateRoot.toBytes())).isTrue();
+    assertThat(localStorage.isWorldStateAvailable(stateRoot)).isTrue();
 
     // Check that already enqueued trie nodes were requested
     final List<Bytes32> requestedHashes =
@@ -721,7 +716,6 @@ public class WorldStateDownloaderTest {
             .filter(m -> m.getCode() == EthPV63.GET_NODE_DATA)
             .map(GetNodeDataMessage::readFrom)
             .flatMap(m -> StreamSupport.stream(m.hashes().spliterator(), true))
-            .map(Hash::toBytes)
             .collect(Collectors.toList());
     assertThat(requestedHashes.size()).isGreaterThan(0);
     assertThat(requestedHashes).containsAll(queuedHashes);
@@ -884,7 +878,7 @@ public class WorldStateDownloaderTest {
     assertAccountsMatch(localWorldState, accounts);
 
     // We shouldn't have any extra data locally
-    assertThat(localStorage.contains(otherHeader.getStateRoot().toBytes())).isFalse();
+    assertThat(localStorage.contains(otherHeader.getStateRoot())).isFalse();
     for (final Account otherAccount : otherAccounts) {
       assertThat(localWorldState.get(otherAccount.getAddress())).isNull();
     }

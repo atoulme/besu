@@ -68,9 +68,9 @@ public final class GenesisStateTest {
     final Account second =
         worldState.get(Address.fromHexString("0x0000000000000000000000000000000000000002"));
     assertThat(first).isNotNull();
-    assertThat(first.getBalance().toBytes().trimLeadingZeros().toLong()).isEqualTo(111111111);
+    assertThat(first.getBalance().trimLeadingZeros().toLong()).isEqualTo(111111111);
     assertThat(second).isNotNull();
-    assertThat(second.getBalance().toBytes().trimLeadingZeros().toLong()).isEqualTo(222222222);
+    assertThat(second.getBalance().trimLeadingZeros().toLong()).isEqualTo(222222222);
   }
 
   @Test

@@ -33,7 +33,7 @@ public class PrivateTransactionMetadata {
   public void writeTo(final RLPOutput out) {
     out.startList();
 
-    out.writeBytes(stateRoot.toBytes());
+    out.writeBytes(stateRoot);
 
     out.endList();
   }

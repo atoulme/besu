@@ -54,11 +54,11 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
       final ProcessableBlockHeader header,
       final List<BlockHeader> ommers,
       final boolean skipZeroBlockRewards) {
-    if (skipZeroBlockRewards && blockReward.toBytes().isZero()) {
+    if (skipZeroBlockRewards && blockReward.isZero()) {
       return true;
     }
     final int blockEra = getBlockEra(header.getNumber(), ERA_LENGTH);
-    final UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(blockEra).toBytes());
+    final UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(blockEra));
     final UInt256 uncleInclusionReward = winnerReward.divide(UInt256.valueOf(32));
     final UInt256 coinbaseReward =
         winnerReward.add(uncleInclusionReward.multiply(ommers.size()).divide(32));
@@ -90,7 +90,7 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
   // getUncleInclusionReword return reward for including
   //  an uncle block
   private Wei calculateOmmerReward(final int era, final long distance) {
-    UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(era).toBytes());
+    UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(era));
     if (era < 1) {
       return Wei.of(winnerReward.subtract(winnerReward.multiply(distance).divide(8)));
     }
@@ -128,7 +128,7 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
     BigInteger d;
     d = disinflationRateDivisor.pow(era);
 
-    BigInteger maximumBlockReward = this.blockReward.toBytes().toUnsignedBigInteger();
+    BigInteger maximumBlockReward = this.blockReward.toUnsignedBigInteger();
     BigInteger r;
     r = maximumBlockReward.multiply(q);
 

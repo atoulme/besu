@@ -68,7 +68,7 @@ public class TangerineWhistleGasCalculator extends HomesteadGasCalculator {
 
     Gas cost = callOperationBaseGasCost().plus(memoryExpansionCost);
 
-    if (!transferValue.toBytes().isZero()) {
+    if (!transferValue.isZero()) {
       cost = cost.plus(callValueTransferGasCost());
     }
 

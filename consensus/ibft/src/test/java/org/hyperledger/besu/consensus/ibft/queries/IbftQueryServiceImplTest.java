@@ -90,8 +90,7 @@ public class IbftQueryServiceImplTest {
             .map(
                 keyPair ->
                     SECP256K1.sign(
-                        IbftBlockHashing.calculateDataHashForCommittedSeal(unsignedBlockHeader)
-                            .toBytes(),
+                        IbftBlockHashing.calculateDataHashForCommittedSeal(unsignedBlockHeader),
                         keyPair))
             .collect(Collectors.toList());
 

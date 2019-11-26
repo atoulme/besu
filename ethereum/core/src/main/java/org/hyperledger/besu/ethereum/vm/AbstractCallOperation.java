@@ -154,8 +154,7 @@ public abstract class AbstractCallOperation extends AbstractOperation {
 
     final Account account = frame.getWorldState().get(frame.getRecipientAddress());
     final Wei balance = account.getBalance();
-    if (UInt256.fromBytes(value(frame).toBytes()).compareTo(UInt256.fromBytes(balance.toBytes()))
-            > 0
+    if (UInt256.fromBytes(value(frame)).compareTo(UInt256.fromBytes(balance)) > 0
         || frame.getMessageStackDepth() >= 1024) {
       frame.expandMemory(inputDataOffset(frame).toLong(), inputDataLength(frame).intValue());
       frame.expandMemory(outputDataOffset(frame).toLong(), outputDataLength(frame).intValue());

@@ -80,13 +80,13 @@ public class WorldStateProofProviderTest {
     storageTrie.commit(updater::putAccountStorageTrieNode);
 
     // Define account value
-    final Hash addressHash = Hash.hash(address.toBytes());
+    final Hash addressHash = Hash.hash(address);
     final Hash codeHash = Hash.hash(Bytes.fromHexString("0x1122"));
     final StateTrieAccountValue accountValue =
         new StateTrieAccountValue(
             1L, Wei.of(2L), Hash.wrap(storageTrie.getRootHash()), codeHash, 0);
     // Save to storage
-    worldStateTrie.put(addressHash.toBytes(), RLP.encode(accountValue::writeTo));
+    worldStateTrie.put(addressHash, RLP.encode(accountValue::writeTo));
     worldStateTrie.commit(updater::putAccountStateTrieNode);
 
     // Persist updates
@@ -137,7 +137,7 @@ public class WorldStateProofProviderTest {
   }
 
   private Bytes32 storageKeyHash(final UInt256 storageKey) {
-    return Hash.hash(storageKey.toBytes()).toBytes();
+    return Hash.hash(storageKey);
   }
 
   private Bytes encodeStorageValue(final UInt256 storageValue) {

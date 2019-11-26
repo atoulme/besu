@@ -141,7 +141,7 @@ public class TransactionReceipt {
     // Determine whether it's a state root-encoded transaction receipt
     // or is a status code-encoded transaction receipt.
     if (stateRoot != null) {
-      out.writeBytes(stateRoot.toBytes());
+      out.writeBytes(stateRoot);
     } else {
       out.writeLongScalar(status);
     }

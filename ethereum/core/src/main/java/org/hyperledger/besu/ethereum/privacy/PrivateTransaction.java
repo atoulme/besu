@@ -370,10 +370,10 @@ public class PrivateTransaction {
     out.startList();
 
     out.writeLongScalar(getNonce());
-    out.writeBytes(getGasPrice().toBytes().trimLeadingZeros());
+    out.writeBytes(getGasPrice().trimLeadingZeros());
     out.writeLongScalar(getGasLimit());
-    out.writeBytes(getTo().isPresent() ? getTo().get().toBytes() : Bytes.EMPTY);
-    out.writeBytes(getValue().toBytes().trimLeadingZeros());
+    out.writeBytes(getTo().isPresent() ? getTo().get() : Bytes.EMPTY);
+    out.writeBytes(getValue().trimLeadingZeros());
     out.writeBytes(getPayload());
     writeSignature(out);
     out.writeBytes(getPrivateFrom());
@@ -438,7 +438,7 @@ public class PrivateTransaction {
    * @return the up-front cost for the gas the transaction can use.
    */
   public Wei getUpfrontGasCost() {
-    return Wei.of(UInt256.fromBytes(getGasPrice().toBytes()).multiply(getGasLimit()));
+    return Wei.of(UInt256.fromBytes(getGasPrice()).multiply(getGasLimit()));
   }
 
   /**
@@ -451,9 +451,7 @@ public class PrivateTransaction {
    * @return the up-front gas cost for the transaction
    */
   public Wei getUpfrontCost() {
-    return Wei.of(
-        UInt256.fromBytes(getUpfrontGasCost().toBytes())
-            .add(UInt256.fromBytes(getValue().toBytes())));
+    return Wei.of(UInt256.fromBytes(getUpfrontGasCost()).add(UInt256.fromBytes(getValue())));
   }
 
   private static Bytes32 computeSenderRecoveryHash(
@@ -473,10 +471,10 @@ public class PrivateTransaction {
             out -> {
               out.startList();
               out.writeLongScalar(nonce);
-              out.writeBytes(gasPrice.toBytes().trimLeadingZeros());
+              out.writeBytes(gasPrice.trimLeadingZeros());
               out.writeLongScalar(gasLimit);
-              out.writeBytes(to == null ? Bytes.EMPTY : to.toBytes());
-              out.writeBytes(value.toBytes().trimLeadingZeros());
+              out.writeBytes(to == null ? Bytes.EMPTY : to);
+              out.writeBytes(value.trimLeadingZeros());
               out.writeBytes(payload);
               if (chainId.isPresent()) {
                 out.writeBigIntegerScalar(chainId.get());

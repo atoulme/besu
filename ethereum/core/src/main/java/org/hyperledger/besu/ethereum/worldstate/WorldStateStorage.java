@@ -56,7 +56,7 @@ public interface WorldStateStorage {
     default Updater putCode(final Bytes code) {
       // Skip the hash calculation for empty code
       final Hash codeHash = code.size() == 0 ? Hash.EMPTY : Hash.hash(code);
-      return putCode(codeHash.toBytes(), code);
+      return putCode(codeHash, code);
     }
 
     Updater putAccountStateTrieNode(Bytes32 nodeHash, Bytes node);

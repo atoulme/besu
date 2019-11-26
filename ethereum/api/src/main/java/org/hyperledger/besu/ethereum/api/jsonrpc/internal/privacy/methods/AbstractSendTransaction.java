@@ -59,7 +59,7 @@ public class AbstractSendTransaction {
       throw new ErrorResponseException(
           new JsonRpcErrorResponse(request.getRequest().getId(), JsonRpcError.DECODE_ERROR));
     }
-    if (!privateTransaction.getValue().toBytes().isZero()) {
+    if (!privateTransaction.getValue().isZero()) {
       throw new ErrorResponseException(
           new JsonRpcErrorResponse(request.getRequest().getId(), JsonRpcError.VALUE_NOT_ZERO));
     }

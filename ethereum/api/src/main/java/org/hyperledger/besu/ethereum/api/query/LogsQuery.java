@@ -55,7 +55,7 @@ public class LogsQuery {
     this.topics = topics != null ? topics : emptyList();
     this.addressBlooms =
         this.addresses.stream()
-            .map(a -> LogsBloomFilter.computeBytes(a.toBytes()))
+            .map(a -> LogsBloomFilter.computeBytes(a))
             .collect(toUnmodifiableList());
     this.topicsBlooms =
         this.topics.stream()

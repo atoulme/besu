@@ -34,12 +34,12 @@ class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
 
   @Override
   protected void doPersist(final Updater updater) {
-    updater.putAccountStateTrieNode(getHash().toBytes(), getData());
+    updater.putAccountStateTrieNode(getHash(), getData());
   }
 
   @Override
   public Optional<Bytes> getExistingData(final WorldStateStorage worldStateStorage) {
-    return worldStateStorage.getAccountStateTrieNode(getHash().toBytes());
+    return worldStateStorage.getAccountStateTrieNode(getHash());
   }
 
   @Override
@@ -56,7 +56,7 @@ class AccountTrieNodeDataRequest extends TrieNodeDataRequest {
       builder.add(createCodeRequest(accountValue.getCodeHash()));
     }
     // Add storage, if appropriate
-    if (!accountValue.getStorageRoot().toBytes().equals(MerklePatriciaTrie.EMPTY_TRIE_NODE_HASH)) {
+    if (!accountValue.getStorageRoot().equals(MerklePatriciaTrie.EMPTY_TRIE_NODE_HASH)) {
       // If storage is non-empty queue download
       final NodeDataRequest storageNode = createStorageDataRequest(accountValue.getStorageRoot());
       builder.add(storageNode);

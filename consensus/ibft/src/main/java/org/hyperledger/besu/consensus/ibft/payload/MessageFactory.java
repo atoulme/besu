@@ -92,6 +92,6 @@ public class MessageFactory {
   }
 
   private static Signature sign(final Payload unsignedMessageData, final KeyPair nodeKeys) {
-    return SECP256K1.sign(hashForSignature(unsignedMessageData).toBytes(), nodeKeys);
+    return SECP256K1.sign(hashForSignature(unsignedMessageData), nodeKeys);
   }
 }

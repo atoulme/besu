@@ -46,7 +46,7 @@ public class IbftBlockHashing {
         serializeHeader(header, () -> encodeExtraDataWithoutCommittedSeals(ibftExtraData, null));
 
     // Proposer hash is the hash of the hash
-    return Hash.hash(Hash.hash(headerRlp).toBytes());
+    return Hash.hash(Hash.hash(headerRlp));
   }
 
   /**
@@ -62,7 +62,7 @@ public class IbftBlockHashing {
       final BlockHeader header, final IbftExtraData ibftExtraData) {
     // The data signed by a committer is an array of [Hash, COMMIT_MSG_CODE]
     final Hash dataHash = Hash.hash(serializeHeaderWithoutCommittedSeals(header, ibftExtraData));
-    final Bytes seal = Bytes.wrap(dataHash.toBytes(), COMMIT_MSG_CODE);
+    final Bytes seal = Bytes.wrap(dataHash, COMMIT_MSG_CODE);
     return Hash.hash(seal);
   }
 
@@ -142,12 +142,12 @@ public class IbftBlockHashing {
     final BytesValueRLPOutput out = new BytesValueRLPOutput();
     out.startList();
 
-    out.writeBytes(header.getParentHash().toBytes());
-    out.writeBytes(header.getOmmersHash().toBytes());
-    out.writeBytes(header.getCoinbase().toBytes());
-    out.writeBytes(header.getStateRoot().toBytes());
-    out.writeBytes(header.getTransactionsRoot().toBytes());
-    out.writeBytes(header.getReceiptsRoot().toBytes());
+    out.writeBytes(header.getParentHash());
+    out.writeBytes(header.getOmmersHash());
+    out.writeBytes(header.getCoinbase());
+    out.writeBytes(header.getStateRoot());
+    out.writeBytes(header.getTransactionsRoot());
+    out.writeBytes(header.getReceiptsRoot());
     out.writeBytes(header.getLogsBloom());
     out.writeBytes(header.getDifficulty().toMinimalBytes());
     out.writeLongScalar(header.getNumber());
@@ -160,7 +160,7 @@ public class IbftBlockHashing {
     } else {
       out.writeBytes(extraDataSerializer.get());
     }
-    out.writeBytes(header.getMixHash().toBytes());
+    out.writeBytes(header.getMixHash());
     out.writeLong(header.getNonce());
     out.endList();
     return out.encoded();

@@ -62,9 +62,7 @@ public abstract class AbstractCreateOperation extends AbstractOperation {
 
     frame.clearReturnData();
 
-    if (UInt256.fromBytes(value.toBytes())
-                .compareTo(UInt256.fromBytes(account.getBalance().toBytes()))
-            > 0
+    if (UInt256.fromBytes(value).compareTo(UInt256.fromBytes(account.getBalance())) > 0
         || frame.getMessageStackDepth() >= 1024) {
       fail(frame);
     } else {

@@ -91,7 +91,7 @@ public final class StatusMessage extends AbstractMessageData {
    * @return The hash of the genesis block of the network the associated node is participating in.
    */
   public Bytes32 genesisHash() {
-    return status().genesisHash.toBytes();
+    return status().genesisHash;
   }
 
   private EthStatus status() {
@@ -128,8 +128,8 @@ public final class StatusMessage extends AbstractMessageData {
       out.writeIntScalar(protocolVersion);
       out.writeBigIntegerScalar(networkId);
       out.writeBytes(totalDifficulty.toBytes().trimLeadingZeros());
-      out.writeBytes(bestHash.toBytes());
-      out.writeBytes(genesisHash.toBytes());
+      out.writeBytes(bestHash);
+      out.writeBytes(genesisHash);
 
       out.endList();
     }

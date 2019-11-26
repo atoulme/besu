@@ -51,10 +51,10 @@ public class MainnetBlockProcessor extends AbstractBlockProcessor {
       final ProcessableBlockHeader header,
       final List<BlockHeader> ommers,
       final boolean skipZeroBlockRewards) {
-    if (skipZeroBlockRewards && blockReward.toBytes().isZero()) {
+    if (skipZeroBlockRewards && blockReward.isZero()) {
       return true;
     }
-    final UInt256 reward = UInt256.fromBytes(blockReward.toBytes());
+    final UInt256 reward = UInt256.fromBytes(blockReward);
 
     final Wei coinbaseReward = Wei.of(reward.add(reward.multiply(ommers.size()).divide(32)));
     final WorldUpdater updater = worldState.updater();

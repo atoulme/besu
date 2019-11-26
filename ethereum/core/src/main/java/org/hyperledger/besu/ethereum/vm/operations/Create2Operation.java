@@ -39,8 +39,7 @@ public class Create2Operation extends AbstractCreateOperation {
     final UInt256 length = UInt256.fromBytes(frame.getStackItem(2));
     final Bytes32 salt = frame.getStackItem(3);
     final Bytes initCode = frame.readMemory(offset, length);
-    final Hash hash =
-        Hash.hash(Bytes.concatenate(PREFIX, sender.toBytes(), salt, Hash.hash(initCode).toBytes()));
+    final Hash hash = Hash.hash(Bytes.concatenate(PREFIX, sender, salt, Hash.hash(initCode)));
     return Address.extract(hash);
   }
 

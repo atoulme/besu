@@ -17,20 +17,18 @@ package org.hyperledger.besu.ethereum.core;
 import org.hyperledger.besu.plugin.data.Quantity;
 
 import java.math.BigInteger;
-import java.util.Objects;
 
 import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.bytes.DelegatingBytes32;
 import org.apache.tuweni.units.bigints.UInt256;
 
 /** A particular quantity of Wei, the Ethereum currency. */
-public final class Wei implements Quantity {
+public final class Wei extends DelegatingBytes32 implements Quantity {
 
   public static final Wei ZERO = of(0);
 
-  private final Bytes32 value;
-
   protected Wei(final Bytes32 bytes) {
-    this.value = bytes;
+    super(bytes);
   }
 
   private Wei(final long v) {
@@ -70,44 +68,21 @@ public final class Wei implements Quantity {
   }
 
   public Bytes32 toBytes() {
-    return value;
+    return copy();
   }
 
   @Override
   public Number getValue() {
-    return value.toUnsignedBigInteger();
+    return toUnsignedBigInteger();
   }
 
   @Override
   public byte[] getByteArray() {
-    return value.toArray();
+    return toArray();
   }
 
   @Override
   public String getHexString() {
-    return value.toHexString();
-  }
-
-  @Override
-  public int size() {
-    return value.size();
-  }
-
-  @Override
-  public String toString() {
-    return getHexString();
-  }
-
-  @Override
-  public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    Wei wei = (Wei) o;
-    return Objects.equals(value, wei.value);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(value);
+    return toHexString();
   }
 }

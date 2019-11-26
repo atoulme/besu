@@ -112,8 +112,8 @@ public class TransactionPool implements BlockAddedObserver {
 
   public ValidationResult<TransactionInvalidReason> addLocalTransaction(
       final Transaction transaction) {
-    if (UInt256.fromBytes(transaction.getGasPrice().toBytes())
-            .compareTo(UInt256.fromBytes(minTransactionGasPrice.toBytes()))
+    if (UInt256.fromBytes(transaction.getGasPrice())
+            .compareTo(UInt256.fromBytes(minTransactionGasPrice))
         < 0) {
       return ValidationResult.invalid(TransactionInvalidReason.GAS_PRICE_TOO_LOW);
     }
@@ -143,8 +143,8 @@ public class TransactionPool implements BlockAddedObserver {
         duplicateTransactionCounter.labels(REMOTE).inc();
         continue;
       }
-      if (UInt256.fromBytes(transaction.getGasPrice().toBytes())
-              .compareTo(UInt256.fromBytes(minTransactionGasPrice.toBytes()))
+      if (UInt256.fromBytes(transaction.getGasPrice())
+              .compareTo(UInt256.fromBytes(minTransactionGasPrice))
           < 0) {
         continue;
       }

@@ -87,13 +87,11 @@ public class TransactionAdapter extends AdapterBase {
   }
 
   public Optional<UInt256> getValue() {
-    return Optional.of(
-        UInt256.fromBytes(transactionWithMetadata.getTransaction().getValue().toBytes()));
+    return Optional.of(UInt256.fromBytes(transactionWithMetadata.getTransaction().getValue()));
   }
 
   public Optional<UInt256> getGasPrice() {
-    return Optional.of(
-        UInt256.fromBytes(transactionWithMetadata.getTransaction().getGasPrice().toBytes()));
+    return Optional.of(UInt256.fromBytes(transactionWithMetadata.getTransaction().getGasPrice()));
   }
 
   public Optional<Long> getGas() {

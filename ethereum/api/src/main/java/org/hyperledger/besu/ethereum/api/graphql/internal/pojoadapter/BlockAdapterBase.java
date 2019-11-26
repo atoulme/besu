@@ -59,7 +59,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes32> getHash() {
-    return Optional.of(header.getHash().toBytes());
+    return Optional.of(header.getHash());
   }
 
   public Optional<Bytes> getNonce() {
@@ -69,15 +69,15 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes32> getTransactionsRoot() {
-    return Optional.of(header.getTransactionsRoot().toBytes());
+    return Optional.of(header.getTransactionsRoot());
   }
 
   public Optional<Bytes32> getStateRoot() {
-    return Optional.of(header.getStateRoot().toBytes());
+    return Optional.of(header.getStateRoot());
   }
 
   public Optional<Bytes32> getReceiptsRoot() {
-    return Optional.of(header.getReceiptsRoot().toBytes());
+    return Optional.of(header.getReceiptsRoot());
   }
 
   public Optional<AccountAdapter> getMiner(final DataFetchingEnvironment environment) {
@@ -113,7 +113,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes32> getMixHash() {
-    return Optional.of(header.getMixHash().toBytes());
+    return Optional.of(header.getMixHash());
   }
 
   public Optional<UInt256> getDifficulty() {
@@ -121,7 +121,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes32> getOmmerHash() {
-    return Optional.of(header.getOmmersHash().toBytes());
+    return Optional.of(header.getOmmersHash());
   }
 
   public Optional<Long> getNumber() {

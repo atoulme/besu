@@ -89,8 +89,7 @@ public class IbftExtraDataFixture {
                       IbftBlockHashing.calculateDataHashForCommittedSeal(
                           header, extraDataForCommittedSealCalculation);
 
-                  return SECP256K1.sign(
-                      headerHashForCommitters.toBytes(), committerKeyPairs.get(i));
+                  return SECP256K1.sign(headerHashForCommitters, committerKeyPairs.get(i));
                 })
             .collect(Collectors.toList());
 

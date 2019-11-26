@@ -37,7 +37,7 @@ public class AccountAdapter extends AdapterBase {
   }
 
   public Optional<UInt256> getBalance() {
-    return Optional.of(UInt256.fromBytes(account.getBalance().toBytes()));
+    return Optional.of(UInt256.fromBytes(account.getBalance()));
   }
 
   public Optional<Long> getTransactionCount() {

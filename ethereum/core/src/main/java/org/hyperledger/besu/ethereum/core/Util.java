@@ -28,7 +28,7 @@ public class Util {
    * @return The Address of the Ethereum node which signed the data defined by the supplied dataHash
    */
   public static Address signatureToAddress(final Signature seal, final Hash dataHash) {
-    return PublicKey.recoverFromSignature(dataHash.toBytes(), seal)
+    return PublicKey.recoverFromSignature(dataHash, seal)
         .map(Util::publicKeyToAddress)
         .orElse(null);
   }

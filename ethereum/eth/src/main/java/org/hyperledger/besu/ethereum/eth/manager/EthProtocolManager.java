@@ -284,7 +284,7 @@ public class EthProtocolManager implements ProtocolManager, MinedBlockObserver {
       if (!status.networkId().equals(networkId)) {
         LOG.debug("Disconnecting from peer with mismatched network id: {}", status.networkId());
         peer.disconnect(DisconnectReason.SUBPROTOCOL_TRIGGERED);
-      } else if (!status.genesisHash().equals(genesisHash.toBytes())) {
+      } else if (!status.genesisHash().equals(genesisHash)) {
         LOG.debug(
             "Disconnecting from peer with matching network id ({}), but non-matching genesis hash: {}",
             networkId,

@@ -50,12 +50,12 @@ public class PendingTransactionDetailResult implements JsonRpcResult {
   public PendingTransactionDetailResult(final Transaction tx) {
     this.from = tx.getSender().toString();
     this.gas = Quantity.create(tx.getGasLimit());
-    this.gasPrice = Quantity.create(tx.getGasPrice().toBytes().toArrayUnsafe());
+    this.gasPrice = Quantity.create(tx.getGasPrice().toArrayUnsafe());
     this.hash = tx.getHash().toString();
     this.input = tx.getPayload().toString();
     this.nonce = Quantity.create(tx.getNonce());
-    this.to = tx.getTo().map(a -> a.toBytes().toHexString()).orElse(null);
-    this.value = Quantity.create(tx.getValue().toBytes().toArrayUnsafe());
+    this.to = tx.getTo().map(a -> a.toHexString()).orElse(null);
+    this.value = Quantity.create(tx.getValue().toArrayUnsafe());
     this.v = Quantity.create(tx.getV());
     this.r = Quantity.create(tx.getR());
     this.s = Quantity.create(tx.getS());

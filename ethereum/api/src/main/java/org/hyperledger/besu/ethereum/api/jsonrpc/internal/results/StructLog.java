@@ -16,7 +16,6 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.results;
 
 import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.debug.TraceFrame;
-import org.hyperledger.besu.util.BytesUtil;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -67,8 +66,7 @@ public class StructLog {
     storage.forEach(
         (key, value) ->
             formattedStorage.put(
-                BytesUtil.toUnprefixedHexString(key.toBytes()),
-                BytesUtil.toUnprefixedHexString(value.toBytes())));
+                key.toBytes().toUnprefixedHexString(), value.toBytes().toUnprefixedHexString()));
     return formattedStorage;
   }
 

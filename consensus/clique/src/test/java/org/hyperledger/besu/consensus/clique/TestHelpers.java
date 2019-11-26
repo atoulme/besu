@@ -43,7 +43,7 @@ public class TestHelpers {
     final Hash signingHash =
         CliqueBlockHashing.calculateDataHashForProposerSeal(unsealedHeader, unsignedExtraData);
 
-    final Signature proposerSignature = SECP256K1.sign(signingHash.toBytes(), signer);
+    final Signature proposerSignature = SECP256K1.sign(signingHash, signer);
 
     final Bytes signedExtraData =
         new CliqueExtraData(

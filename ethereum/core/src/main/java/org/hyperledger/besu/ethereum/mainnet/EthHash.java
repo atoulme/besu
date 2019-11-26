@@ -165,12 +165,12 @@ public final class EthHash {
   public static byte[] hashHeader(final SealableBlockHeader header) {
     final BytesValueRLPOutput out = new BytesValueRLPOutput();
     out.startList();
-    out.writeBytes(header.getParentHash().toBytes());
-    out.writeBytes(header.getOmmersHash().toBytes());
-    out.writeBytes(header.getCoinbase().toBytes());
-    out.writeBytes(header.getStateRoot().toBytes());
-    out.writeBytes(header.getTransactionsRoot().toBytes());
-    out.writeBytes(header.getReceiptsRoot().toBytes());
+    out.writeBytes(header.getParentHash());
+    out.writeBytes(header.getOmmersHash());
+    out.writeBytes(header.getCoinbase());
+    out.writeBytes(header.getStateRoot());
+    out.writeBytes(header.getTransactionsRoot());
+    out.writeBytes(header.getReceiptsRoot());
     out.writeBytes(header.getLogsBloom());
     out.writeBytes(header.getDifficulty().toBytes().trimLeadingZeros());
     out.writeLongScalar(header.getNumber());

@@ -107,7 +107,7 @@ public class MarkSweepPruner {
 
   public void mark(final Hash rootHash) {
     markOperationCounter.inc();
-    createStateTrie(rootHash.toBytes())
+    createStateTrie(rootHash)
         .visitAll(
             node -> {
               if (Thread.interrupted()) {
@@ -132,12 +132,12 @@ public class MarkSweepPruner {
       final Hash candidateStateRootHash =
           blockchain.getBlockHeader(blockNumber).get().getStateRoot();
 
-      if (!worldStateStorage.isWorldStateAvailable(candidateStateRootHash.toBytes())) {
+      if (!worldStateStorage.isWorldStateAvailable(candidateStateRootHash)) {
         break;
       }
 
-      if (!isMarked(candidateStateRootHash.toBytes())) {
-        updater.removeAccountStateTrieNode(candidateStateRootHash.toBytes());
+      if (!isMarked(candidateStateRootHash)) {
+        updater.removeAccountStateTrieNode(candidateStateRootHash);
         prunedNodeCount++;
         if (prunedNodeCount % operationsPerTransaction == 0) {
           updater.commit();
@@ -189,9 +189,9 @@ public class MarkSweepPruner {
 
   private void processAccountState(final Bytes value) {
     final StateTrieAccountValue accountValue = StateTrieAccountValue.readFrom(RLP.input(value));
-    markNode(accountValue.getCodeHash().toBytes());
+    markNode(accountValue.getCodeHash());
 
-    createStorageTrie(accountValue.getStorageRoot().toBytes())
+    createStorageTrie(accountValue.getStorageRoot())
         .visitAll(storageNode -> markNode(storageNode.getHash()));
   }
 

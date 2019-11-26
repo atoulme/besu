@@ -75,7 +75,7 @@ public class ExtCodeHashOperationTest {
   @Test
   public void shouldReturnHashOfEmptyDataWhenAccountExistsButDoesNotHaveCode() {
     worldStateUpdater.getOrCreate(REQUESTED_ADDRESS).getMutable().setBalance(Wei.of(1));
-    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.EMPTY.toBytes());
+    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.EMPTY);
   }
 
   @Test
@@ -93,7 +93,7 @@ public class ExtCodeHashOperationTest {
   public void shouldReturnEmptyCodeHashWhenPrecompileHasBalance() {
     // Sending money to a precompile causes it to exist in the world state archive.
     worldStateUpdater.getOrCreate(Address.ECREC).getMutable().setBalance(Wei.of(10));
-    assertThat(executeOperation(Address.ECREC)).isEqualTo(Hash.EMPTY.toBytes());
+    assertThat(executeOperation(Address.ECREC)).isEqualTo(Hash.EMPTY);
   }
 
   @Test
@@ -102,7 +102,7 @@ public class ExtCodeHashOperationTest {
     final MutableAccount account = worldStateUpdater.getOrCreate(REQUESTED_ADDRESS).getMutable();
     account.setCode(code);
     account.setVersion(Account.DEFAULT_VERSION);
-    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.hash(code).toBytes());
+    assertThat(executeOperation(REQUESTED_ADDRESS)).isEqualTo(Hash.hash(code));
   }
 
   @Test
@@ -118,7 +118,7 @@ public class ExtCodeHashOperationTest {
             .toBytes();
     final MessageFrame frame = createMessageFrame(value);
     operation.execute(frame);
-    assertThat(frame.getStackItem(0)).isEqualTo(Hash.hash(code).toBytes());
+    assertThat(frame.getStackItem(0)).isEqualTo(Hash.hash(code));
   }
 
   private Bytes32 executeOperation(final Address requestedAddress) {

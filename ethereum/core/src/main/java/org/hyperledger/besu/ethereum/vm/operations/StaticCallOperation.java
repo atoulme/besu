@@ -83,8 +83,7 @@ public class StaticCallOperation extends AbstractCallOperation {
 
   @Override
   public Gas gasAvailableForChildCall(final MessageFrame frame) {
-    return gasCalculator()
-        .gasAvailableForChildCall(frame, gas(frame), !value(frame).toBytes().isZero());
+    return gasCalculator().gasAvailableForChildCall(frame, gas(frame), !value(frame).isZero());
   }
 
   @Override

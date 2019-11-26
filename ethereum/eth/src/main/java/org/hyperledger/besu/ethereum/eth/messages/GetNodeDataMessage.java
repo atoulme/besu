@@ -43,7 +43,7 @@ public final class GetNodeDataMessage extends AbstractMessageData {
   public static GetNodeDataMessage create(final Iterable<Hash> hashes) {
     final BytesValueRLPOutput tmp = new BytesValueRLPOutput();
     tmp.startList();
-    hashes.forEach(h -> tmp.writeBytes(h.toBytes()));
+    hashes.forEach(h -> tmp.writeBytes(h));
     tmp.endList();
     return new GetNodeDataMessage(tmp.encoded());
   }

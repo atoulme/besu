@@ -56,8 +56,7 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
       return false;
     }
 
-    if (!validateStateRoot(
-        block.getHeader().getStateRoot().toBytes(), worldStateRootHash.toBytes())) {
+    if (!validateStateRoot(block.getHeader().getStateRoot(), worldStateRootHash)) {
       return false;
     }
 
@@ -73,14 +72,13 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     final BlockHeader header = block.getHeader();
     final BlockBody body = block.getBody();
 
-    final Bytes32 transactionsRoot =
-        BodyValidation.transactionsRoot(body.getTransactions()).toBytes();
-    if (!validateTransactionsRoot(header.getTransactionsRoot().toBytes(), transactionsRoot)) {
+    final Bytes32 transactionsRoot = BodyValidation.transactionsRoot(body.getTransactions());
+    if (!validateTransactionsRoot(header.getTransactionsRoot(), transactionsRoot)) {
       return false;
     }
 
-    final Bytes32 receiptsRoot = BodyValidation.receiptsRoot(receipts).toBytes();
-    if (!validateReceiptsRoot(header.getReceiptsRoot().toBytes(), receiptsRoot)) {
+    final Bytes32 receiptsRoot = BodyValidation.receiptsRoot(receipts);
+    if (!validateReceiptsRoot(header.getReceiptsRoot(), receiptsRoot)) {
       return false;
     }
 
@@ -155,8 +153,8 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     final BlockHeader header = block.getHeader();
     final BlockBody body = block.getBody();
 
-    final Bytes32 ommerHash = BodyValidation.ommersHash(body.getOmmers()).toBytes();
-    if (!validateOmmersHash(header.getOmmersHash().toBytes(), ommerHash)) {
+    final Bytes32 ommerHash = BodyValidation.ommersHash(body.getOmmers());
+    if (!validateOmmersHash(header.getOmmersHash(), ommerHash)) {
       return false;
     }
 

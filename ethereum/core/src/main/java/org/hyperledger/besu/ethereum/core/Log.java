@@ -53,7 +53,7 @@ public class Log implements org.hyperledger.besu.plugin.data.Log {
    */
   public void writeTo(final RLPOutput out) {
     out.startList();
-    out.writeBytes(logger.toBytes());
+    out.writeBytes(logger);
     out.writeList(topics, (topic, listOut) -> listOut.writeBytes(topic));
     out.writeBytes(data);
     out.endList();

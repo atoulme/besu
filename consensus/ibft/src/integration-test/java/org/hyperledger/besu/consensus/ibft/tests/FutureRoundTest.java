@@ -107,8 +107,7 @@ public class FutureRoundTest {
         localNodeMessageFactory.createCommit(
             futureRoundId,
             futureBlock.getHash(),
-            SECP256K1.sign(
-                futureBlock.getHash().toBytes(), context.getLocalNodeParams().getNodeKeyPair()));
+            SECP256K1.sign(futureBlock.getHash(), context.getLocalNodeParams().getNodeKeyPair()));
     peers.verifyMessagesReceived(expectedCommit);
 
     // requires 1 more commit and the blockchain will progress

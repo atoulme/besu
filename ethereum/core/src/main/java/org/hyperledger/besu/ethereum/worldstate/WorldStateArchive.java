@@ -47,15 +47,14 @@ public class WorldStateArchive {
   }
 
   public boolean isWorldStateAvailable(final Hash rootHash) {
-    return worldStateStorage.isWorldStateAvailable(rootHash.toBytes());
+    return worldStateStorage.isWorldStateAvailable(rootHash);
   }
 
   public Optional<MutableWorldState> getMutable(final Hash rootHash) {
-    if (!worldStateStorage.isWorldStateAvailable(rootHash.toBytes())) {
+    if (!worldStateStorage.isWorldStateAvailable(rootHash)) {
       return Optional.empty();
     }
-    return Optional.of(
-        new DefaultMutableWorldState(rootHash.toBytes(), worldStateStorage, preimageStorage));
+    return Optional.of(new DefaultMutableWorldState(rootHash, worldStateStorage, preimageStorage));
   }
 
   public WorldState get() {
@@ -67,7 +66,7 @@ public class WorldStateArchive {
   }
 
   public Optional<Bytes> getNodeData(final Hash hash) {
-    return worldStateStorage.getNodeData(hash.toBytes());
+    return worldStateStorage.getNodeData(hash);
   }
 
   public WorldStateStorage getWorldStateStorage() {

@@ -144,13 +144,11 @@ public class GetBodiesFromPeerTask<C> extends AbstractPeerRequestTask<List<Block
     }
 
     public BodyIdentifier(final List<Transaction> transactions, final List<BlockHeader> ommers) {
-      this(
-          BodyValidation.transactionsRoot(transactions).toBytes(),
-          BodyValidation.ommersHash(ommers).toBytes());
+      this(BodyValidation.transactionsRoot(transactions), BodyValidation.ommersHash(ommers));
     }
 
     public BodyIdentifier(final BlockHeader header) {
-      this(header.getTransactionsRoot().toBytes(), header.getOmmersHash().toBytes());
+      this(header.getTransactionsRoot(), header.getOmmersHash());
     }
 
     @Override

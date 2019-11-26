@@ -215,7 +215,7 @@ public class IbftRoundTest {
     final Hash commitSealHash =
         IbftBlockHashing.calculateDataHashForCommittedSeal(
             proposedBlock.getHeader(), proposedExtraData);
-    final Signature localCommitSeal = SECP256K1.sign(commitSealHash.toBytes(), localNodeKeys);
+    final Signature localCommitSeal = SECP256K1.sign(commitSealHash, localNodeKeys);
 
     // Receive Proposal Message
     round.handleProposalMessage(
@@ -258,7 +258,7 @@ public class IbftRoundTest {
     final Hash commitSealHash =
         IbftBlockHashing.calculateDataHashForCommittedSeal(
             proposedBlock.getHeader(), proposedExtraData);
-    final Signature localCommitSeal = SECP256K1.sign(commitSealHash.toBytes(), localNodeKeys);
+    final Signature localCommitSeal = SECP256K1.sign(commitSealHash, localNodeKeys);
 
     round.createAndSendProposalMessage(15);
     verify(transmitter, never()).multicastCommit(any(), any(), any());

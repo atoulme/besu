@@ -59,7 +59,7 @@ public class IbftExtraDataValidationRuleTest {
     // Hash the header (ignoring committer and proposer seals), and create signature
     final Hash proposerSealHash =
         IbftBlockHashing.calculateDataHashForProposerSeal(header, initialIbftExtraData);
-    final Signature proposerSignature = SECP256K1.sign(proposerSealHash.toBytes(), proposerKeyPair);
+    final Signature proposerSignature = SECP256K1.sign(proposerSealHash, proposerKeyPair);
 
     // Construct a new extraData block, containing the constructed proposer signature
     final IbftExtraData proposedData =
@@ -83,7 +83,7 @@ public class IbftExtraDataValidationRuleTest {
 
     final List<Signature> commitSeals =
         committerKeyPairs.stream()
-            .map(keys -> SECP256K1.sign(headerHashForCommitters.toBytes(), keys))
+            .map(keys -> SECP256K1.sign(headerHashForCommitters, keys))
             .collect(Collectors.toList());
 
     return new IbftExtraData(

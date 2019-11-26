@@ -80,9 +80,9 @@ public class GetProofResult {
     return new GetProofResult(
         address,
         stateTrieAccountValue.getBalance(),
-        stateTrieAccountValue.getCodeHash().toBytes(),
+        stateTrieAccountValue.getCodeHash(),
         stateTrieAccountValue.getNonce(),
-        stateTrieAccountValue.getStorageRoot().toBytes(),
+        stateTrieAccountValue.getStorageRoot(),
         worldStateProof.getAccountProof(),
         storageEntries);
   }
@@ -94,7 +94,7 @@ public class GetProofResult {
 
   @JsonGetter(value = "balance")
   public String getBalance() {
-    return Quantity.create(balance.toBytes().toArrayUnsafe());
+    return Quantity.create(balance.toArrayUnsafe());
   }
 
   @JsonGetter(value = "codeHash")

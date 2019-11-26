@@ -33,7 +33,7 @@ public abstract class Words {
    */
   public static Bytes32 fromAddress(final Address address) {
     final MutableBytes32 bytes = MutableBytes32.create();
-    address.toBytes().copyTo(bytes, Bytes32.SIZE - Address.SIZE);
+    address.copyTo(bytes, Bytes32.SIZE - Address.SIZE);
     return bytes;
   }
 

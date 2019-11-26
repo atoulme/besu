@@ -63,7 +63,7 @@ public class BlockHashOperation extends AbstractOperation {
     } else {
       final BlockHashLookup blockHashLookup = frame.getBlockHashLookup();
       final Hash blockHash = blockHashLookup.getBlockHash(soughtBlock);
-      frame.pushStackItem(blockHash.toBytes());
+      frame.pushStackItem(blockHash);
     }
   }
 }

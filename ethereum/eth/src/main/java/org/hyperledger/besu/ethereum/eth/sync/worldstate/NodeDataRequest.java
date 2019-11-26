@@ -84,7 +84,7 @@ public abstract class NodeDataRequest {
   private void writeTo(final RLPOutput out) {
     out.startList();
     out.writeByte(requestType.getValue());
-    out.writeBytes(hash.toBytes());
+    out.writeBytes(hash);
     out.endList();
   }
 

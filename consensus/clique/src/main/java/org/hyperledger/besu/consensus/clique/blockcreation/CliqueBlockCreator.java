@@ -127,7 +127,7 @@ public class CliqueBlockCreator extends AbstractBlockCreator<CliqueContext> {
         CliqueBlockHashing.calculateDataHashForProposerSeal(headerToSign, extraData);
     return new CliqueExtraData(
         extraData.getVanityData(),
-        SECP256K1.sign(hashToSign.toBytes(), nodeKeys),
+        SECP256K1.sign(hashToSign, nodeKeys),
         extraData.getValidators(),
         headerToSign);
   }

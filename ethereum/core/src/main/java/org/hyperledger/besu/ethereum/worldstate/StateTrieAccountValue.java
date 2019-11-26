@@ -96,9 +96,9 @@ public class StateTrieAccountValue {
     out.startList();
 
     out.writeLongScalar(nonce);
-    out.writeBytes(balance.toBytes().trimLeadingZeros());
-    out.writeBytes(storageRoot.toBytes());
-    out.writeBytes(codeHash.toBytes());
+    out.writeBytes(balance.trimLeadingZeros());
+    out.writeBytes(storageRoot);
+    out.writeBytes(codeHash);
 
     if (version != Account.DEFAULT_VERSION) {
       // version of zero is never written out.

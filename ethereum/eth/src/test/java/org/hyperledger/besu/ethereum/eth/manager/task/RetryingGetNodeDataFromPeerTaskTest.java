@@ -23,7 +23,6 @@ import org.hyperledger.besu.ethereum.eth.manager.EthProtocolManagerTestUtil;
 import org.hyperledger.besu.ethereum.eth.manager.RespondingEthPeer;
 import org.hyperledger.besu.ethereum.eth.manager.ethtaskutils.RetryingMessageTaskTest;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,7 +38,7 @@ public class RetryingGetNodeDataFromPeerTaskTest extends RetryingMessageTaskTest
 
   @Override
   protected Map<Hash, Bytes> generateDataToBeRequested() {
-    final Map<Hash, Bytes> requestedData = new TreeMap<>(Comparator.comparing(o -> o.toBytes()));
+    final Map<Hash, Bytes> requestedData = new TreeMap<>();
     for (int i = 0; i < 3; i++) {
       final BlockHeader blockHeader = blockchain.getBlockHeader(10 + i).get();
       requestedData.put(
