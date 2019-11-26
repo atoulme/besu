@@ -289,7 +289,7 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
     // TODO(tmm): Added to make this work, should come from blockProcessor.
     final int MAX_GENERATION = 6;
-    UInt256 reward = UInt256.fromBytes(blockReward);
+    final UInt256 reward = UInt256.fromBytes(blockReward);
     if (skipZeroBlockRewards && reward.isZero()) {
       return true;
     }
