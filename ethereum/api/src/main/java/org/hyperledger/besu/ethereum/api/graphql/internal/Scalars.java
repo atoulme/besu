@@ -14,6 +14,7 @@
  */
 package org.hyperledger.besu.ethereum.api.graphql.internal;
 
+import org.apache.tuweni.units.bigints.UInt256Value;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
 
@@ -66,16 +67,16 @@ public class Scalars {
       new Coercing<Object, Object>() {
         @Override
         public String serialize(final Object input) throws CoercingSerializeException {
-          if (input instanceof UInt256) {
-            return ((UInt256) input).toShortHexString();
+          if (input instanceof UInt256Value) {
+            return ((UInt256Value) input).toShortHexString();
           }
           throw new CoercingSerializeException("Unable to serialize " + input + " as an BigInt");
         }
 
         @Override
         public String parseValue(final Object input) throws CoercingParseValueException {
-          if (input instanceof UInt256) {
-            return ((UInt256) input).toShortHexString();
+          if (input instanceof UInt256Value) {
+            return ((UInt256Value) input).toShortHexString();
           }
           throw new CoercingParseValueException(
               "Unable to parse variable value " + input + " as an BigInt");
