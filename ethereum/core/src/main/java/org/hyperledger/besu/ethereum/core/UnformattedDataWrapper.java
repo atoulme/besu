@@ -18,9 +18,9 @@ package org.hyperledger.besu.ethereum.core;
 
 import org.hyperledger.besu.plugin.data.UnformattedData;
 
-import org.apache.tuweni.bytes.Bytes;
-
 import java.util.Objects;
+
+import org.apache.tuweni.bytes.Bytes;
 
 /** Wrapper for a Bytes value to be exposed as UnformattedData. */
 public class UnformattedDataWrapper implements UnformattedData {

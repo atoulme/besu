@@ -148,7 +148,7 @@ public class PrivGetPrivateTransactionIntegrationTest {
     final SendResponse sendResponse = enclave.send(sendRequest);
 
     final Bytes hexKey = Bytes.fromBase64String(sendResponse.getKey());
-    when(justTransaction.getPayload()).thenReturn(hexKey);
+    when(justTransaction.getPayloadBytes()).thenReturn(hexKey);
 
     final Object[] params = new Object[] {Hash.ZERO};
 
