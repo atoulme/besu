@@ -138,7 +138,7 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
         privacyParameters
             .getPrivateStateStorage()
             .getTransactionOutput(txHash)
-            .orElse(Bytes.wrap(new byte[0]));
+            .orElse(Bytes.EMPTY);
 
     final Bytes revertReason =
         privacyParameters.getPrivateStateStorage().getRevertReason(txHash).orElse(null);
@@ -148,7 +148,7 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
             privacyParameters
                 .getPrivateStateStorage()
                 .getStatus(txHash)
-                .orElse(Bytes.wrap(new byte[0]))
+                .orElse(Bytes.EMPTY)
                 .toUnsignedBigInteger());
 
     LOG.trace("Processed private transaction output");
