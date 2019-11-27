@@ -50,7 +50,7 @@ public class BlockBroadcasterTest {
     final BlockBroadcaster blockBroadcaster = new BlockBroadcaster(ethContext);
     final Block block = generateBlock();
     final NewBlockMessage newBlockMessage =
-        NewBlockMessage.create(block, block.getHeader().getDifficulty());
+        NewBlockMessage.create(block, block.getHeader().internalGetDifficulty());
 
     blockBroadcaster.propagate(block, UInt256.ZERO);
 
@@ -73,7 +73,7 @@ public class BlockBroadcasterTest {
     final BlockBroadcaster blockBroadcaster = new BlockBroadcaster(ethContext);
     final Block block = generateBlock();
     final NewBlockMessage newBlockMessage =
-        NewBlockMessage.create(block, block.getHeader().getDifficulty());
+        NewBlockMessage.create(block, block.getHeader().internalGetDifficulty());
 
     blockBroadcaster.propagate(block, UInt256.ZERO);
 

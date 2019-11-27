@@ -73,13 +73,13 @@ public class BlockHeaderBuilder {
         .stateRoot(header.getStateRoot())
         .transactionsRoot(header.getTransactionsRoot())
         .receiptsRoot(header.getReceiptsRoot())
-        .logsBloom(new LogsBloomFilter(header.getLogsBloom()))
-        .difficulty(header.getDifficulty())
+        .logsBloom(new LogsBloomFilter(header.getLogsBloom().getBytes()))
+        .difficulty(header.internalGetDifficulty())
         .number(header.getNumber())
         .gasLimit(header.getGasLimit())
         .gasUsed(header.getGasUsed())
         .timestamp(header.getTimestamp())
-        .extraData(header.getExtraData())
+        .extraData(header.internalGetExtraData())
         .mixHash(header.getMixHash())
         .nonce(header.getNonce());
   }
@@ -185,7 +185,7 @@ public class BlockHeaderBuilder {
     checkNotNull(processableBlockHeader);
     parentHash(processableBlockHeader.getParentHash());
     coinbase(processableBlockHeader.getCoinbase());
-    difficulty(processableBlockHeader.getDifficulty());
+    difficulty(processableBlockHeader.internalGetDifficulty());
     number(processableBlockHeader.getNumber());
     gasLimit(processableBlockHeader.getGasLimit());
     timestamp(processableBlockHeader.getTimestamp());
@@ -200,13 +200,13 @@ public class BlockHeaderBuilder {
     stateRoot(sealableBlockHeader.getStateRoot());
     transactionsRoot(sealableBlockHeader.getTransactionsRoot());
     receiptsRoot(sealableBlockHeader.getReceiptsRoot());
-    logsBloom(new LogsBloomFilter(sealableBlockHeader.getLogsBloom()));
-    difficulty(sealableBlockHeader.getDifficulty());
+    logsBloom(new LogsBloomFilter(sealableBlockHeader.getLogsBloom().getBytes()));
+    difficulty(sealableBlockHeader.internalGetDifficulty());
     number(sealableBlockHeader.getNumber());
     gasLimit(sealableBlockHeader.getGasLimit());
     gasUsed(sealableBlockHeader.getGasUsed());
     timestamp(sealableBlockHeader.getTimestamp());
-    extraData(sealableBlockHeader.getExtraData());
+    extraData(sealableBlockHeader.internalGetExtraData());
     return this;
   }
 

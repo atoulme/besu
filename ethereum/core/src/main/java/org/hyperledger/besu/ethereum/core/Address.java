@@ -102,8 +102,7 @@ public class Address extends DelegatingBytes implements org.hyperledger.besu.plu
   @JsonCreator
   public static Address fromHexString(final String str) {
     if (str == null) return null;
-
-    return new Address(Bytes.fromHexStringLenient(str, SIZE));
+    return wrap(Bytes.fromHexStringLenient(str, SIZE));
   }
 
   /**
@@ -117,8 +116,13 @@ public class Address extends DelegatingBytes implements org.hyperledger.besu.plu
    */
   public static Address fromHexStringStrict(final String str) {
     checkArgument(str != null);
-
-    return new Address(Bytes.fromHexString(str));
+    final Bytes value = Bytes.fromHexString(str);
+    checkArgument(
+        value.size() == SIZE,
+        "An account address must be be %s bytes long, got %s",
+        SIZE,
+        value.size());
+    return new Address(value);
   }
 
   private static Address precompiled(final int value) {

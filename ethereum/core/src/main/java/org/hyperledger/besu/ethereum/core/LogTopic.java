@@ -14,23 +14,21 @@
  */
 package org.hyperledger.besu.ethereum.core;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.DelegatingBytes32;
 
-public class LogTopic {
+public class LogTopic extends DelegatingBytes32 implements UnformattedData {
 
-  public static final int SIZE = 32;
+  protected LogTopic(final Bytes bytes) {
+    super(bytes);
+  }
 
-  private final Bytes value;
-
-  private LogTopic(final Bytes bytes) {
-    this.value = bytes;
-    checkArgument(
-        bytes.size() == SIZE, "A log topic must be be %s bytes long, got %s", SIZE, bytes.size());
+  public static LogTopic create(final UnformattedData data) {
+    return create(Bytes.wrap(data.getByteArray()));
   }
 
   public static LogTopic create(final Bytes bytes) {
@@ -65,10 +63,16 @@ public class LogTopic {
    * @param out the output in which to encode the log topic.
    */
   public void writeTo(final RLPOutput out) {
-    out.writeBytes(this.value);
+    out.writeBytes(this);
   }
 
-  public Bytes toBytes() {
-    return value;
+  @Override
+  public byte[] getByteArray() {
+    return toArray();
+  }
+
+  @Override
+  public String getHexString() {
+    return toHexString();
   }
 }

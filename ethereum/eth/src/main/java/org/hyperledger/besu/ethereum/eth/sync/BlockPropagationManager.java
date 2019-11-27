@@ -254,7 +254,7 @@ public class BlockPropagationManager<C> {
             .getBlockchain()
             .getTotalDifficultyByHash(parent.getHash())
             .get()
-            .add(block.getHeader().getDifficulty());
+            .add(block.getHeader().internalGetDifficulty());
     blockBroadcaster.propagate(block, totalDifficulty);
   }
 

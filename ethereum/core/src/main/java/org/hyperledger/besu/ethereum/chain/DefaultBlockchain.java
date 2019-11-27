@@ -257,7 +257,7 @@ public class DefaultBlockchain implements MutableBlockchain {
 
   private UInt256 calculateTotalDifficulty(final Block block) {
     if (block.getHeader().getNumber() == BlockHeader.GENESIS_BLOCK_NUMBER) {
-      return block.getHeader().getDifficulty();
+      return block.getHeader().internalGetDifficulty();
     }
 
     final UInt256 parentTotalDifficulty =
@@ -265,7 +265,7 @@ public class DefaultBlockchain implements MutableBlockchain {
             .getTotalDifficulty(block.getHeader().getParentHash())
             .orElseThrow(
                 () -> new IllegalStateException("Blockchain is missing total difficulty data."));
-    return block.getHeader().getDifficulty().add(parentTotalDifficulty);
+    return block.getHeader().internalGetDifficulty().add(parentTotalDifficulty);
   }
 
   private BlockAddedEvent updateCanonicalChainData(

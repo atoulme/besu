@@ -180,7 +180,7 @@ public class PrivGetTransactionReceipt implements JsonRpcMethod {
       final Transaction transaction, final String publicKey) {
     LOG.trace("Fetching transaction information from Enclave");
     final ReceiveRequest enclaveRequest =
-        new ReceiveRequest(transaction.getPayload().toBase64String(), publicKey);
+        new ReceiveRequest(transaction.getPayloadBytes().toBase64String(), publicKey);
     final ReceiveResponse enclaveResponse = enclave.receive(enclaveRequest);
     LOG.trace("Received transaction information from Enclave");
     return enclaveResponse;

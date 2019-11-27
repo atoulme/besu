@@ -196,7 +196,7 @@ public class TransactionSmartContractPermissioningController
         transaction.getValue(),
         transaction.getGasPrice(),
         encodeLong(transaction.getGasLimit()),
-        encodeBytes(transaction.getPayload()));
+        encodeBytes(transaction.getPayloadBytes()));
   }
 
   // Case for empty address

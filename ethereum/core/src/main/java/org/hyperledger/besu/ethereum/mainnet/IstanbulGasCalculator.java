@@ -41,7 +41,7 @@ public class IstanbulGasCalculator extends ConstantinopleFixGasCalculator {
 
   @Override
   public Gas transactionIntrinsicGasCost(final Transaction transaction) {
-    final Bytes payload = transaction.getPayload();
+    final Bytes payload = transaction.getPayloadBytes();
     int zeros = 0;
     for (int i = 0; i < payload.size(); i++) {
       if (payload.get(i) == 0) {

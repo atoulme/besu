@@ -238,7 +238,7 @@ public class MainnetTransactionProcessor implements TransactionProcessor {
               .sender(senderAddress)
               .value(transaction.getValue())
               .apparentValue(transaction.getValue())
-              .code(new Code(transaction.getPayload()))
+              .code(new Code(transaction.getPayloadBytes()))
               .blockHeader(blockHeader)
               .depth(0)
               .completer(c -> {})
@@ -265,7 +265,7 @@ public class MainnetTransactionProcessor implements TransactionProcessor {
               .contractAccountVersion(
                   contract != null ? contract.getVersion() : Account.DEFAULT_VERSION)
               .gasPrice(transaction.getGasPrice())
-              .inputData(transaction.getPayload())
+              .inputData(transaction.getPayloadBytes())
               .sender(senderAddress)
               .value(transaction.getValue())
               .apparentValue(transaction.getValue())

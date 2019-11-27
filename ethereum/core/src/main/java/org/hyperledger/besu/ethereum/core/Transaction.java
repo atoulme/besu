@@ -22,6 +22,7 @@ import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPException;
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import java.math.BigInteger;
 import java.util.Objects;
@@ -219,7 +220,11 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return the transaction payload
    */
   @Override
-  public Bytes getPayload() {
+  public UnformattedData getPayload() {
+    return new UnformattedDataWrapper(payload);
+  }
+
+  public Bytes getPayloadBytes() {
     return payload;
   }
 
@@ -229,8 +234,10 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return if present the init code
    */
   @Override
-  public Optional<Bytes> getInit() {
-    return getTo().isPresent() ? Optional.empty() : Optional.of(payload);
+  public Optional<UnformattedData> getInit() {
+    return getTo().isPresent()
+        ? Optional.empty()
+        : Optional.of(new UnformattedDataWrapper(payload));
   }
 
   /**
@@ -239,8 +246,10 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return if present the init code
    */
   @Override
-  public Optional<Bytes> getData() {
-    return getTo().isPresent() ? Optional.of(payload) : Optional.empty();
+  public Optional<UnformattedData> getData() {
+    return getTo().isPresent()
+        ? Optional.of(new UnformattedDataWrapper(payload))
+        : Optional.empty();
   }
 
   /**
@@ -297,7 +306,7 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
     out.writeLongScalar(getGasLimit());
     out.writeBytes(getTo().isPresent() ? getTo().get() : Bytes.EMPTY);
     out.writeBytes(getValue().trimLeadingZeros());
-    out.writeBytes(getPayload());
+    out.writeBytes(getPayloadBytes());
     writeSignature(out);
 
     out.endList();

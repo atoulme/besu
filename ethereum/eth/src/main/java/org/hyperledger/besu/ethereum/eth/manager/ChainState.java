@@ -90,7 +90,8 @@ public class ChainState implements ChainHeadEstimate {
       final BlockHeader blockHeader, final UInt256 totalDifficulty) {
     synchronized (this) {
       // Blocks are announced before they're imported so their chain head must be the parent
-      final UInt256 parentTotalDifficulty = totalDifficulty.subtract(blockHeader.getDifficulty());
+      final UInt256 parentTotalDifficulty =
+          totalDifficulty.subtract(blockHeader.internalGetDifficulty());
       final long parentBlockNumber = blockHeader.getNumber() - 1;
       if (parentTotalDifficulty.compareTo(bestBlock.totalDifficulty) >= 0) {
         bestBlock.totalDifficulty = parentTotalDifficulty;

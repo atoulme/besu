@@ -16,6 +16,7 @@ package org.hyperledger.besu.ethereum.core;
 
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
 import org.hyperledger.besu.ethereum.rlp.RLPOutput;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,6 @@ import java.util.Objects;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.bytes.Bytes32;
 
 /**
  * A log entry is a tuple of a logger’s address (the address of the contract that added the logs), a
@@ -32,15 +32,15 @@ import org.apache.tuweni.bytes.Bytes32;
 public class Log implements org.hyperledger.besu.plugin.data.Log {
 
   private final Address logger;
-  private final Bytes data;
-  private final ImmutableList<Bytes32> topics;
+  private final UnformattedData data;
+  private final ImmutableList<LogTopic> topics;
 
   /**
    * @param logger The address of the contract that produced this log.
    * @param data Data associated with this log.
    * @param topics Indexable topics associated with this log.
    */
-  public Log(final Address logger, final Bytes data, final List<Bytes32> topics) {
+  public Log(final Address logger, final UnformattedData data, final List<LogTopic> topics) {
     this.logger = logger;
     this.data = data;
     this.topics = ImmutableList.copyOf(topics);
@@ -55,7 +55,7 @@ public class Log implements org.hyperledger.besu.plugin.data.Log {
     out.startList();
     out.writeBytes(logger);
     out.writeList(topics, (topic, listOut) -> listOut.writeBytes(topic));
-    out.writeBytes(data);
+    out.writeBytes(Bytes.wrap(data.getByteArray()));
     out.endList();
   }
 
@@ -68,10 +68,10 @@ public class Log implements org.hyperledger.besu.plugin.data.Log {
   public static Log readFrom(final RLPInput in) {
     in.enterList();
     final Address logger = Address.wrap(in.readBytes());
-    final List<Bytes32> topics = in.readList(listIn -> listIn.readBytes32());
+    final List<LogTopic> topics = in.readList(listIn -> LogTopic.wrap(listIn.readBytes32()));
     final Bytes data = in.readBytes();
     in.leaveList();
-    return new Log(logger, data, topics);
+    return new Log(logger, new UnformattedDataWrapper(data), topics);
   }
 
   @Override
@@ -80,12 +80,12 @@ public class Log implements org.hyperledger.besu.plugin.data.Log {
   }
 
   @Override
-  public Bytes getData() {
+  public UnformattedData getData() {
     return data;
   }
 
   @Override
-  public List<Bytes32> getTopics() {
+  public List<LogTopic> getTopics() {
     return topics;
   }
 

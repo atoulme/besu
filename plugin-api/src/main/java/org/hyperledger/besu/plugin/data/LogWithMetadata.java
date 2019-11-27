@@ -18,9 +18,6 @@ import org.hyperledger.besu.plugin.Unstable;
 
 import java.util.List;
 
-import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.bytes.Bytes32;
-
 /** A Log entry from a transaction execution. */
 @Unstable
 public interface LogWithMetadata {
@@ -37,14 +34,14 @@ public interface LogWithMetadata {
    *
    * @return The list, possibly zero length, of log topics.
    */
-  List<Bytes32> getTopics();
+  List<? extends UnformattedData> getTopics();
 
   /**
    * The data, of possibly unlimited length, for this log entry.
    *
    * @return The log data.
    */
-  Bytes getData();
+  UnformattedData getData();
 
   int getLogIndex();
 

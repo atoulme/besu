@@ -89,7 +89,7 @@ public class IbftBlockHashing {
 
     // set the extraData field using the supplied extraDataSerializer if the block height is not 0
     if (header.getNumber() == BlockHeader.GENESIS_BLOCK_NUMBER) {
-      builder.extraData(header.getExtraData());
+      builder.extraData(header.internalGetExtraData());
     } else {
       builder.extraData(extraDataSerializer.get());
     }

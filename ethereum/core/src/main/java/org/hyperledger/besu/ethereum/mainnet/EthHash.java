@@ -171,13 +171,13 @@ public final class EthHash {
     out.writeBytes(header.getStateRoot());
     out.writeBytes(header.getTransactionsRoot());
     out.writeBytes(header.getReceiptsRoot());
-    out.writeBytes(header.getLogsBloom());
-    out.writeBytes(header.getDifficulty().toBytes().trimLeadingZeros());
+    out.writeBytes(header.getLogsBloom().getBytes());
+    out.writeBytes(header.internalGetDifficulty().toBytes().trimLeadingZeros());
     out.writeLongScalar(header.getNumber());
     out.writeLongScalar(header.getGasLimit());
     out.writeLongScalar(header.getGasUsed());
     out.writeLongScalar(header.getTimestamp());
-    out.writeBytes(header.getExtraData());
+    out.writeBytes(header.internalGetExtraData());
     out.endList();
     return DirectAcyclicGraphSeed.KECCAK_256.get().digest(out.encoded().toArray());
   }

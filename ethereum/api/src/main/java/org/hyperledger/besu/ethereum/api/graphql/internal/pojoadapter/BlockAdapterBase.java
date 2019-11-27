@@ -93,7 +93,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes> getExtraData() {
-    return Optional.of(header.getExtraData());
+    return Optional.of(header.internalGetExtraData());
   }
 
   public Optional<Long> getGasLimit() {
@@ -109,7 +109,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<Bytes> getLogsBloom() {
-    return Optional.of(header.getLogsBloom());
+    return Optional.of(header.getLogsBloom().getBytes());
   }
 
   public Optional<Bytes32> getMixHash() {
@@ -117,7 +117,7 @@ public class BlockAdapterBase extends AdapterBase {
   }
 
   public Optional<UInt256> getDifficulty() {
-    return Optional.of(header.getDifficulty());
+    return Optional.of(header.internalGetDifficulty());
   }
 
   public Optional<Bytes32> getOmmerHash() {

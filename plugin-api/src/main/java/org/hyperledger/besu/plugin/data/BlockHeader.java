@@ -16,9 +16,6 @@ package org.hyperledger.besu.plugin.data;
 
 import org.hyperledger.besu.plugin.Unstable;
 
-import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.units.bigints.UInt256;
-
 /**
  * The minimum set of data for a BlockHeader, as defined in the <a href=
  * "https://ethereum.github.io/yellowpaper/paper.pdf">Ethereum Yellow Paper</a>.
@@ -85,7 +82,7 @@ public interface BlockHeader {
    * @return The Bloom filter composed from indexable information (logger address and log topics)
    *     contained in each log entry from the receipt of each transaction in the transactions list.
    */
-  Bytes getLogsBloom();
+  UnformattedData getLogsBloom();
 
   /**
    * A scalar value corresponding to the difficulty level of this block. This can be calculated from
@@ -94,7 +91,7 @@ public interface BlockHeader {
    * @return A scalar value corresponding to the difficulty level of this block. This can be
    *     calculated from the previous block’s difficulty level and the timestamp.
    */
-  UInt256 getDifficulty();
+  Quantity getDifficulty();
 
   /**
    * A scalar value equal to the number of ancestor blocks. The genesis block has a number of zero.
@@ -132,7 +129,7 @@ public interface BlockHeader {
    * @return An arbitrary byte array containing data relevant to this block. This must be 32 bytes
    *     or fewer.
    */
-  Bytes getExtraData();
+  UnformattedData getExtraData();
 
   /**
    * A 256-bit hash which, combined with the nonce, proves that a sufficient amount of computation

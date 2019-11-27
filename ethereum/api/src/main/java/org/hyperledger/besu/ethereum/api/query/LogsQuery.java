@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.parameters.TopicsDeserializer;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Log;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogsBloomFilter;
 
 import java.util.Arrays;
@@ -84,7 +85,7 @@ public class LogsQuery {
     return addresses.isEmpty() || addresses.contains(address);
   }
 
-  private boolean matchesTopics(final List<Bytes32> topics) {
+  private boolean matchesTopics(final List<LogTopic> topics) {
     return this.topics.isEmpty()
         || (topics.size() >= this.topics.size()
             && IntStream.range(0, this.topics.size())

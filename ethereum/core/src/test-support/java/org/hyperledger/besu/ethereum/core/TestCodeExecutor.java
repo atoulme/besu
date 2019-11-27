@@ -76,7 +76,7 @@ public class TestCodeExecutor {
             .contract(SENDER_ADDRESS)
             .contractAccountVersion(accountVersion)
             .gasPrice(transaction.getGasPrice())
-            .inputData(transaction.getPayload())
+            .inputData(transaction.getPayloadBytes())
             .sender(SENDER_ADDRESS)
             .value(transaction.getValue())
             .code(new Code(Bytes.fromHexString(code)))

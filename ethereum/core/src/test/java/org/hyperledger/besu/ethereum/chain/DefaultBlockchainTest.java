@@ -265,7 +265,7 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkBlock)
-            .setDifficulty(chain.get(forkBlock).getHeader().getDifficulty().add(10L));
+            .setDifficulty(chain.get(forkBlock).getHeader().internalGetDifficulty().add(10L));
     final Block fork = gen.block(options);
     final List<TransactionReceipt> forkReceipts = gen.receipts(fork);
     final List<Block> reorgedChain = new ArrayList<>(chain.subList(0, forkBlock));
@@ -341,15 +341,15 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkStart)
-            .setDifficulty(chain.get(forkStart).getHeader().getDifficulty().subtract(5L));
+            .setDifficulty(chain.get(forkStart).getHeader().internalGetDifficulty().subtract(5L));
     forkBlocks.add(gen.block(options));
     // Generate second block
     final UInt256 remainingDifficultyToOutpace =
         chain
             .get(forkStart + 1)
             .getHeader()
-            .getDifficulty()
-            .add(chain.get(forkStart + 2).getHeader().getDifficulty());
+            .internalGetDifficulty()
+            .add(chain.get(forkStart + 2).getHeader().internalGetDifficulty());
     options =
         new BlockDataGenerator.BlockOptions()
             .setParentHash(forkBlocks.get(0).getHash())
@@ -461,7 +461,7 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkStart)
-            .setDifficulty(chain.get(forkStart).getHeader().getDifficulty().subtract(5L));
+            .setDifficulty(chain.get(forkStart).getHeader().internalGetDifficulty().subtract(5L));
     forkBlocks.add(gen.block(options));
     // Generate second block
     options =
@@ -570,7 +570,7 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkBlock)
-            .setDifficulty(chain.get(forkBlock).getHeader().getDifficulty().add(10L))
+            .setDifficulty(chain.get(forkBlock).getHeader().internalGetDifficulty().add(10L))
             .addTransaction(overlappingTx)
             .addTransaction(gen.transaction());
     final Block fork = gen.block(options);
@@ -683,14 +683,15 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkStart)
-            .setDifficulty(chain.get(forkStart).getHeader().getDifficulty().subtract(5L));
+            .setDifficulty(chain.get(forkStart).getHeader().internalGetDifficulty().subtract(5L));
     forkBlocks.add(gen.block(options));
     // Generate second block
     options =
         new BlockDataGenerator.BlockOptions()
             .setParentHash(forkBlocks.get(0).getHash())
             .setBlockNumber(forkStart + 1)
-            .setDifficulty(chain.get(forkStart + 1).getHeader().getDifficulty().subtract(5L));
+            .setDifficulty(
+                chain.get(forkStart + 1).getHeader().internalGetDifficulty().subtract(5L));
     forkBlocks.add(gen.block(options));
     // Generate corresponding receipts
     final List<List<TransactionReceipt>> forkReceipts =
@@ -724,7 +725,7 @@ public class DefaultBlockchainTest {
         new BlockDataGenerator.BlockOptions()
             .setParentHash(chain.get(commonAncestor).getHash())
             .setBlockNumber(forkStart)
-            .setDifficulty(chain.get(forkStart).getHeader().getDifficulty().subtract(5L));
+            .setDifficulty(chain.get(forkStart).getHeader().internalGetDifficulty().subtract(5L));
     final Block secondFork = gen.block(options);
     blockchain.appendBlock(secondFork, gen.receipts(secondFork));
 
@@ -898,7 +899,7 @@ public class DefaultBlockchainTest {
     while (num <= head.getHeader().getNumber()) {
       final Hash curHash = blockchain.getBlockHashByNumber(num).get();
       final BlockHeader curHead = blockchain.getBlockHeader(curHash).get();
-      td = td.add(curHead.getDifficulty());
+      td = td.add(curHead.internalGetDifficulty());
       assertThat(blockchain.getTotalDifficultyByHash(curHash).get()).isEqualTo(td);
 
       num += 1;

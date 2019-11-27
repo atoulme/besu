@@ -81,7 +81,7 @@ public class CliqueExtraData implements ParsedExtraData {
   }
 
   static CliqueExtraData decodeRaw(final BlockHeader header) {
-    final Bytes input = header.getExtraData();
+    final Bytes input = header.internalGetExtraData();
     if (input.size() < EXTRA_VANITY_LENGTH + Signature.BYTES_REQUIRED) {
       throw new IllegalArgumentException(
           "Invalid Bytes supplied - too short to produce a valid Clique Extra Data object.");

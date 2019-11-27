@@ -17,9 +17,10 @@ package org.hyperledger.besu.ethereum.core;
 import org.hyperledger.besu.plugin.data.Address;
 import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.plugin.data.Hash;
+import org.hyperledger.besu.plugin.data.Quantity;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.units.bigints.UInt256;
 
 public class NonBesuBlockHeader implements BlockHeader {
 
@@ -62,12 +63,12 @@ public class NonBesuBlockHeader implements BlockHeader {
   }
 
   @Override
-  public Bytes getLogsBloom() {
+  public LogsBloomFilter getLogsBloom() {
     return null;
   }
 
   @Override
-  public UInt256 getDifficulty() {
+  public Quantity getDifficulty() {
     return null;
   }
 
@@ -92,8 +93,8 @@ public class NonBesuBlockHeader implements BlockHeader {
   }
 
   @Override
-  public Bytes getExtraData() {
-    return extraData;
+  public UnformattedData getExtraData() {
+    return new UnformattedDataWrapper(extraData);
   }
 
   @Override

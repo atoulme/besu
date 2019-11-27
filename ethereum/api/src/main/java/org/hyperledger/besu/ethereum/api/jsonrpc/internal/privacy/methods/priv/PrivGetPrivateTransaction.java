@@ -73,7 +73,7 @@ public class PrivGetPrivateTransaction implements JsonRpcMethod {
     try {
       ReceiveResponse receiveResponse =
           getReceiveResponseFromEnclave(
-              resultTransaction.getTransaction().getPayload().toBase64String(),
+              resultTransaction.getTransaction().getPayloadBytes().toBase64String(),
               privacyParameters.getEnclavePublicKey());
 
       LOG.trace("Received transaction information from Enclave");

@@ -95,7 +95,7 @@ public class BlockResult implements JsonRpcResult {
     this.stateRoot = header.getStateRoot().toString();
     this.receiptsRoot = header.getReceiptsRoot().toString();
     this.miner = header.getCoinbase().toString();
-    this.difficulty = Quantity.create(header.getDifficulty());
+    this.difficulty = Quantity.create(header.internalGetDifficulty());
     this.totalDifficulty = Quantity.create(totalDifficulty);
     this.extraData = header.getExtraData().toString();
     this.size = Quantity.create(size);

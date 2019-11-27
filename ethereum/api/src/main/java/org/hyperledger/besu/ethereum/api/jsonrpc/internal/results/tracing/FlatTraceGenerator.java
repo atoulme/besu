@@ -20,6 +20,7 @@ import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.debug.TraceFrame;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class FlatTraceGenerator {
     transactionTrace
         .getTransaction()
         .getInit()
-        .map(Bytes::toHexString)
+        .map(UnformattedData::getHexString)
         .ifPresent(firstFlatTraceBuilder.getActionBuilder()::init);
     // set to, input and callType fields if not a smart contract
     transactionTrace
@@ -93,8 +94,13 @@ public class FlatTraceGenerator {
                         transactionTrace
                             .getTransaction()
                             .getData()
-                            .orElse(transactionTrace.getTransaction().getInit().orElse(Bytes.EMPTY))
-                            .toHexString()));
+                            .map(UnformattedData::getHexString)
+                            .orElse(
+                                transactionTrace
+                                    .getTransaction()
+                                    .getInit()
+                                    .map(UnformattedData::getHexString)
+                                    .orElse(Bytes.EMPTY.toHexString()))));
     // declare a queue of transactionTrace contexts
     final Deque<FlatTrace.Context> tracesContexts = new ArrayDeque<>();
     // add the first transactionTrace context to the queue of transactionTrace contexts

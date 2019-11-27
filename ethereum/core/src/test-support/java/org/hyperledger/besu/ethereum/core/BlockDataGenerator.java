@@ -384,9 +384,13 @@ public class BlockDataGenerator {
   }
 
   public Log log(final int topicCount) {
-    final List<Bytes32> topics =
-        Stream.generate(this::bytes32).limit(topicCount).collect(Collectors.toList());
-    return new Log(address(), byteValues(5, 15), topics);
+    final List<LogTopic> topics =
+        Stream.generate(this::logTopic).limit(topicCount).collect(Collectors.toList());
+    return new Log(address(), new UnformattedDataWrapper(byteValues(5, 15)), topics);
+  }
+
+  private LogTopic logTopic() {
+    return LogTopic.wrap(byteValues(Bytes32.SIZE));
   }
 
   private Bytes32 bytes32() {

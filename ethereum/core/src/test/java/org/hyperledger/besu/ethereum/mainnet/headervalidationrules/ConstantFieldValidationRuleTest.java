@@ -46,7 +46,8 @@ public class ConstantFieldValidationRuleTest {
   @Test
   public void difficultyFieldIsValidatedCorrectly() {
     final ConstantFieldValidationRule<UInt256> uut =
-        new ConstantFieldValidationRule<>("Difficulty", BlockHeader::getDifficulty, UInt256.ONE);
+        new ConstantFieldValidationRule<>(
+            "Difficulty", BlockHeader::internalGetDifficulty, UInt256.ONE);
 
     final BlockHeaderTestFixture blockHeaderBuilder = new BlockHeaderTestFixture();
     blockHeaderBuilder.difficulty(UInt256.ONE);

@@ -1,4 +1,5 @@
 /*
+ *
  * Copyright ConsenSys AG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
@@ -11,26 +12,35 @@
  * specific language governing permissions and limitations under the License.
  *
  * SPDX-License-Identifier: Apache-2.0
+ *
  */
-package org.hyperledger.besu.plugin.data;
+package org.hyperledger.besu.ethereum.core;
 
-import org.hyperledger.besu.plugin.Unstable;
+import org.hyperledger.besu.plugin.data.UnformattedData;
 
-/** The minimum set of data for a PropagatedBlockContext. */
-@Unstable
-public interface PropagatedBlockContext {
+import org.apache.tuweni.bytes.Bytes;
 
-  /**
-   * A {@link BlockHeader} object.
-   *
-   * @return A {@link BlockHeader}
-   */
-  BlockHeader getBlockHeader();
+/** Wrapper for a Bytes value to be exposed as UnformattedData. */
+public class UnformattedDataWrapper implements UnformattedData {
 
-  /**
-   * A scalar value corresponding to the total difficulty.
-   *
-   * @return A scalar value corresponding to the total difficulty.
-   */
-  Quantity getTotalDifficulty();
+  private final Bytes value;
+
+  public UnformattedDataWrapper(final Bytes value) {
+    this.value = value;
+  }
+
+  @Override
+  public byte[] getByteArray() {
+    return value.toArray();
+  }
+
+  @Override
+  public String getHexString() {
+    return value.toHexString();
+  }
+
+  @Override
+  public int size() {
+    return value.size();
+  }
 }

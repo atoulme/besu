@@ -14,6 +14,8 @@
  */
 package org.hyperledger.besu.ethereum.core;
 
+import org.hyperledger.besu.plugin.data.UnformattedData;
+
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
 
@@ -98,8 +100,8 @@ public class SealableBlockHeader extends ProcessableBlockHeader {
    *
    * @return the block logs bloom filter
    */
-  public Bytes getLogsBloom() {
-    return logsBloom.getBytes();
+  public LogsBloomFilter getLogsBloom() {
+    return logsBloom;
   }
 
   /**
@@ -116,7 +118,11 @@ public class SealableBlockHeader extends ProcessableBlockHeader {
    *
    * @return the raw bytes of the extra data field
    */
-  public Bytes getExtraData() {
+  public UnformattedData getExtraData() {
+    return new UnformattedDataWrapper(extraData);
+  }
+
+  public Bytes internalGetExtraData() {
     return extraData;
   }
 }

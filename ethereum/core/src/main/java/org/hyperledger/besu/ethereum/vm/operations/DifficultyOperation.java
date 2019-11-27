@@ -34,7 +34,7 @@ public class DifficultyOperation extends AbstractOperation {
 
   @Override
   public void execute(final MessageFrame frame) {
-    final UInt256 difficulty = frame.getBlockHeader().getDifficulty();
+    final UInt256 difficulty = frame.getBlockHeader().internalGetDifficulty();
     frame.pushStackItem(difficulty.toBytes());
   }
 }

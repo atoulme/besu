@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Test;
 
 public class LogsBloomFilterTest {
@@ -29,12 +28,12 @@ public class LogsBloomFilterTest {
   public void logsBloomFilter() {
     final Address address = Address.fromHexString("0x095e7baea6a6c7c4c2dfeb977efac326af552d87");
     final Bytes data = Bytes.fromHexString("0x0102");
-    final List<Bytes32> topics = new ArrayList<>();
+    final List<LogTopic> topics = new ArrayList<>();
     topics.add(
-        Bytes32.fromHexString(
+        LogTopic.fromHexString(
             "0x0000000000000000000000000000000000000000000000000000000000000000"));
 
-    final Log log = new Log(address, data, topics);
+    final Log log = new Log(address, new UnformattedDataWrapper(data), topics);
     final LogsBloomFilter bloom = LogsBloomFilter.empty();
     bloom.insertLog(log);
 

@@ -17,6 +17,7 @@ package org.hyperledger.besu.ethereum.api.graphql.internal.pojoadapter;
 import org.hyperledger.besu.ethereum.api.query.BlockchainQueries;
 import org.hyperledger.besu.ethereum.api.query.TransactionWithMetadata;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class LogAdapter extends AdapterBase {
   }
 
   public List<Bytes32> getTopics() {
-    final List<Bytes32> topics = logWithMetadata.getTopics();
+    final List<LogTopic> topics = logWithMetadata.getTopics();
     final List<Bytes32> result = new ArrayList<>();
     for (final Bytes topic : topics) {
       result.add(Bytes32.leftPad(topic));
@@ -49,7 +50,7 @@ public class LogAdapter extends AdapterBase {
   }
 
   public Optional<Bytes> getData() {
-    return Optional.of(logWithMetadata.getData());
+    return Optional.of(Bytes.wrap(logWithMetadata.getData().getByteArray()));
   }
 
   public Optional<TransactionAdapter> getTransaction(final DataFetchingEnvironment environment) {

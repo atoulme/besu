@@ -17,6 +17,8 @@ package org.hyperledger.besu.ethereum.vm.operations;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Gas;
 import org.hyperledger.besu.ethereum.core.Log;
+import org.hyperledger.besu.ethereum.core.LogTopic;
+import org.hyperledger.besu.ethereum.core.UnformattedDataWrapper;
 import org.hyperledger.besu.ethereum.vm.AbstractOperation;
 import org.hyperledger.besu.ethereum.vm.EVM;
 import org.hyperledger.besu.ethereum.vm.ExceptionalHaltReason;
@@ -28,7 +30,6 @@ import java.util.Optional;
 
 import com.google.common.collect.ImmutableList;
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.bytes.Bytes32;
 import org.apache.tuweni.units.bigints.UInt256;
 
 public class LogOperation extends AbstractOperation {
@@ -56,12 +57,13 @@ public class LogOperation extends AbstractOperation {
     final UInt256 numBytes = UInt256.fromBytes(frame.popStackItem());
     final Bytes data = frame.readMemory(dataLocation, numBytes);
 
-    final ImmutableList.Builder<Bytes32> builder = ImmutableList.builderWithExpectedSize(numTopics);
+    final ImmutableList.Builder<LogTopic> builder =
+        ImmutableList.builderWithExpectedSize(numTopics);
     for (int i = 0; i < numTopics; i++) {
-      builder.add(frame.popStackItem());
+      builder.add(LogTopic.create(frame.popStackItem()));
     }
 
-    frame.addLog(new Log(address, data, builder.build()));
+    frame.addLog(new Log(address, new UnformattedDataWrapper(data), builder.build()));
   }
 
   @Override

@@ -56,6 +56,7 @@ import org.hyperledger.besu.plugin.data.Transaction;
 import org.hyperledger.besu.services.kvstore.InMemoryKeyValueStorage;
 import org.hyperledger.besu.testutil.TestClock;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -186,7 +187,7 @@ public class BesuEventsImplTest {
 
     assertThat(result.get()).isNotNull();
     assertThat(result.get().getBlockHeader()).isEqualTo(block.getHeader());
-    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.valueOf(1));
+    assertThat(result.get().getTotalDifficulty().getValue()).isEqualTo(BigInteger.ONE);
   }
 
   @Test
@@ -200,7 +201,7 @@ public class BesuEventsImplTest {
 
     assertThat(result.get()).isNotNull();
     assertThat(result.get().getBlockHeader()).isEqualTo(block.getHeader());
-    assertThat(result.get().getTotalDifficulty()).isEqualTo(UInt256.valueOf(2));
+    assertThat(result.get().getTotalDifficulty().getValue()).isEqualTo(BigInteger.valueOf(2L));
     serviceImpl.removeBlockPropagatedListener(id);
     result.set(null);
 

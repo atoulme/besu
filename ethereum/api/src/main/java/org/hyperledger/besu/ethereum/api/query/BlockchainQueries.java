@@ -496,7 +496,7 @@ public class BlockchainQueries {
         // handles the case when fromBlockNumber is past chain head.
         .takeWhile(Optional::isPresent)
         .map(Optional::get)
-        .filter(header -> query.couldMatch(new LogsBloomFilter(header.getLogsBloom())))
+        .filter(header -> query.couldMatch(new LogsBloomFilter(header.getLogsBloom().getBytes())))
         .flatMap(header -> matchingLogs(header.getHash(), query).stream())
         .collect(Collectors.toList());
   }

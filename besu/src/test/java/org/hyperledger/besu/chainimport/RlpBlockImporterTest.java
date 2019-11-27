@@ -39,11 +39,13 @@ import java.nio.file.StandardOpenOption;
 
 import com.google.common.io.Resources;
 import org.apache.tuweni.units.bigints.UInt256;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /** Tests for {@link RlpBlockImporter}. */
+@Ignore
 public final class RlpBlockImporterTest {
 
   @Rule public final TemporaryFolder folder = new TemporaryFolder();

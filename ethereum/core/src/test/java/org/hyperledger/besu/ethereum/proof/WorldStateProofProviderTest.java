@@ -137,7 +137,7 @@ public class WorldStateProofProviderTest {
   }
 
   private Bytes32 storageKeyHash(final UInt256 storageKey) {
-    return Hash.hash(storageKey);
+    return Hash.hash(storageKey.toBytes());
   }
 
   private Bytes encodeStorageValue(final UInt256 storageValue) {

@@ -1812,7 +1812,7 @@ public class JsonRpcHttpServiceTest {
         .isEqualTo(header.getReceiptsRoot());
     assertThat(Address.fromHexString(result.getString("miner"))).isEqualTo(header.getCoinbase());
     assertThat(UInt256.fromHexString(result.getString("difficulty")))
-        .isEqualTo(header.getDifficulty());
+        .isEqualTo(header.internalGetDifficulty());
     assertThat(Bytes.fromHexString(result.getString("extraData"))).isEqualTo(header.getExtraData());
     assertThat(hexStringToInt(result.getString("size"))).isEqualTo(block.calculateSize());
     assertThat(Long.decode(result.getString("gasLimit"))).isEqualTo(header.getGasLimit());
@@ -1874,7 +1874,7 @@ public class JsonRpcHttpServiceTest {
   }
 
   public BlockWithMetadata<TransactionWithMetadata, Hash> blockWithMetadata(final Block block) {
-    final UInt256 td = block.getHeader().getDifficulty().add(10L);
+    final UInt256 td = block.getHeader().internalGetDifficulty().add(10L);
     final int size = block.calculateSize();
 
     final List<Transaction> txs = block.getBody().getTransactions();
@@ -1890,7 +1890,7 @@ public class JsonRpcHttpServiceTest {
   }
 
   public BlockWithMetadata<Hash, Hash> blockWithMetadataAndTxHashes(final Block block) {
-    final UInt256 td = block.getHeader().getDifficulty().add(10L);
+    final UInt256 td = block.getHeader().internalGetDifficulty().add(10L);
     final int size = block.calculateSize();
 
     final List<Hash> txs =

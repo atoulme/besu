@@ -88,7 +88,7 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
       return false;
     }
 
-    if (!validateLogsBloom(header.getLogsBloom(), BodyValidation.logsBloom(receipts))) {
+    if (!validateLogsBloom(header.getLogsBloom().getBytes(), BodyValidation.logsBloom(receipts))) {
       return false;
     }
 

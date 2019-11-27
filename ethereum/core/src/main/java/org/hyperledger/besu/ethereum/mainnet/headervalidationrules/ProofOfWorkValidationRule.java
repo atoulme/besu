@@ -42,11 +42,11 @@ public final class ProofOfWorkValidationRule implements DetachedBlockHeaderValid
     final Hash headerHash = hashHeader(header);
     HASHER.hash(hashBuffer, header.getNonce(), header.getNumber(), headerHash.getByteArray());
 
-    if (header.getDifficulty().isZero()) {
+    if (header.internalGetDifficulty().isZero()) {
       LOG.trace("Rejecting header because difficulty is 0");
       return false;
     }
-    final BigInteger difficulty = header.getDifficulty().toBytes().toUnsignedBigInteger();
+    final BigInteger difficulty = header.internalGetDifficulty().toBytes().toUnsignedBigInteger();
     final UInt256 target =
         difficulty.equals(BigInteger.ONE)
             ? UInt256.MAX_VALUE
@@ -88,13 +88,13 @@ public final class ProofOfWorkValidationRule implements DetachedBlockHeaderValid
     out.writeBytes(header.getStateRoot());
     out.writeBytes(header.getTransactionsRoot());
     out.writeBytes(header.getReceiptsRoot());
-    out.writeBytes(header.getLogsBloom());
-    out.writeBytes(header.getDifficulty().toBytes().trimLeadingZeros());
+    out.writeBytes(header.getLogsBloom().getBytes());
+    out.writeBytes(header.internalGetDifficulty().toBytes().trimLeadingZeros());
     out.writeLongScalar(header.getNumber());
     out.writeLongScalar(header.getGasLimit());
     out.writeLongScalar(header.getGasUsed());
     out.writeLongScalar(header.getTimestamp());
-    out.writeBytes(header.getExtraData());
+    out.writeBytes(header.internalGetExtraData());
     out.endList();
 
     return Hash.hash(out.encoded());

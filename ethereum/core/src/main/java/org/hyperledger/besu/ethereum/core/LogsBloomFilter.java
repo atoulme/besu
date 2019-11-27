@@ -136,15 +136,19 @@ public class LogsBloomFilter implements UnformattedData {
   }
 
   public void insertLog(final Log log) {
-    insertBytes(log.getLogger());
+    insertBytes((Bytes) log.getLogger());
 
-    for (final Bytes topic : log.getTopics()) {
+    for (final UnformattedData topic : log.getTopics()) {
       insertBytes(topic);
     }
   }
 
   private void insertBytes(final Bytes value) {
     setBits(keccak256(value));
+  }
+
+  private void insertBytes(final UnformattedData value) {
+    insertBytes(Bytes.wrap(value.getByteArray()));
   }
 
   private void setBit(final int index) {

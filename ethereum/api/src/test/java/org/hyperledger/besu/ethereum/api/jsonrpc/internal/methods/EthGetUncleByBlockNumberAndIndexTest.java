@@ -148,6 +148,6 @@ public class EthGetUncleByBlockNumberAndIndexTest {
     final List<Hash> ommers = new ArrayList<>();
     ommers.add(Hash.ZERO);
 
-    return new BlockWithMetadata<>(header, transactions, ommers, header.getDifficulty(), 0);
+    return new BlockWithMetadata<>(header, transactions, ommers, header.internalGetDifficulty(), 0);
   }
 }

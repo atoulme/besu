@@ -80,7 +80,7 @@ public class IbftExtraData implements ParsedExtraData {
     LOG.warn(
         "Expected a IbftExtraData instance but got {}. Reparsing required.",
         inputExtraData != null ? inputExtraData.getClass().getName() : "null");
-    return decodeRaw(blockHeader.getExtraData());
+    return decodeRaw(blockHeader.internalGetExtraData());
   }
 
   static IbftExtraData decodeRaw(final Bytes input) {

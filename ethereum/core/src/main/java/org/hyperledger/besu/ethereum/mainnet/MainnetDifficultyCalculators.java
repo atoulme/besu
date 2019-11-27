@@ -16,11 +16,11 @@ package org.hyperledger.besu.ethereum.mainnet;
 
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.plugin.data.Quantity;
 
 import java.math.BigInteger;
 
 import com.google.common.primitives.Ints;
-import org.apache.tuweni.units.bigints.UInt256;
 
 /** Provides the various difficultly calculates used on mainnet hard forks. */
 public abstract class MainnetDifficultyCalculators {
@@ -118,7 +118,7 @@ public abstract class MainnetDifficultyCalculators {
     return difficulty.compareTo(MINIMUM_DIFFICULTY) < 0 ? MINIMUM_DIFFICULTY : difficulty;
   }
 
-  private static BigInteger difficulty(final UInt256 value) {
-    return new BigInteger(1, value.toBytes().toArray());
+  private static BigInteger difficulty(final Quantity value) {
+    return (BigInteger) value.getValue();
   }
 }

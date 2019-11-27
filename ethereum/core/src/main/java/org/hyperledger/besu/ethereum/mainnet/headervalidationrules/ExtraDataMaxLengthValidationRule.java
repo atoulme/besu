@@ -36,7 +36,7 @@ public class ExtraDataMaxLengthValidationRule implements DetachedBlockHeaderVali
 
   @Override
   public boolean validate(final BlockHeader header, final BlockHeader parent) {
-    return validateExtraData(header.getExtraData());
+    return validateExtraData(header.internalGetExtraData());
   }
 
   private boolean validateExtraData(final Bytes extraData) {

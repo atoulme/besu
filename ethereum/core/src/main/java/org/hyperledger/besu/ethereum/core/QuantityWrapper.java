@@ -12,21 +12,37 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package org.hyperledger.besu.consensus.ibftlegacy;
+package org.hyperledger.besu.ethereum.core;
 
-import org.hyperledger.besu.ethereum.core.BlockHeader;
-import org.hyperledger.besu.ethereum.core.BlockHeaderFunctions;
-import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.plugin.data.Quantity;
 
-public class LegacyIbftBlockHeaderFunctions implements BlockHeaderFunctions {
+import org.apache.tuweni.units.bigints.UInt256;
 
-  @Override
-  public Hash hash(final BlockHeader header) {
-    return IbftBlockHashing.calculateHashOfIbftBlockOnChain(header);
+public class QuantityWrapper implements Quantity {
+
+  private final UInt256 value;
+
+  public QuantityWrapper(final UInt256 value) {
+    this.value = value;
   }
 
   @Override
-  public IbftExtraData parseExtraData(final BlockHeader header) {
-    return IbftExtraData.decodeRaw(header.internalGetExtraData());
+  public Number getValue() {
+    return value.toBigInteger();
+  }
+
+  @Override
+  public byte[] getByteArray() {
+    return value.toBytes().toArrayUnsafe();
+  }
+
+  @Override
+  public String getHexString() {
+    return value.toHexString();
+  }
+
+  @Override
+  public int size() {
+    return value.toBytes().size();
   }
 }

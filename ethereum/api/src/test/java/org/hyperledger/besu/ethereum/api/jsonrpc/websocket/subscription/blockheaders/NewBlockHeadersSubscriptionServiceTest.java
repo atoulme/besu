@@ -126,7 +126,11 @@ public class NewBlockHeadersSubscriptionServiceTest {
     final List<TransactionWithMetadata> txHashList = transactionsWithMetadata();
     final BlockWithMetadata<TransactionWithMetadata, Hash> testBlockWithMetadata =
         new BlockWithMetadata<>(
-            blockHeader, txHashList, Collections.emptyList(), blockHeader.getDifficulty(), 0);
+            blockHeader,
+            txHashList,
+            Collections.emptyList(),
+            blockHeader.internalGetDifficulty(),
+            0);
     final BlockResult expectedNewBlock =
         blockResultFactory.transactionComplete(testBlockWithMetadata);
     when(blockchainQueries.blockByHash(testBlockWithMetadata.getHeader().getHash()))
