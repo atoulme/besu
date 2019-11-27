@@ -20,6 +20,8 @@ import org.hyperledger.besu.plugin.data.UnformattedData;
 
 import org.apache.tuweni.bytes.Bytes;
 
+import java.util.Objects;
+
 /** Wrapper for a Bytes value to be exposed as UnformattedData. */
 public class UnformattedDataWrapper implements UnformattedData {
 
@@ -47,5 +49,18 @@ public class UnformattedDataWrapper implements UnformattedData {
   @Override
   public String toString() {
     return getHexString();
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UnformattedDataWrapper that = (UnformattedDataWrapper) o;
+    return Objects.equals(value, that.value);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(value);
   }
 }
