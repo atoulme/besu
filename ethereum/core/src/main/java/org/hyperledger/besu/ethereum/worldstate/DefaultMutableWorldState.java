@@ -109,7 +109,7 @@ public class DefaultMutableWorldState implements MutableWorldState {
   public Account get(final Address address) {
     final Hash addressHash = Hash.hash(address);
     return accountStateTrie
-        .get(Hash.hash(address))
+        .get(addressHash)
         .map(bytes -> deserializeAccount(address, addressHash, bytes))
         .orElse(null);
   }
