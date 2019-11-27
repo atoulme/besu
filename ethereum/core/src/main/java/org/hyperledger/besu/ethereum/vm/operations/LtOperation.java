@@ -39,7 +39,7 @@ public class LtOperation extends AbstractOperation {
     final UInt256 value1 = UInt256.fromBytes(frame.popStackItem());
 
     final Bytes32 result =
-        value0.compareTo(value1) < 0 ? UInt256.valueOf(1).toBytes() : UInt256.valueOf(0).toBytes();
+        value0.compareTo(value1) < 0 ? UInt256.valueOf(1).toBytes() : UInt256.ZERO.toBytes();
 
     frame.pushStackItem(result);
   }

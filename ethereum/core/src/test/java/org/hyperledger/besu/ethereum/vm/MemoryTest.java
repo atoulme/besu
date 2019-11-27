@@ -42,7 +42,7 @@ public class MemoryTest {
   public void shouldSetMemoryWhenLengthEqualToSourceLength() {
     final Bytes value = Bytes.concatenate(WORD1, WORD2, WORD3);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(value.size()), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(WORD1);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(WORD1);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(WORD2);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(WORD3);
   }
@@ -51,7 +51,7 @@ public class MemoryTest {
   public void shouldSetMemoryWhenLengthLessThanSourceLength() {
     final Bytes value = Bytes.concatenate(WORD1, WORD2, WORD3);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(64), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(WORD1);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(WORD1);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(WORD2);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(Bytes32.ZERO);
   }
@@ -60,7 +60,7 @@ public class MemoryTest {
   public void shouldSetMemoryWhenLengthGreaterThanSourceLength() {
     final Bytes value = Bytes.concatenate(WORD1, WORD2);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(96), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(WORD1);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(WORD1);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(WORD2);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(Bytes32.ZERO);
   }
@@ -74,7 +74,7 @@ public class MemoryTest {
 
     final Bytes value = Bytes.concatenate(WORD1, WORD2);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(96), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(WORD1);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(WORD1);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(WORD2);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(96))).isEqualTo(WORD4);
@@ -106,7 +106,7 @@ public class MemoryTest {
 
     final Bytes value = Bytes.concatenate(WORD1, WORD2);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(32), UInt256.valueOf(64), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(WORD2);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(WORD2);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(WORD3);
   }
@@ -118,7 +118,7 @@ public class MemoryTest {
 
     final Bytes value = Bytes.concatenate(WORD1, WORD2);
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(94), UInt256.valueOf(64), value);
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(Bytes32.ZERO);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(WORD3);
   }
@@ -130,7 +130,7 @@ public class MemoryTest {
 
     memory.setBytes(UInt256.ZERO, UInt256.valueOf(96), Bytes.EMPTY);
 
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(Bytes32.ZERO);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(Bytes32.ZERO);
   }
@@ -142,7 +142,7 @@ public class MemoryTest {
 
     memory.setBytes(UInt256.ZERO, UInt256.ZERO, UInt256.valueOf(96), Bytes.EMPTY);
 
-    assertThat(memory.getWord(UInt256.valueOf(0))).isEqualTo(Bytes32.ZERO);
+    assertThat(memory.getWord(UInt256.ZERO)).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(32))).isEqualTo(Bytes32.ZERO);
     assertThat(memory.getWord(UInt256.valueOf(64))).isEqualTo(Bytes32.ZERO);
   }

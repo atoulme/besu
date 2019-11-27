@@ -895,7 +895,7 @@ public class DefaultBlockchainTest {
   private void assertTotalDifficultiesAreConsistent(final Blockchain blockchain, final Block head) {
     // Check that total difficulties are summed correctly
     long num = BlockHeader.GENESIS_BLOCK_NUMBER;
-    UInt256 td = UInt256.valueOf(0);
+    UInt256 td = UInt256.ZERO;
     while (num <= head.getHeader().getNumber()) {
       final Hash curHash = blockchain.getBlockHashByNumber(num).get();
       final BlockHeader curHead = blockchain.getBlockHeader(curHash).get();

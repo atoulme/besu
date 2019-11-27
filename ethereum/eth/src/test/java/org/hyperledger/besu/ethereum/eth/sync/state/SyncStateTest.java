@@ -61,7 +61,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SyncStateTest {
 
-  private static final UInt256 standardDifficultyPerBlock = UInt256.valueOf(1L);
+  private static final UInt256 standardDifficultyPerBlock = UInt256.ONE;
   private static final long OUR_CHAIN_HEAD_NUMBER = 20;
   private static final UInt256 OUR_CHAIN_DIFFICULTY =
       standardDifficultyPerBlock.multiply(OUR_CHAIN_HEAD_NUMBER);

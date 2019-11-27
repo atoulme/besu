@@ -221,8 +221,7 @@ public class FullSyncChainDownloaderTest {
     localBlockchainSetup.importFirstBlocks(3);
     gen = new BlockDataGenerator();
     final Block chainHead = localBlockchain.getChainHeadBlock();
-    final Block forkBlock =
-        gen.block(gen.nextBlockOptions(chainHead).setDifficulty(UInt256.valueOf(0L)));
+    final Block forkBlock = gen.block(gen.nextBlockOptions(chainHead).setDifficulty(UInt256.ZERO));
     localBlockchain.appendBlock(forkBlock, gen.receipts(forkBlock));
 
     // Sanity check

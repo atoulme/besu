@@ -86,7 +86,7 @@ public class CliqueDifficultyValidationRuleTest {
   @Test
   public void isTrueIfOutTurnValidatorSuppliesDifficultyOfOne() {
     final long OUT_OF_TURN_BLOCK_NUMBER = validatorList.size() - 1L;
-    final UInt256 REPORTED_DIFFICULTY = UInt256.valueOf(1);
+    final UInt256 REPORTED_DIFFICULTY = UInt256.ONE;
 
     blockHeaderBuilder.number(OUT_OF_TURN_BLOCK_NUMBER - 1L);
     final BlockHeader parentHeader =
@@ -125,7 +125,7 @@ public class CliqueDifficultyValidationRuleTest {
   @Test
   public void isFalseIfInTurnValidatorSuppliesDifficultyOfOne() {
     final long IN_TURN_BLOCK_NUMBER = validatorList.size();
-    final UInt256 REPORTED_DIFFICULTY = UInt256.valueOf(1);
+    final UInt256 REPORTED_DIFFICULTY = UInt256.ONE;
 
     blockHeaderBuilder.number(IN_TURN_BLOCK_NUMBER - 1L);
     final BlockHeader parentHeader =

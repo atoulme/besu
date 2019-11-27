@@ -73,7 +73,7 @@ public class WorldStateProofProviderTest {
     final WorldStateStorage.Updater updater = worldStateStorage.updater();
 
     // Add some storage values
-    writeStorageValue(storageTrie, UInt256.valueOf(1L), UInt256.valueOf(2L));
+    writeStorageValue(storageTrie, UInt256.ONE, UInt256.valueOf(2L));
     writeStorageValue(storageTrie, UInt256.valueOf(2L), UInt256.valueOf(4L));
     writeStorageValue(storageTrie, UInt256.valueOf(3L), UInt256.valueOf(6L));
     // Save to Storage
@@ -93,7 +93,7 @@ public class WorldStateProofProviderTest {
     updater.commit();
 
     final List<UInt256> storageKeys =
-        Arrays.asList(UInt256.valueOf(1L), UInt256.valueOf(3L), UInt256.valueOf(6L));
+        Arrays.asList(UInt256.ONE, UInt256.valueOf(3L), UInt256.valueOf(6L));
     final Optional<WorldStateProof> accountProof =
         worldStateProofProvider.getAccountProof(
             Hash.wrap(worldStateTrie.getRootHash()), address, storageKeys);
@@ -105,7 +105,7 @@ public class WorldStateProofProviderTest {
     // Check storage fields
     assertThat(accountProof.get().getStorageKeys()).isEqualTo(storageKeys);
     // Check key 1
-    UInt256 storageKey = UInt256.valueOf(1L);
+    UInt256 storageKey = UInt256.ONE;
     assertThat(accountProof.get().getStorageValue(storageKey)).isEqualTo(UInt256.valueOf(2L));
     assertThat(accountProof.get().getStorageProof(storageKey).size()).isGreaterThanOrEqualTo(1);
     // Check key 3
@@ -114,7 +114,7 @@ public class WorldStateProofProviderTest {
     assertThat(accountProof.get().getStorageProof(storageKey).size()).isGreaterThanOrEqualTo(1);
     // Check key 6
     storageKey = UInt256.valueOf(6L);
-    assertThat(accountProof.get().getStorageValue(storageKey)).isEqualTo(UInt256.valueOf(0L));
+    assertThat(accountProof.get().getStorageValue(storageKey)).isEqualTo(UInt256.ZERO);
     assertThat(accountProof.get().getStorageProof(storageKey).size()).isGreaterThanOrEqualTo(1);
   }
 

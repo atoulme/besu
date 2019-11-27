@@ -38,8 +38,7 @@ public class EqOperation extends AbstractOperation {
     final UInt256 value0 = UInt256.fromBytes(frame.popStackItem());
     final UInt256 value1 = UInt256.fromBytes(frame.popStackItem());
 
-    final Bytes32 result =
-        (value0.equals(value1) ? UInt256.valueOf(1) : UInt256.valueOf(0)).toBytes();
+    final Bytes32 result = (value0.equals(value1) ? UInt256.valueOf(1) : UInt256.ZERO).toBytes();
 
     frame.pushStackItem(result);
   }
