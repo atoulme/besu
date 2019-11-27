@@ -41,7 +41,7 @@ public class IbftExtraDataTest {
 
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
     encoder.writeBytes(proposerSeal.encodedBytes());
     encoder.writeList(committerSeals, (committer, rlp) -> rlp.writeBytes(committer.encodedBytes()));
     encoder.endList();
@@ -70,7 +70,7 @@ public class IbftExtraDataTest {
 
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList(); // This is required to create a "root node" for all RLP'd data
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
     encoder.writeBytes(proposerSeal.encodedBytes());
     encoder.writeList(committerSeals, (committer, rlp) -> rlp.writeBytes(committer.encodedBytes()));
     encoder.endList();
@@ -97,7 +97,7 @@ public class IbftExtraDataTest {
 
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
     encoder.writeBytes(proposerSeal.encodedBytes());
     encoder.writeList(committerSeals, (committer, rlp) -> rlp.writeBytes(committer.encodedBytes()));
     encoder.writeLong(1);
@@ -119,7 +119,7 @@ public class IbftExtraDataTest {
 
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
     encoder.writeBytes(proposerSeal.encodedBytes());
     encoder.writeList(committerSeals, (committer, rlp) -> rlp.writeBytes(committer.encodedBytes()));
     encoder.endList();

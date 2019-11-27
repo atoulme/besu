@@ -16,6 +16,8 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.parameters;
 
 import static java.util.Collections.singletonList;
 
+import org.hyperledger.besu.ethereum.core.LogTopic;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -24,10 +26,9 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.collect.Lists;
-import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 
-public class TopicsDeserializer extends StdDeserializer<List<List<Bytes32>>> {
+public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
   public TopicsDeserializer() {
     this(null);
   }
@@ -37,22 +38,23 @@ public class TopicsDeserializer extends StdDeserializer<List<List<Bytes32>>> {
   }
 
   @Override
-  public List<List<Bytes32>> deserialize(
+  public List<List<LogTopic>> deserialize(
       final JsonParser jsonparser, final DeserializationContext context) throws IOException {
     final JsonNode topicsNode = jsonparser.getCodec().readTree(jsonparser);
-    final List<List<Bytes32>> topics = Lists.newArrayList();
+    final List<List<LogTopic>> topics = Lists.newArrayList();
 
     if (!topicsNode.isArray()) {
-      topics.add(singletonList(Bytes32.fromHexStringLenient(topicsNode.textValue())));
+      topics.add(
+          singletonList(LogTopic.wrap(Bytes32.fromHexStringLenient(topicsNode.textValue()))));
     } else {
       for (JsonNode child : topicsNode) {
         if (child.isArray()) {
-          final List<Bytes32> childItems = Lists.newArrayList();
+          final List<LogTopic> childItems = Lists.newArrayList();
           for (JsonNode subChild : child) {
             if (subChild.isNull()) {
               childItems.add(null);
             } else {
-              childItems.add(Bytes32.wrap(Bytes.fromHexStringLenient(subChild.textValue())));
+              childItems.add(LogTopic.wrap(Bytes32.fromHexStringLenient(subChild.textValue())));
             }
           }
           topics.add(childItems);
@@ -60,7 +62,8 @@ public class TopicsDeserializer extends StdDeserializer<List<List<Bytes32>>> {
           if (child.isNull()) {
             topics.add(singletonList(null));
           } else {
-            topics.add(singletonList(Bytes32.wrap(Bytes.fromHexStringLenient(child.textValue()))));
+            topics.add(
+                singletonList(LogTopic.wrap(Bytes32.fromHexStringLenient(child.textValue()))));
           }
         }
       }

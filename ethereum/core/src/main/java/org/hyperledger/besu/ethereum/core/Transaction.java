@@ -400,7 +400,7 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
               out.writeLongScalar(nonce);
               out.writeBytes(gasPrice.trimLeadingZeros());
               out.writeLongScalar(gasLimit);
-              out.writeBytes(to == null ? Bytes.EMPTY : to.toBytes());
+              out.writeBytes(to == null ? Bytes.EMPTY : to);
               out.writeBytes(value.trimLeadingZeros());
               out.writeBytes(payload);
               if (chainId.isPresent()) {

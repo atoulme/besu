@@ -79,7 +79,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -117,7 +117,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -147,7 +147,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encode an empty vote
     encoder.writeNull();
@@ -200,7 +200,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -256,11 +256,11 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList(); // This is required to create a "root node" for all RLP'd data
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     encoder.startList();
-    encoder.writeBytes(Address.fromHexString("1").toBytes());
+    encoder.writeBytes(Address.fromHexString("1"));
     encoder.writeByte(Vote.ADD_BYTE_VALUE);
     encoder.endList();
 
@@ -339,7 +339,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -374,7 +374,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -404,7 +404,7 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encoded vote
     vote.get().writeTo(encoder);
@@ -439,11 +439,11 @@ public class IbftExtraDataTest {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanity_data);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
 
     // encode vote
     encoder.startList();
-    encoder.writeBytes(voteRecipient.toBytes());
+    encoder.writeBytes(voteRecipient);
     encoder.writeByte(voteType);
     encoder.endList();
 

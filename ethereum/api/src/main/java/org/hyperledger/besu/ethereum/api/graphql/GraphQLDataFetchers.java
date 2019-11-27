@@ -31,6 +31,7 @@ import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
 import org.hyperledger.besu.ethereum.core.Account;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Synchronizer;
@@ -226,7 +227,7 @@ public class GraphQLDataFetchers {
       @SuppressWarnings("unchecked")
       final List<Address> addrs = (List<Address>) filter.get("addresses");
       @SuppressWarnings("unchecked")
-      final List<List<Bytes32>> topics = (List<List<Bytes32>>) filter.get("topics");
+      final List<List<LogTopic>> topics = (List<List<LogTopic>>) filter.get("topics");
 
       final LogsQuery query = new LogsQuery.Builder().addresses(addrs).topics(topics).build();
 

@@ -120,7 +120,7 @@ public class IbftBlockHashing {
     final BytesValueRLPOutput extraDataEncoding = new BytesValueRLPOutput();
     extraDataEncoding.startList();
     extraDataEncoding.writeList(
-        ibftExtraData.getValidators(), (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+        ibftExtraData.getValidators(), (validator, rlp) -> rlp.writeBytes(validator));
 
     if (proposerSeal != null) {
       extraDataEncoding.writeBytes(proposerSeal.encodedBytes());

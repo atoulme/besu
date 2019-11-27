@@ -25,7 +25,6 @@ import org.hyperledger.besu.ethereum.core.ParsedExtraData;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Lists;
@@ -132,12 +131,7 @@ public class CliqueExtraData implements ParsedExtraData {
       final Bytes vanityData,
       final List<Address> validators,
       final Optional<Signature> proposerSeal) {
-    final Bytes validatorData =
-        Bytes.concatenate(
-            validators.stream()
-                .map(Address::toBytes)
-                .collect(Collectors.toList())
-                .toArray(new Bytes[0]));
+    final Bytes validatorData = Bytes.concatenate(validators.toArray(new Bytes[0]));
     return Bytes.concatenate(
         vanityData,
         validatorData,

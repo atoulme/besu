@@ -80,7 +80,7 @@ public class AccountSmartContractPermissioningIsAllowedTransaction implements Tr
         Bytes.concatenate(
             IS_ACCOUNT_ALLOWED_SIGNATURE,
             Bytes.fromHexString("0x000000000000000000000000"),
-            account.toBytes());
+            account);
 
     return org.web3j.protocol.core.methods.request.Transaction.createFunctionCallTransaction(
         null, null, null, null, contractAddress.toString(), payload.toString());

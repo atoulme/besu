@@ -84,7 +84,7 @@ public class Vote {
 
   public void writeTo(final RLPOutput rlpOutput) {
     rlpOutput.startList();
-    rlpOutput.writeBytes(recipient.toBytes());
+    rlpOutput.writeBytes(recipient);
     rlpOutput.writeByte(voteToValue.get(voteType));
     rlpOutput.endList();
   }

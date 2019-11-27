@@ -130,7 +130,7 @@ public class IbftExtraData implements ParsedExtraData {
     final BytesValueRLPOutput encoder = new BytesValueRLPOutput();
     encoder.startList();
     encoder.writeBytes(vanityData);
-    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator.toBytes()));
+    encoder.writeList(validators, (validator, rlp) -> rlp.writeBytes(validator));
     if (vote.isPresent()) {
       vote.get().writeTo(encoder);
     } else {

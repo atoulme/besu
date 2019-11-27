@@ -184,10 +184,6 @@ public class Address extends DelegatingBytes implements org.hyperledger.besu.plu
     return logger instanceof Address ? (Address) logger : wrap(Bytes.wrap(logger.getByteArray()));
   }
 
-  public Bytes toBytes() {
-    return copy();
-  }
-
   @Override
   public byte[] getByteArray() {
     return toArrayUnsafe();
