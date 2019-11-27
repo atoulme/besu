@@ -57,7 +57,7 @@ abstract class AbstractRLPOutput implements RLPOutput {
    * Side-note: this class internally and informally use "element" to refer to a non list items.
    */
 
-  private static final Bytes LIST_MARKER = Bytes.EMPTY;
+  private static final Bytes LIST_MARKER = Bytes.wrap(new byte[0]);
 
   private final List<Bytes> values = new ArrayList<>();
   // For every value i in values, rlpEncoded.get(i) will be true only if the value stored is an

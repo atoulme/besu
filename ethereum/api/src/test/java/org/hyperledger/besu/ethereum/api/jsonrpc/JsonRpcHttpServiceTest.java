@@ -1796,7 +1796,8 @@ public class JsonRpcHttpServiceTest {
     assertThat(Wei.fromHexString(result.getString("gasPrice")))
         .isEqualTo(transaction.getGasPrice());
     assertThat(Long.decode(result.getString("gas"))).isEqualTo(transaction.getGasLimit());
-    assertThat(Bytes.fromHexString(result.getString("input"))).isEqualTo(transaction.getPayload());
+    assertThat(Bytes.fromHexString(result.getString("input")))
+        .isEqualTo(transaction.getPayloadBytes());
   }
 
   private void assertBlockResultMatchesBlock(final JsonObject result, final Block block) {
@@ -1813,7 +1814,8 @@ public class JsonRpcHttpServiceTest {
     assertThat(Address.fromHexString(result.getString("miner"))).isEqualTo(header.getCoinbase());
     assertThat(UInt256.fromHexString(result.getString("difficulty")))
         .isEqualTo(header.internalGetDifficulty());
-    assertThat(Bytes.fromHexString(result.getString("extraData"))).isEqualTo(header.getExtraData());
+    assertThat(Bytes.fromHexStringLenient(result.getString("extraData")))
+        .isEqualTo(header.internalGetExtraData());
     assertThat(hexStringToInt(result.getString("size"))).isEqualTo(block.calculateSize());
     assertThat(Long.decode(result.getString("gasLimit"))).isEqualTo(header.getGasLimit());
     assertThat(Long.decode(result.getString("gasUsed"))).isEqualTo(header.getGasUsed());
@@ -1824,7 +1826,8 @@ public class JsonRpcHttpServiceTest {
     assertThat(nonceResult.length() == 18 && nonceResult.startsWith("0x")).isTrue();
     assertThat(Long.parseUnsignedLong(nonceResult.substring(2), 16)).isEqualTo(header.getNonce());
     assertThat(Hash.fromHexString(result.getString("hash"))).isEqualTo(header.getHash());
-    assertThat(Bytes.fromHexString(result.getString("logsBloom"))).isEqualTo(header.getLogsBloom());
+    assertThat(Bytes.fromHexString(result.getString("logsBloom")))
+        .isEqualTo(header.getLogsBloom().getBytes());
   }
 
   private int hexStringToInt(final String hexString) {

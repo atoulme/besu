@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.MutableBytes;
+import org.apache.tuweni.units.bigints.UInt256Value;
 
 /**
  * An output used to encode data in RLP encoding.
@@ -71,6 +72,15 @@ public interface RLPOutput {
    * @param v The value to write.
    */
   void writeBytes(Bytes v);
+
+  /**
+   * Writes a scalar (encoded with no leading zeroes).
+   *
+   * @param v The scalar to write.
+   */
+  default void writeUInt256Scalar(final UInt256Value<?> v) {
+    writeBytes(v.toBytes().trimLeadingZeros());
+  }
 
   /**
    * Writes a RLP "null", that is an empty value.

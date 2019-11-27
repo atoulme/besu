@@ -82,13 +82,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.apache.tuweni.units.bigints.UInt256;
 import org.awaitility.Awaitility;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /** Tests for {@link Runner}. */
-@Ignore
 public final class RunnerTest {
 
   private static final int MAX_OPEN_FILES = 1024;

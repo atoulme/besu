@@ -43,4 +43,9 @@ public class UnformattedDataWrapper implements UnformattedData {
   public int size() {
     return value.size();
   }
+
+  @Override
+  public String toString() {
+    return getHexString();
+  }
 }

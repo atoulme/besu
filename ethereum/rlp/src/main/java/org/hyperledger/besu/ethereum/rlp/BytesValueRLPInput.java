@@ -48,7 +48,7 @@ public class BytesValueRLPInput extends AbstractRLPInput {
 
   @Override
   protected Bytes32 inputSlice32(final long offset) {
-    return Bytes32.wrap(value, Math.toIntExact(offset));
+    return Bytes32.wrap(inputSlice(offset, 32));
   }
 
   @Override
