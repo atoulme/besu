@@ -130,8 +130,6 @@ public class GeneralStateReferenceTestTools {
 
     // Check the world state root hash.
     final Hash expectedRootHash = spec.expectedRootHash();
-    System.out.println(worldState.rootHash());
-    System.out.println(expectedRootHash);
     assertThat(worldState.rootHash())
         .withFailMessage("Unexpected world state root hash; computed state: %s", worldState)
         .isEqualTo(expectedRootHash);
