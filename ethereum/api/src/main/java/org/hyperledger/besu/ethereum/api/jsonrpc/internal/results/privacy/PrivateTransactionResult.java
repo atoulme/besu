@@ -17,6 +17,7 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.results.privacy;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import org.hyperledger.besu.ethereum.api.jsonrpc.internal.results.Quantity;
+import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.privacy.PrivateTransaction;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -39,12 +40,12 @@ public abstract class PrivateTransactionResult {
   public PrivateTransactionResult(final PrivateTransaction tx) {
     this.from = tx.getSender().toString();
     this.gas = Quantity.create(tx.getGasLimit());
-    this.gasPrice = Quantity.create(tx.getGasPrice().toArrayUnsafe());
+    this.gasPrice = Quantity.create(tx.getGasPrice());
     this.hash = tx.hash().toString();
     this.input = tx.getPayload().toString();
     this.nonce = Quantity.create(tx.getNonce());
-    this.to = tx.getTo().map(a -> a.toHexString()).orElse(null);
-    this.value = Quantity.create(tx.getValue().toArrayUnsafe());
+    this.to = tx.getTo().map(Address::toHexString).orElse(null);
+    this.value = Quantity.create(tx.getValue());
     this.v = Quantity.create(tx.getV());
     this.r = Quantity.create(tx.getR());
     this.s = Quantity.create(tx.getS());

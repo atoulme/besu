@@ -85,7 +85,7 @@ public class Action {
         .input(dumpMemory(traceFrame.getMemory()))
         .gas(gasRemaining.toHexString())
         .callType("call")
-        .value(Quantity.create(transaction.getValue().toUnsignedBigInteger()));
+        .value(Quantity.create(transaction.getValue()));
   }
 
   public static Builder createSelfDestructAction(
@@ -181,7 +181,7 @@ public class Action {
       return new Builder()
           .from(trace.getTransaction().getSender().getHexString())
           .gas(trace.getTraceFrames().get(0).getGasRemaining().toHexString())
-          .value(Quantity.create(trace.getTransaction().getValue().toUnsignedBigInteger()));
+          .value(Quantity.create(trace.getTransaction().getValue()));
     }
 
     public Builder callType(final String callType) {

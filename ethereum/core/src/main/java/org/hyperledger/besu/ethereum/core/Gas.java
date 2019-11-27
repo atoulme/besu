@@ -77,7 +77,7 @@ public final class Gas {
    * @return The price of this amount of gas for a per unit of gas price of {@code gasPrice}.
    */
   public Wei priceFor(final Wei gasPrice) {
-    return Wei.of(UInt256.fromBytes(gasPrice).multiply(UInt256.valueOf(value)));
+    return gasPrice.multiply(value);
   }
 
   public Gas max(final Gas other) {

@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
-import org.apache.tuweni.units.bigints.UInt256;
 
 /**
  * Maintains the set of pending transactions received from JSON-RPC or other nodes. Transactions are
@@ -112,9 +111,7 @@ public class TransactionPool implements BlockAddedObserver {
 
   public ValidationResult<TransactionInvalidReason> addLocalTransaction(
       final Transaction transaction) {
-    if (UInt256.fromBytes(transaction.getGasPrice())
-            .compareTo(UInt256.fromBytes(minTransactionGasPrice))
-        < 0) {
+    if (transaction.getGasPrice().compareTo(minTransactionGasPrice) < 0) {
       return ValidationResult.invalid(TransactionInvalidReason.GAS_PRICE_TOO_LOW);
     }
     final ValidationResult<TransactionInvalidReason> validationResult =
@@ -143,9 +140,7 @@ public class TransactionPool implements BlockAddedObserver {
         duplicateTransactionCounter.labels(REMOTE).inc();
         continue;
       }
-      if (UInt256.fromBytes(transaction.getGasPrice())
-              .compareTo(UInt256.fromBytes(minTransactionGasPrice))
-          < 0) {
+      if (transaction.getGasPrice().compareTo(minTransactionGasPrice) < 0) {
         continue;
       }
       final ValidationResult<TransactionInvalidReason> validationResult =

@@ -19,28 +19,28 @@ import org.hyperledger.besu.plugin.data.Quantity;
 import java.math.BigInteger;
 
 import org.apache.tuweni.bytes.Bytes32;
-import org.apache.tuweni.bytes.DelegatingBytes32;
+import org.apache.tuweni.units.bigints.BaseUInt256Value;
 import org.apache.tuweni.units.bigints.UInt256;
 
 /** A particular quantity of Wei, the Ethereum currency. */
-public final class Wei extends DelegatingBytes32 implements Quantity {
+public final class Wei extends BaseUInt256Value<Wei> implements Quantity {
 
   public static final Wei ZERO = of(0);
 
-  protected Wei(final Bytes32 bytes) {
-    super(bytes);
+  protected Wei(final UInt256 value) {
+    super(value, Wei::new);
   }
 
   private Wei(final long v) {
-    this(UInt256.valueOf(v).toBytes());
+    this(UInt256.valueOf(v));
   }
 
   private Wei(final BigInteger v) {
-    this(UInt256.valueOf(v).toBytes());
+    this(UInt256.valueOf(v));
   }
 
   private Wei(final String hexString) {
-    this(Bytes32.fromHexStringLenient(hexString));
+    this(UInt256.fromHexString(hexString));
   }
 
   public static Wei of(final long value) {
@@ -52,11 +52,11 @@ public final class Wei extends DelegatingBytes32 implements Quantity {
   }
 
   public static Wei of(final UInt256 value) {
-    return new Wei(value.toBytes());
+    return new Wei(value);
   }
 
   public static Wei wrap(final Bytes32 value) {
-    return new Wei(value);
+    return new Wei(UInt256.fromBytes(value));
   }
 
   public static Wei fromHexString(final String str) {
@@ -67,22 +67,28 @@ public final class Wei extends DelegatingBytes32 implements Quantity {
     return Wei.of(BigInteger.valueOf(eth).multiply(BigInteger.TEN.pow(18)));
   }
 
-  public Bytes32 toBytes() {
-    return copy();
-  }
-
   @Override
   public Number getValue() {
-    return toUnsignedBigInteger();
+    return toBigInteger();
   }
 
   @Override
   public byte[] getByteArray() {
-    return toArray();
+    return toBytes().toArray();
   }
 
   @Override
   public String getHexString() {
     return toHexString();
+  }
+
+  @Override
+  public int size() {
+    return toMinimalBytes().size();
+  }
+
+  @Override
+  public Wei copy() {
+    return super.copy();
   }
 }

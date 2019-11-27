@@ -19,6 +19,7 @@ import org.hyperledger.besu.ethereum.core.Transaction;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.tuweni.bytes.Bytes;
 
 @JsonPropertyOrder({
   "blockHash",
@@ -59,13 +60,13 @@ public class TransactionCompleteResult implements TransactionResult {
     this.blockNumber = Quantity.create(tx.getBlockNumber().get());
     this.from = transaction.getSender().toString();
     this.gas = Quantity.create(transaction.getGasLimit());
-    this.gasPrice = Quantity.create(transaction.getGasPrice().toArrayUnsafe());
+    this.gasPrice = Quantity.create(transaction.getGasPrice());
     this.hash = transaction.getHash().toString();
     this.input = transaction.getPayload().toString();
     this.nonce = Quantity.create(transaction.getNonce());
-    this.to = transaction.getTo().map(a -> a.toHexString()).orElse(null);
+    this.to = transaction.getTo().map(Bytes::toHexString).orElse(null);
     this.transactionIndex = Quantity.create(tx.getTransactionIndex().get());
-    this.value = Quantity.create(transaction.getValue().toArrayUnsafe());
+    this.value = Quantity.create(transaction.getValue());
     this.v = Quantity.create(transaction.getV());
     this.r = Quantity.create(transaction.getR());
     this.s = Quantity.create(transaction.getS());

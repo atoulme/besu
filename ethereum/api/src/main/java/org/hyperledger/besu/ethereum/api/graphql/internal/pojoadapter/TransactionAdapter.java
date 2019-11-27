@@ -23,6 +23,7 @@ import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.TransactionReceipt;
+import org.hyperledger.besu.ethereum.core.Wei;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,6 @@ import java.util.Optional;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.units.bigints.UInt256;
 
 @SuppressWarnings("unused") // reflected by GraphQL
 public class TransactionAdapter extends AdapterBase {
@@ -86,12 +86,12 @@ public class TransactionAdapter extends AdapterBase {
                     .map(addr -> new AccountAdapter(ws.get(addr))));
   }
 
-  public Optional<UInt256> getValue() {
-    return Optional.of(UInt256.fromBytes(transactionWithMetadata.getTransaction().getValue()));
+  public Optional<Wei> getValue() {
+    return Optional.of(transactionWithMetadata.getTransaction().getValue());
   }
 
-  public Optional<UInt256> getGasPrice() {
-    return Optional.of(UInt256.fromBytes(transactionWithMetadata.getTransaction().getGasPrice()));
+  public Optional<Wei> getGasPrice() {
+    return Optional.of(transactionWithMetadata.getTransaction().getGasPrice());
   }
 
   public Optional<Long> getGas() {

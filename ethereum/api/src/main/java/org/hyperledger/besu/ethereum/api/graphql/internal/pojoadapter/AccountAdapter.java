@@ -16,6 +16,7 @@ package org.hyperledger.besu.ethereum.api.graphql.internal.pojoadapter;
 
 import org.hyperledger.besu.ethereum.core.Account;
 import org.hyperledger.besu.ethereum.core.Address;
+import org.hyperledger.besu.ethereum.core.Wei;
 
 import java.util.Optional;
 
@@ -36,8 +37,8 @@ public class AccountAdapter extends AdapterBase {
     return Optional.of(account.getAddress());
   }
 
-  public Optional<UInt256> getBalance() {
-    return Optional.of(UInt256.fromBytes(account.getBalance()));
+  public Optional<Wei> getBalance() {
+    return Optional.of(account.getBalance());
   }
 
   public Optional<Long> getTransactionCount() {

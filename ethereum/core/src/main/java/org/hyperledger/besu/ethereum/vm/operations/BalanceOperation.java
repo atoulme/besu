@@ -39,6 +39,6 @@ public class BalanceOperation extends AbstractOperation {
   public void execute(final MessageFrame frame) {
     final Address accountAddress = Words.toAddress(frame.popStackItem());
     final Account account = frame.getWorldState().get(accountAddress);
-    frame.pushStackItem(account == null ? Bytes32.ZERO : account.getBalance());
+    frame.pushStackItem(account == null ? Bytes32.ZERO : account.getBalance().toBytes());
   }
 }

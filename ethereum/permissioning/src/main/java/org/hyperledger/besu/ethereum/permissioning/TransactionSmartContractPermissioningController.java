@@ -193,8 +193,8 @@ public class TransactionSmartContractPermissioningController
     return Bytes.concatenate(
         encodeAddress(transaction.getSender()),
         encodeAddress(transaction.getTo()),
-        transaction.getValue(),
-        transaction.getGasPrice(),
+        transaction.getValue().toBytes(),
+        transaction.getGasPrice().toBytes(),
         encodeLong(transaction.getGasLimit()),
         encodeBytes(transaction.getPayloadBytes()));
   }

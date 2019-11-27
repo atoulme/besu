@@ -94,7 +94,7 @@ public class GetProofResult {
 
   @JsonGetter(value = "balance")
   public String getBalance() {
-    return Quantity.create(balance.toArrayUnsafe());
+    return Quantity.create(balance);
   }
 
   @JsonGetter(value = "codeHash")

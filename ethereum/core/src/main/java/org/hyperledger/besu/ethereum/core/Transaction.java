@@ -302,10 +302,10 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
     out.startList();
 
     out.writeLongScalar(getNonce());
-    out.writeBytes(getGasPrice().trimLeadingZeros());
+    out.writeBytes(getGasPrice().toMinimalBytes());
     out.writeLongScalar(getGasLimit());
     out.writeBytes(getTo().isPresent() ? getTo().get() : Bytes.EMPTY);
-    out.writeBytes(getValue().trimLeadingZeros());
+    out.writeBytes(getValue().toMinimalBytes());
     out.writeBytes(getPayloadBytes());
     writeSignature(out);
 
@@ -369,7 +369,7 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return the up-front cost for the gas the transaction can use.
    */
   public Wei getUpfrontGasCost() {
-    return Wei.of(UInt256.fromBytes(getGasPrice()).multiply(UInt256.valueOf(getGasLimit())));
+    return getGasPrice().multiply(getGasLimit());
   }
 
   /**
@@ -382,7 +382,7 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return the up-front gas cost for the transaction
    */
   public Wei getUpfrontCost() {
-    return Wei.of(UInt256.fromBytes(getUpfrontGasCost()).add(UInt256.fromBytes(getValue())));
+    return getUpfrontGasCost().add(getValue());
   }
 
   private static Bytes32 computeSenderRecoveryHash(
@@ -398,10 +398,10 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
             out -> {
               out.startList();
               out.writeLongScalar(nonce);
-              out.writeBytes(gasPrice.trimLeadingZeros());
+              out.writeBytes(gasPrice.toMinimalBytes());
               out.writeLongScalar(gasLimit);
               out.writeBytes(to == null ? Bytes.EMPTY : to);
-              out.writeBytes(value.trimLeadingZeros());
+              out.writeBytes(value.toMinimalBytes());
               out.writeBytes(payload);
               if (chainId.isPresent()) {
                 out.writeBigIntegerScalar(chainId.get());

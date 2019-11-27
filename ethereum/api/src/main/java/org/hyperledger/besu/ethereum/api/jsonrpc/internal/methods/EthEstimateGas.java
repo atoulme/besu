@@ -77,9 +77,7 @@ public class EthEstimateGas implements JsonRpcMethod {
         callParams.getTo() != null ? callParams.getTo().toString() : null,
         Quantity.create(gasLimit),
         Quantity.create(0L),
-        callParams.getValue() != null
-            ? Quantity.create(callParams.getValue().toArrayUnsafe())
-            : null,
+        callParams.getValue() != null ? Quantity.create(callParams.getValue()) : null,
         callParams.getPayload() != null ? callParams.getPayload().toString() : null);
   }
 

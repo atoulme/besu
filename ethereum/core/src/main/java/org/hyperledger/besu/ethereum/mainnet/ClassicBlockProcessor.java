@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tuweni.units.bigints.UInt256;
 
 public class ClassicBlockProcessor extends AbstractBlockProcessor {
 
@@ -58,14 +57,14 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
       return true;
     }
     final int blockEra = getBlockEra(header.getNumber(), ERA_LENGTH);
-    final UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(blockEra));
-    final UInt256 uncleInclusionReward = winnerReward.divide(UInt256.valueOf(32));
-    final UInt256 coinbaseReward =
+    final Wei winnerReward = getBlockWinnerRewardByEra(blockEra);
+    final Wei uncleInclusionReward = winnerReward.divide(32);
+    final Wei coinbaseReward =
         winnerReward.add(uncleInclusionReward.multiply(ommers.size()).divide(32));
     final WorldUpdater updater = worldState.updater();
     final MutableAccount coinbase = updater.getOrCreate(header.getCoinbase()).getMutable();
 
-    coinbase.incrementBalance(Wei.of(coinbaseReward));
+    coinbase.incrementBalance(coinbaseReward);
     for (final BlockHeader ommerHeader : ommers) {
       if (ommerHeader.getNumber() - header.getNumber() > MAX_GENERATION) {
         LOG.warn(
@@ -90,11 +89,11 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
   // getUncleInclusionReword return reward for including
   //  an uncle block
   private Wei calculateOmmerReward(final int era, final long distance) {
-    UInt256 winnerReward = UInt256.fromBytes(getBlockWinnerRewardByEra(era));
+    Wei winnerReward = getBlockWinnerRewardByEra(era);
     if (era < 1) {
-      return Wei.of(winnerReward.subtract(winnerReward.multiply(distance).divide(8)));
+      return winnerReward.subtract(winnerReward.multiply(distance).divide(8));
     }
-    return Wei.of(winnerReward.divide(32));
+    return winnerReward.divide(32);
   }
 
   // GetBlockEra gets which "Era" a given block is within, given an era length (ecip-1017 has
@@ -128,7 +127,7 @@ public class ClassicBlockProcessor extends AbstractBlockProcessor {
     BigInteger d;
     d = disinflationRateDivisor.pow(era);
 
-    BigInteger maximumBlockReward = this.blockReward.toUnsignedBigInteger();
+    BigInteger maximumBlockReward = this.blockReward.toBigInteger();
     BigInteger r;
     r = maximumBlockReward.multiply(q);
 

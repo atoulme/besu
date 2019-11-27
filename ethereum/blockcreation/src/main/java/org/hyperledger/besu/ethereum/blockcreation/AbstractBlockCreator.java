@@ -289,16 +289,14 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
     // TODO(tmm): Added to make this work, should come from blockProcessor.
     final int MAX_GENERATION = 6;
-    final UInt256 reward = UInt256.fromBytes(blockReward);
-    if (skipZeroBlockRewards && reward.isZero()) {
+    if (skipZeroBlockRewards && blockReward.isZero()) {
       return true;
     }
-    final UInt256 coinbaseReward =
-        reward.add(reward.multiply(ommers.size()).divide(UInt256.valueOf(32)));
+    final Wei coinbaseReward = blockReward.add(blockReward.multiply(ommers.size()).divide(32));
     final WorldUpdater updater = worldState.updater();
     final DefaultEvmAccount beneficiary = updater.getOrCreate(miningBeneficiary);
 
-    beneficiary.getMutable().incrementBalance(Wei.of(coinbaseReward));
+    beneficiary.getMutable().incrementBalance(coinbaseReward);
     for (final BlockHeader ommerHeader : ommers) {
       if (ommerHeader.getNumber() - header.getNumber() > MAX_GENERATION) {
         LOG.trace(
@@ -311,9 +309,7 @@ public abstract class AbstractBlockCreator<C> implements AsyncBlockCreator {
 
       final DefaultEvmAccount ommerCoinbase = updater.getOrCreate(ommerHeader.getCoinbase());
       final long distance = header.getNumber() - ommerHeader.getNumber();
-      final UInt256 bReward = UInt256.fromBytes(blockReward);
-      final Wei ommerReward =
-          Wei.of(bReward.subtract(bReward.multiply(distance).divide(UInt256.valueOf(8))));
+      final Wei ommerReward = blockReward.subtract(blockReward.multiply(distance).divide(8));
       ommerCoinbase.getMutable().incrementBalance(ommerReward);
     }
 

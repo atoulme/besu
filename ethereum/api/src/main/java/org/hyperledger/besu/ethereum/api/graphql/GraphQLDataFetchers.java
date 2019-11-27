@@ -36,6 +36,7 @@ import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Synchronizer;
 import org.hyperledger.besu.ethereum.core.Transaction;
+import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.eth.EthProtocol;
 import org.hyperledger.besu.ethereum.eth.transactions.TransactionPool;
 import org.hyperledger.besu.ethereum.mainnet.TransactionValidator.TransactionInvalidReason;
@@ -56,7 +57,6 @@ import com.google.common.base.Preconditions;
 import graphql.schema.DataFetcher;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
-import org.apache.tuweni.units.bigints.UInt256;
 
 public class GraphQLDataFetchers {
   public GraphQLDataFetchers(final Set<Capability> supportedCapabilities) {
@@ -112,12 +112,12 @@ public class GraphQLDataFetchers {
     };
   }
 
-  DataFetcher<Optional<UInt256>> getGasPriceDataFetcher() {
+  DataFetcher<Optional<Wei>> getGasPriceDataFetcher() {
     return dataFetchingEnvironment -> {
       final MiningCoordinator miningCoordinator =
           ((GraphQLDataFetcherContext) dataFetchingEnvironment.getContext()).getMiningCoordinator();
 
-      return Optional.of(UInt256.fromBytes(miningCoordinator.getMinTransactionGasPrice()));
+      return Optional.of(miningCoordinator.getMinTransactionGasPrice());
     };
   }
 

@@ -48,7 +48,7 @@ public interface MutableAccount extends Account {
    */
   default Wei incrementBalance(final Wei value) {
     final Wei current = getBalance();
-    setBalance(Wei.of(UInt256.fromBytes(current).add(UInt256.fromBytes(value))));
+    setBalance(current.add(value));
     return current;
   }
 
@@ -62,11 +62,11 @@ public interface MutableAccount extends Account {
    */
   default Wei decrementBalance(final Wei value) {
     final Wei current = getBalance();
-    if (UInt256.fromBytes(current).compareTo(UInt256.fromBytes(value)) < 0) {
+    if (current.compareTo(value) < 0) {
       throw new IllegalStateException(
           String.format("Cannot remove %s wei from account, balance is only %s", value, current));
     }
-    setBalance(Wei.of(UInt256.fromBytes(current).subtract(UInt256.fromBytes(value))));
+    setBalance(current.subtract(value));
     return current;
   }
 

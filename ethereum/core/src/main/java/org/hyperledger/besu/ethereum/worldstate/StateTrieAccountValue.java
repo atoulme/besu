@@ -96,7 +96,7 @@ public class StateTrieAccountValue {
     out.startList();
 
     out.writeLongScalar(nonce);
-    out.writeBytes(balance.trimLeadingZeros());
+    out.writeBytes(balance.toMinimalBytes());
     out.writeBytes(storageRoot);
     out.writeBytes(codeHash);
 
