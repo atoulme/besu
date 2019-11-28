@@ -369,7 +369,7 @@ public class Transaction implements org.hyperledger.besu.plugin.data.Transaction
    * @return the up-front cost for the gas the transaction can use.
    */
   public Wei getUpfrontGasCost() {
-    return getGasPrice().multiply(getGasLimit());
+    return Wei.of(getGasLimit()).multiply(getGasPrice());
   }
 
   /**
