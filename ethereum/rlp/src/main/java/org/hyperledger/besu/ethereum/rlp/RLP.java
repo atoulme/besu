@@ -179,8 +179,7 @@ public abstract class RLP {
                 encodedValue, sizeLength + 1, encodedValue.size()));
       }
       offset = 1 + sizeLength;
-      size =
-          (int) RLPDecodingHelpers.extractSize((index) -> encodedValue.get(index), 1, sizeLength);
+      size = RLPDecodingHelpers.extractSize((index) -> encodedValue.get(index), 1, sizeLength);
     }
     if (offset + size != encodedValue.size()) {
       throw new RLPException(

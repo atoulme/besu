@@ -85,7 +85,7 @@ public class Subscribers<T> {
    *
    * @param subscriberId the ID of the subscriber to remove
    * @return <code>true</code> if a subscriber with that ID was found and removed, otherwise <code>
-   * false</code>
+   *     false</code>
    */
   public boolean unsubscribe(final long subscriberId) {
     return subscribers.remove(subscriberId) != null;
