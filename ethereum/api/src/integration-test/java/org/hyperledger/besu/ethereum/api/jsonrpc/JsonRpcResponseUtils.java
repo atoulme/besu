@@ -164,7 +164,6 @@ public class JsonRpcResponseUtils {
     when(transaction.getHash()).thenReturn(hash(hash));
     when(transaction.getTo()).thenReturn(Optional.ofNullable(address(toAddress)));
     when(transaction.getSender()).thenReturn(address(fromAddress));
-    when(transaction.getPayloadBytes()).thenReturn(bytes(input));
     when(transaction.getPayload()).thenReturn(new UnformattedDataWrapper(bytes(input)));
     when(transaction.getValue()).thenReturn(wei(value));
     when(transaction.getGasLimit()).thenReturn(unsignedLong(gas));
