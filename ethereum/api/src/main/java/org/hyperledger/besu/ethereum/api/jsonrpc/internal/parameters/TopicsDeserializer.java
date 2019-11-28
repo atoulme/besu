@@ -44,8 +44,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
     final List<List<LogTopic>> topics = Lists.newArrayList();
 
     if (!topicsNode.isArray()) {
-      topics.add(
-          singletonList(LogTopic.wrap(Bytes32.fromHexStringLenient(topicsNode.textValue()))));
+      topics.add(singletonList(LogTopic.wrap(Bytes32.fromHexString(topicsNode.textValue()))));
     } else {
       for (JsonNode child : topicsNode) {
         if (child.isArray()) {
@@ -54,7 +53,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
             if (subChild.isNull()) {
               childItems.add(null);
             } else {
-              childItems.add(LogTopic.wrap(Bytes32.fromHexStringLenient(subChild.textValue())));
+              childItems.add(LogTopic.wrap(Bytes32.fromHexString(subChild.textValue())));
             }
           }
           topics.add(childItems);
@@ -62,8 +61,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
           if (child.isNull()) {
             topics.add(singletonList(null));
           } else {
-            topics.add(
-                singletonList(LogTopic.wrap(Bytes32.fromHexStringLenient(child.textValue()))));
+            topics.add(singletonList(LogTopic.wrap(Bytes32.fromHexString(child.textValue()))));
           }
         }
       }

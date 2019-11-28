@@ -34,7 +34,6 @@ import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.BlockWithReceipts;
 import org.hyperledger.besu.ethereum.core.InMemoryStorageProvider;
 import org.hyperledger.besu.ethereum.core.Log;
-import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.TransactionReceipt;
 
@@ -49,6 +48,7 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Lists;
 import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -351,7 +351,7 @@ public class LogsSubscriptionServiceTest {
   }
 
   private LogsSubscription createSubscription(
-      final List<Address> addresses, final List<List<LogTopic>> logTopics) {
+      final List<Address> addresses, final List<List<Bytes32>> logTopics) {
 
     return new LogsSubscription(
         nextSubscriptionId.incrementAndGet(), "conn", new LogsQuery(addresses, logTopics));

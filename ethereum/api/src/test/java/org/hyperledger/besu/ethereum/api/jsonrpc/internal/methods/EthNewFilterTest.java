@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -141,7 +142,7 @@ public class EthNewFilterTest {
   @Test
   public void newFilterWithAddressAndTopicsParamInstallsExpectedLogFilter() {
     final Address address = Address.fromHexString("0x0");
-    final List<List<LogTopic>> topics = topics();
+    final List<List<Bytes32>> topics = topics();
     final FilterParameter filterParameter = filterParamWithAddressAndTopics(address, topics);
     final JsonRpcRequestContext request = ethNewFilter(filterParameter);
     final JsonRpcResponse expectedResponse =
@@ -159,7 +160,7 @@ public class EthNewFilterTest {
             refEq(blockParamLatest()), refEq(blockParamLatest()), eq(expectedLogsQuery));
   }
 
-  private List<List<LogTopic>> topics() {
+  private List<List<Bytes32>> topics() {
     return singletonList(
         singletonList(
             LogTopic.fromHexString(
@@ -167,7 +168,7 @@ public class EthNewFilterTest {
   }
 
   private FilterParameter filterParamWithAddressAndTopics(
-      final Address address, final List<List<LogTopic>> topics) {
+      final Address address, final List<List<Bytes32>> topics) {
     return new FilterParameter(
         "latest",
         "latest",

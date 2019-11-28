@@ -31,6 +31,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import org.apache.tuweni.bytes.Bytes;
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Test;
 
 public class LogsQueryTest {
@@ -107,10 +108,10 @@ public class LogsQueryTest {
         LogTopic.fromHexString(
             "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-    final List<LogTopic> topics = new ArrayList<>();
+    final List<Bytes32> topics = new ArrayList<>();
     topics.add(topic);
 
-    final List<List<LogTopic>> topicsQuery = new ArrayList<>();
+    final List<List<Bytes32>> topicsQuery = new ArrayList<>();
     topicsQuery.add(topics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(topicsQuery).build();
@@ -126,10 +127,10 @@ public class LogsQueryTest {
         LogTopic.fromHexString(
             "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
-    final List<LogTopic> topics = new ArrayList<>();
+    final List<Bytes32> topics = new ArrayList<>();
     topics.add(topic);
 
-    final List<List<LogTopic>> topicsQuery = new ArrayList<>();
+    final List<List<Bytes32>> topicsQuery = new ArrayList<>();
     topicsQuery.add(topics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(topicsQuery).build();
@@ -145,8 +146,8 @@ public class LogsQueryTest {
     final LogTopic topic =
         LogTopic.fromHexString(
             "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    final List<LogTopic> topics = Lists.newArrayList(topic);
-    final List<List<LogTopic>> topicsQuery = new ArrayList<>();
+    final List<Bytes32> topics = Lists.newArrayList(topic);
+    final List<List<Bytes32>> topicsQuery = new ArrayList<>();
     topicsQuery.add(topics);
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(topicsQuery).build();
 
@@ -176,10 +177,10 @@ public class LogsQueryTest {
     logTopics.add(topic1);
     logTopics.add(topic2);
 
-    final List<LogTopic> queryTopics = new ArrayList<>();
+    final List<Bytes32> queryTopics = new ArrayList<>();
     queryTopics.add(topic3);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(queryParameter).build();
@@ -209,11 +210,11 @@ public class LogsQueryTest {
     logTopics.add(topic2);
     logTopics.add(topic3);
 
-    final List<LogTopic> queryTopics = new ArrayList<>();
+    final List<Bytes32> queryTopics = new ArrayList<>();
     queryTopics.add(topic4);
     queryTopics.add(topic2);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics);
 
     final LogsQuery query =
@@ -240,11 +241,11 @@ public class LogsQueryTest {
     logTopics.add(topic1);
     logTopics.add(topic2);
 
-    final List<LogTopic> queryTopics = new ArrayList<>();
+    final List<Bytes32> queryTopics = new ArrayList<>();
     queryTopics.add(topic1);
     queryTopics.add(topic2);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(queryParameter).build();
@@ -273,11 +274,11 @@ public class LogsQueryTest {
     logTopics.add(topic1);
     logTopics.add(topic2);
 
-    final List<LogTopic> queryTopics = new ArrayList<>();
+    final List<Bytes32> queryTopics = new ArrayList<>();
     queryTopics.add(topic1);
     queryTopics.add(topic3);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(queryParameter).build();
@@ -307,11 +308,11 @@ public class LogsQueryTest {
     logTopics.add(topic2);
     logTopics.add(topic3);
 
-    final List<LogTopic> queryTopics = new ArrayList<>();
+    final List<Bytes32> queryTopics = new ArrayList<>();
     queryTopics.add(topic1);
     queryTopics.add(topic2);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics);
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(queryParameter).build();
@@ -340,14 +341,14 @@ public class LogsQueryTest {
     logTopics.add(topic2);
     logTopics.add(topic2);
 
-    final List<LogTopic> queryTopics1 = new ArrayList<>();
+    final List<Bytes32> queryTopics1 = new ArrayList<>();
     queryTopics1.add(topic1);
     queryTopics1.add(topic2);
-    final List<LogTopic> queryTopics2 = new ArrayList<>();
+    final List<Bytes32> queryTopics2 = new ArrayList<>();
     queryTopics2.add(topic1);
     queryTopics2.add(topic2);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics1);
     queryParameter.add(queryTopics2);
 
@@ -376,14 +377,14 @@ public class LogsQueryTest {
     logTopics.add(topic1);
     logTopics.add(topic3);
 
-    final List<LogTopic> queryTopics1 = new ArrayList<>();
+    final List<Bytes32> queryTopics1 = new ArrayList<>();
     queryTopics1.add(topic1);
     queryTopics1.add(topic2);
-    final List<LogTopic> queryTopics2 = new ArrayList<>();
+    final List<Bytes32> queryTopics2 = new ArrayList<>();
     queryTopics2.add(topic1);
     queryTopics2.add(topic2);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics1);
     queryParameter.add(queryTopics2);
 
@@ -414,14 +415,14 @@ public class LogsQueryTest {
     logTopics.add(topic1);
     logTopics.add(topic3);
 
-    final List<LogTopic> queryTopics1 = new ArrayList<>();
+    final List<Bytes32> queryTopics1 = new ArrayList<>();
     queryTopics1.add(topic1);
     queryTopics1.add(topic2);
-    final List<LogTopic> queryTopics2 = new ArrayList<>();
+    final List<Bytes32> queryTopics2 = new ArrayList<>();
     queryTopics2.add(topic3);
     queryTopics2.add(topic4);
 
-    final List<List<LogTopic>> queryParameter = new ArrayList<>();
+    final List<List<Bytes32>> queryParameter = new ArrayList<>();
     queryParameter.add(queryTopics1);
     queryParameter.add(queryTopics2);
 
@@ -442,7 +443,7 @@ public class LogsQueryTest {
     final LogTopic topic2 =
         LogTopic.fromHexString(
             "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-    final List<List<LogTopic>> queryParameter =
+    final List<List<Bytes32>> queryParameter =
         Lists.newArrayList(singletonList(topic1), emptyList());
 
     final LogsQuery query = new LogsQuery.Builder().address(address).topics(queryParameter).build();

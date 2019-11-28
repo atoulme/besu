@@ -47,7 +47,7 @@ public final class MainnetBlockHeaderValidator {
     return createValidator(difficultyCalculator)
         .addRule(
             new ConstantFieldValidationRule<>(
-                "extraData", BlockHeader::getExtraData, DAO_EXTRA_DATA))
+                "extraData", BlockHeader::internalGetExtraData, DAO_EXTRA_DATA))
         .build();
   }
 
@@ -63,7 +63,7 @@ public final class MainnetBlockHeaderValidator {
   }
 
   public static boolean validateHeaderForDaoFork(final BlockHeader header) {
-    return header.getExtraData().equals(DAO_EXTRA_DATA);
+    return header.internalGetExtraData().equals(DAO_EXTRA_DATA);
   }
 
   public static boolean validateHeaderForClassicFork(final BlockHeader header) {

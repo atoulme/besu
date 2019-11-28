@@ -26,7 +26,6 @@ import java.util.Optional;
 
 import graphql.schema.DataFetchingEnvironment;
 import org.apache.tuweni.bytes.Bytes;
-import org.apache.tuweni.bytes.Bytes32;
 
 @SuppressWarnings("unused") // reflected by GraphQL
 public class LogAdapter extends AdapterBase {
@@ -40,13 +39,9 @@ public class LogAdapter extends AdapterBase {
     return Optional.of(logWithMetadata.getLogIndex());
   }
 
-  public List<Bytes32> getTopics() {
+  public List<LogTopic> getTopics() {
     final List<LogTopic> topics = logWithMetadata.getTopics();
-    final List<Bytes32> result = new ArrayList<>();
-    for (final Bytes topic : topics) {
-      result.add(Bytes32.leftPad(topic));
-    }
-    return result;
+    return new ArrayList<>(topics);
   }
 
   public Optional<Bytes> getData() {

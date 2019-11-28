@@ -32,6 +32,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import org.apache.tuweni.bytes.Bytes32;
 import org.junit.Test;
 
 public class FilterParameterTest {
@@ -255,9 +256,9 @@ public class FilterParameterTest {
 
   private FilterParameter filterParameterWithAddressAndMultipleListOfTopics(
       final String address, final String... topics) {
-    List<LogTopic> topicsList =
+    List<Bytes32> topicsList =
         Arrays.stream(topics).map(LogTopic::fromHexString).collect(toUnmodifiableList());
-    List<List<LogTopic>> topicsListList = Arrays.asList(topicsList, topicsList);
+    List<List<Bytes32>> topicsListList = Arrays.asList(topicsList, topicsList);
     return new FilterParameter(
         "latest", "latest", singletonList(Address.fromHexString(address)), topicsListList, null);
   }
