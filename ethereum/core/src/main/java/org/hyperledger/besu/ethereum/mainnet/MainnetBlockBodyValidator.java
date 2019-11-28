@@ -28,7 +28,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 
 public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
@@ -88,7 +87,7 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
       return false;
     }
 
-    if (!validateLogsBloom(header.getLogsBloom().getBytes(), BodyValidation.logsBloom(receipts))) {
+    if (!validateLogsBloom(header.getLogsBloom(), BodyValidation.logsBloom(receipts))) {
       return false;
     }
 
@@ -109,8 +108,9 @@ public class MainnetBlockBodyValidator<C> implements BlockBodyValidator<C> {
     return true;
   }
 
-  private static boolean validateLogsBloom(final Bytes expected, final LogsBloomFilter actual) {
-    if (!expected.equals(actual.getBytes())) {
+  private static boolean validateLogsBloom(
+      final LogsBloomFilter expected, final LogsBloomFilter actual) {
+    if (!expected.equals(actual)) {
       LOG.warn(
           "Invalid block: logs bloom filter mismatch (expected={}, actual={})", expected, actual);
       return false;

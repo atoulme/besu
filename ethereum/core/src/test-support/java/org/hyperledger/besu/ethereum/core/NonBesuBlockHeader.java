@@ -63,7 +63,7 @@ public class NonBesuBlockHeader implements BlockHeader {
   }
 
   @Override
-  public LogsBloomFilter getLogsBloom() {
+  public UnformattedData getLogsBloom() {
     return null;
   }
 

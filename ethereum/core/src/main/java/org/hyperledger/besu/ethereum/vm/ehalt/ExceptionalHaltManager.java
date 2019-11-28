@@ -27,9 +27,9 @@ public class ExceptionalHaltManager {
   private static final List<ExceptionalHaltPredicate> GLOBAL =
       Arrays.asList(
           new InvalidOperationExceptionalHaltPredicate(),
-          new StackOverflowExceptionalHaltPredicate(),
+              new StackOverflowExceptionalHaltPredicate(),
           new StackUnderflowExceptionalHaltPredicate(),
-          new InsufficientGasExceptionalHaltPredicate());
+              new InsufficientGasExceptionalHaltPredicate());
 
   public static EnumSet<ExceptionalHaltReason> evaluateAll(
       final MessageFrame frame, final EVM evm) {

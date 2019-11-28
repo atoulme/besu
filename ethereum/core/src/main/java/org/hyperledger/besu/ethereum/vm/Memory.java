@@ -50,8 +50,7 @@ public class Memory {
    *   <li>the price of a transaction needing more than that is likely prohibitive.
    * </ul>
    *
-   * <p>So this is likely a reasonable limitation, at least at first (and possibly ever if I'm to
-   * bet).
+   * So this is likely a reasonable limitation, at least at first (and possibly ever if I'm to bet).
    */
   /*
    * Implementation note: using an array of word have a bunch of advantages: - it can make

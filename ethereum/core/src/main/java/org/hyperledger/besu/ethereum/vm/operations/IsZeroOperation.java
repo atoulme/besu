@@ -36,6 +36,6 @@ public class IsZeroOperation extends AbstractOperation {
   public void execute(final MessageFrame frame) {
     final UInt256 value = UInt256.fromBytes(frame.popStackItem());
 
-    frame.pushStackItem(value.isZero() ? UInt256.valueOf(1).toBytes() : UInt256.ZERO.toBytes());
+    frame.pushStackItem(value.isZero() ? UInt256.ONE.toBytes() : UInt256.ZERO.toBytes());
   }
 }

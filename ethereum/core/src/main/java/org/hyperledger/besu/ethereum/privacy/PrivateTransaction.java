@@ -370,10 +370,10 @@ public class PrivateTransaction {
     out.startList();
 
     out.writeLongScalar(getNonce());
-    out.writeBytes(getGasPrice().toMinimalBytes());
+    out.writeUInt256Scalar(getGasPrice());
     out.writeLongScalar(getGasLimit());
     out.writeBytes(getTo().isPresent() ? getTo().get() : Bytes.EMPTY);
-    out.writeBytes(getValue().toMinimalBytes());
+    out.writeUInt256Scalar(getValue());
     out.writeBytes(getPayload());
     writeSignature(out);
     out.writeBytes(getPrivateFrom());
@@ -471,15 +471,15 @@ public class PrivateTransaction {
             out -> {
               out.startList();
               out.writeLongScalar(nonce);
-              out.writeBytes(gasPrice.toMinimalBytes());
+              out.writeUInt256Scalar(gasPrice);
               out.writeLongScalar(gasLimit);
               out.writeBytes(to == null ? Bytes.EMPTY : to);
-              out.writeBytes(value.toMinimalBytes());
+              out.writeUInt256Scalar(value);
               out.writeBytes(payload);
               if (chainId.isPresent()) {
                 out.writeBigIntegerScalar(chainId.get());
-                out.writeBytes(UInt256.ZERO.toMinimalBytes());
-                out.writeBytes(UInt256.ZERO.toMinimalBytes());
+                out.writeUInt256Scalar(UInt256.ZERO);
+                out.writeUInt256Scalar(UInt256.ZERO);
               }
               out.writeBytes(privateFrom);
               privateFor.ifPresent(pF -> out.writeList(pF, (bv, rlpO) -> rlpO.writeBytes(bv)));

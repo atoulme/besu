@@ -123,14 +123,7 @@ public class DebugStorageRangeAtTest {
     entries.add(
         AccountStorageEntry.create(
             UInt256.valueOf(7), Hash.hash(Bytes32.fromHexString("0x45")), Optional.empty()));
-    final NavigableMap<Bytes32, AccountStorageEntry> rawEntries =
-        new TreeMap<>(
-            new Comparator<Bytes32>() {
-              @Override
-              public int compare(final Bytes32 o1, final Bytes32 o2) {
-                return o1.toUnsignedBigInteger().compareTo(o2.toUnsignedBigInteger());
-              }
-            });
+    final NavigableMap<Bytes32, AccountStorageEntry> rawEntries = new TreeMap<>();
     entries.forEach(e -> rawEntries.put(e.getKeyHash(), e));
 
     when(account.storageEntriesFrom(START_KEY_HASH, 11)).thenReturn(rawEntries);
@@ -141,7 +134,7 @@ public class DebugStorageRangeAtTest {
     assertThat(result).isNotNull();
     assertThat(result.getNextKey()).isNull();
 
-    entries.sort(Comparator.comparing(entry -> entry.getKeyHash()));
+    entries.sort(Comparator.comparing(AccountStorageEntry::getKeyHash));
     assertThat(result.getStorage())
         .containsExactly(
             entry(

@@ -43,8 +43,7 @@ public class SLtOperation extends AbstractOperation {
     BigInteger b0 = value0.toBigInteger();
     BigInteger b1 = value1.toBigInteger();
 
-    final Bytes32 result =
-        b0.compareTo(b1) < 0 ? UInt256.valueOf(1).toBytes() : UInt256.ZERO.toBytes();
+    final Bytes32 result = b0.compareTo(b1) < 0 ? UInt256.ONE.toBytes() : UInt256.ZERO.toBytes();
 
     frame.pushStackItem(result);
   }

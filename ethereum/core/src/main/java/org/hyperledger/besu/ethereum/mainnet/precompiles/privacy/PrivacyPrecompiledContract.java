@@ -14,7 +14,6 @@
  */
 package org.hyperledger.besu.ethereum.mainnet.precompiles.privacy;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.besu.crypto.Hash.keccak256;
 
 import org.hyperledger.besu.enclave.Enclave;
@@ -39,6 +38,8 @@ import org.hyperledger.besu.ethereum.vm.DebugOperationTracer;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
+
+import java.util.Base64;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,7 +100,7 @@ public class PrivacyPrecompiledContract extends AbstractPrecompiledContract {
 
     final BytesValueRLPInput bytesValueRLPInput =
         new BytesValueRLPInput(
-            Bytes.fromBase64String(new String(receiveResponse.getPayload(), UTF_8)), false);
+            Bytes.wrap(Base64.getDecoder().decode(receiveResponse.getPayload())), false);
 
     final PrivateTransaction privateTransaction = PrivateTransaction.readFrom(bytesValueRLPInput);
 
