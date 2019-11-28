@@ -73,7 +73,7 @@ public class BlockHeaderBuilder {
         .stateRoot(header.getStateRoot())
         .transactionsRoot(header.getTransactionsRoot())
         .receiptsRoot(header.getReceiptsRoot())
-        .logsBloom(new LogsBloomFilter(header.getLogsBloom().getBytes()))
+        .logsBloom(header.getLogsBloom())
         .difficulty(header.internalGetDifficulty())
         .number(header.getNumber())
         .gasLimit(header.getGasLimit())
@@ -200,7 +200,7 @@ public class BlockHeaderBuilder {
     stateRoot(sealableBlockHeader.getStateRoot());
     transactionsRoot(sealableBlockHeader.getTransactionsRoot());
     receiptsRoot(sealableBlockHeader.getReceiptsRoot());
-    logsBloom(new LogsBloomFilter(sealableBlockHeader.getLogsBloom().getBytes()));
+    logsBloom(sealableBlockHeader.getLogsBloom());
     difficulty(sealableBlockHeader.internalGetDifficulty());
     number(sealableBlockHeader.getNumber());
     gasLimit(sealableBlockHeader.getGasLimit());

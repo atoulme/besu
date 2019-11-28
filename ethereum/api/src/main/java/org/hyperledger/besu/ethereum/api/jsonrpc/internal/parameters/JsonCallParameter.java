@@ -37,6 +37,6 @@ public class JsonCallParameter extends CallParameter {
         gasLimit != null ? Long.decode(gasLimit) : -1,
         gasPrice != null ? Wei.fromHexString(gasPrice) : null,
         value != null ? Wei.fromHexString(value) : null,
-        payload != null ? Bytes.fromHexStringLenient(payload) : null);
+        payload != null ? Bytes.fromHexString(payload) : null);
   }
 }

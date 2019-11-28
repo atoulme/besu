@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 import org.hyperledger.besu.ethereum.api.query.LogsQuery;
 import org.hyperledger.besu.ethereum.chain.Blockchain;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.QuantityWrapper;
 import org.hyperledger.besu.ethereum.eth.sync.BlockBroadcaster;
@@ -33,7 +34,7 @@ import org.hyperledger.besu.plugin.services.BesuEvents;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.apache.tuweni.bytes.Bytes32;
+import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
 
 public class BesuEventsImpl implements BesuEvents {
@@ -107,12 +108,13 @@ public class BesuEventsImpl implements BesuEvents {
         addresses.stream()
             .map(org.hyperledger.besu.ethereum.core.Address::fromPlugin)
             .collect(toUnmodifiableList());
-    final List<List<Bytes32>> besuTopics =
+    final List<List<LogTopic>> besuTopics =
         topics.stream()
             .map(
                 subList ->
                     subList.stream()
-                        .map(lt -> Bytes32.wrap(lt.getByteArray()))
+                        .map(UnformattedData::getByteArray)
+                        .map(bytes -> LogTopic.wrap(Bytes.wrap(bytes)))
                         .collect(toUnmodifiableList()))
             .collect(toUnmodifiableList());
 

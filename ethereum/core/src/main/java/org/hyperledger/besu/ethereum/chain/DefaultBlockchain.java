@@ -86,8 +86,7 @@ public class DefaultBlockchain implements MutableBlockchain {
         BesuMetricCategory.BLOCKCHAIN,
         "difficulty_total",
         "Total difficulty of the chainhead",
-        () ->
-            this.getChainHead().getTotalDifficulty().toBytes().toUnsignedBigInteger().longValue());
+        () -> this.getChainHead().getTotalDifficulty().toLong());
 
     metricsSystem.createLongGauge(
         BesuMetricCategory.BLOCKCHAIN,

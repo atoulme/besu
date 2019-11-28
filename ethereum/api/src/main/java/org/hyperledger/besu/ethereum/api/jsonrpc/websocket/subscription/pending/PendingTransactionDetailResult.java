@@ -20,6 +20,7 @@ import org.hyperledger.besu.ethereum.core.Transaction;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.tuweni.bytes.Bytes;
 
 @JsonPropertyOrder({
   "from",
@@ -54,7 +55,7 @@ public class PendingTransactionDetailResult implements JsonRpcResult {
     this.hash = tx.getHash().toString();
     this.input = tx.getPayload().toString();
     this.nonce = Quantity.create(tx.getNonce());
-    this.to = tx.getTo().map(a -> a.toHexString()).orElse(null);
+    this.to = tx.getTo().map(Bytes::toHexString).orElse(null);
     this.value = Quantity.create(tx.getValue());
     this.v = Quantity.create(tx.getV());
     this.r = Quantity.create(tx.getR());

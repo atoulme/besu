@@ -25,7 +25,6 @@ import org.hyperledger.besu.ethereum.core.BlockBody;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
-import org.hyperledger.besu.ethereum.core.LogsBloomFilter;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Transaction;
 import org.hyperledger.besu.ethereum.core.TransactionReceipt;
@@ -496,7 +495,7 @@ public class BlockchainQueries {
         // handles the case when fromBlockNumber is past chain head.
         .takeWhile(Optional::isPresent)
         .map(Optional::get)
-        .filter(header -> query.couldMatch(new LogsBloomFilter(header.getLogsBloom().getBytes())))
+        .filter(header -> query.couldMatch(header.getLogsBloom()))
         .flatMap(header -> matchingLogs(header.getHash(), query).stream())
         .collect(Collectors.toList());
   }

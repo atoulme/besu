@@ -78,8 +78,7 @@ public class Address extends DelegatingBytes implements org.hyperledger.besu.plu
 
   /**
    * @param hash A hash that has been obtained through hashing the return of the <code>ECDSARECOVER
-   *             </code> function from Appendix F (Signing Transactions) of the Ethereum Yellow
-   *     Paper.
+   *     </code> function from Appendix F (Signing Transactions) of the Ethereum Yellow Paper.
    * @return The ethereum address from the provided hash.
    */
   public static Address extract(final Hash hash) {

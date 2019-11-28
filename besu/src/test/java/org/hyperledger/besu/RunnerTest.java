@@ -293,7 +293,6 @@ public final class RunnerTest {
                           .intValue();
                   if (currentBlock < blockCount) {
                     // if not yet at blockCount, we should get a sync result from eth_syncing
-
                     final int syncResultCurrentBlock =
                         UInt256.fromHexString(
                                 new JsonObject(syncingResp.body().string())

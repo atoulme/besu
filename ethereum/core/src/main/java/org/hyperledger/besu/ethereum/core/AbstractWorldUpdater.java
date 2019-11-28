@@ -337,10 +337,7 @@ public abstract class AbstractWorldUpdater<W extends WorldView, A extends Accoun
       }
       updatedStorage.entrySet().stream()
           .map(entry -> AccountStorageEntry.forKeyAndValue(entry.getKey(), entry.getValue()))
-          .filter(
-              entry ->
-                  UInt256.fromBytes(entry.getKeyHash()).compareTo(UInt256.fromBytes(startKeyHash))
-                      >= 0)
+          .filter(entry -> entry.getKeyHash().compareTo(startKeyHash) >= 0)
           .forEach(entry -> entries.put(entry.getKeyHash(), entry));
 
       while (entries.size() > limit) {

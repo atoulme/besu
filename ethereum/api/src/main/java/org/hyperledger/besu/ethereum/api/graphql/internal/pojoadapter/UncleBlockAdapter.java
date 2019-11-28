@@ -22,8 +22,7 @@ import java.util.Optional;
 
 import org.apache.tuweni.units.bigints.UInt256;
 
-@SuppressWarnings("unused")
-// reflected by GraphQL
+@SuppressWarnings("unused") // reflected by GraphQL
 class UncleBlockAdapter extends BlockAdapterBase {
 
   UncleBlockAdapter(final BlockHeader uncleHeader) {

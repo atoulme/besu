@@ -18,6 +18,7 @@ import static java.util.Collections.emptyList;
 
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 
 import java.util.List;
 
@@ -26,14 +27,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.base.MoreObjects;
-import org.apache.tuweni.bytes.Bytes32;
 
 public class FilterParameter {
 
   private final BlockParameter fromBlock;
   private final BlockParameter toBlock;
   private final List<Address> addresses;
-  private final List<List<Bytes32>> topics;
+  private final List<List<LogTopic>> topics;
   private final Hash blockhash;
 
   @JsonCreator
@@ -43,7 +43,7 @@ public class FilterParameter {
       @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY) @JsonProperty("address")
           final List<Address> address,
       @JsonDeserialize(using = TopicsDeserializer.class) @JsonProperty("topics")
-          final List<List<Bytes32>> topics,
+          final List<List<LogTopic>> topics,
       @JsonProperty("blockhash") final String blockhash) {
     this.fromBlock =
         fromBlock != null ? new BlockParameter(fromBlock) : new BlockParameter("latest");
@@ -65,7 +65,7 @@ public class FilterParameter {
     return addresses;
   }
 
-  public List<List<Bytes32>> getTopics() {
+  public List<List<LogTopic>> getTopics() {
     return topics;
   }
 

@@ -31,6 +31,7 @@ import org.hyperledger.besu.ethereum.blockcreation.MiningCoordinator;
 import org.hyperledger.besu.ethereum.core.Account;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.MutableWorldState;
 import org.hyperledger.besu.ethereum.core.Synchronizer;
@@ -51,6 +52,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
 import graphql.schema.DataFetcher;
@@ -228,7 +230,13 @@ public class GraphQLDataFetchers {
       @SuppressWarnings("unchecked")
       final List<List<Bytes32>> topics = (List<List<Bytes32>>) filter.get("topics");
 
-      final LogsQuery query = new LogsQuery.Builder().addresses(addrs).topics(topics).build();
+      final List<List<LogTopic>> transformedTopics = new ArrayList<>();
+      for (final List<Bytes32> topic : topics) {
+        transformedTopics.add(topic.stream().map(LogTopic::of).collect(Collectors.toList()));
+      }
+
+      final LogsQuery query =
+          new LogsQuery.Builder().addresses(addrs).topics(transformedTopics).build();
 
       final List<LogWithMetadata> logs = blockchainQuery.matchingLogs(fromBlock, toBlock, query);
       final List<LogAdapter> results = new ArrayList<>();

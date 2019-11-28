@@ -22,6 +22,7 @@ import org.hyperledger.besu.ethereum.api.query.TransactionWithMetadata;
 import org.hyperledger.besu.ethereum.core.Address;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.Hash;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 import org.hyperledger.besu.ethereum.core.LogWithMetadata;
 import org.hyperledger.besu.ethereum.core.Wei;
 import org.hyperledger.besu.ethereum.core.WorldState;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.google.common.primitives.Longs;
 import graphql.schema.DataFetchingEnvironment;
@@ -151,7 +153,12 @@ public class BlockAdapterBase extends AdapterBase {
     @SuppressWarnings("unchecked")
     final List<List<Bytes32>> topics = (List<List<Bytes32>>) filter.get("topics");
 
-    final LogsQuery query = new LogsQuery.Builder().addresses(addrs).topics(topics).build();
+    final List<List<LogTopic>> transformedTopics = new ArrayList<>();
+    for (final List<Bytes32> topic : topics) {
+      transformedTopics.add(topic.stream().map(LogTopic::of).collect(Collectors.toList()));
+    }
+    final LogsQuery query =
+        new LogsQuery.Builder().addresses(addrs).topics(transformedTopics).build();
 
     final BlockchainQueries blockchain = getBlockchainQueries(environment);
 

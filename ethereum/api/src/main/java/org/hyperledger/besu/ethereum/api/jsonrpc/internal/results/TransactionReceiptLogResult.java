@@ -16,13 +16,13 @@ package org.hyperledger.besu.ethereum.api.jsonrpc.internal.results;
 
 import org.hyperledger.besu.ethereum.core.Hash;
 import org.hyperledger.besu.ethereum.core.Log;
+import org.hyperledger.besu.ethereum.core.LogTopic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.tuweni.bytes.Bytes;
 
 @JsonPropertyOrder({
   "address",
@@ -57,7 +57,7 @@ public class TransactionReceiptLogResult {
     this.address = log.getLogger().toString();
     this.topics = new ArrayList<>(log.getTopics().size());
 
-    for (final Bytes topic : log.getTopics()) {
+    for (final LogTopic topic : log.getTopics()) {
       topics.add(topic.toString());
     }
 

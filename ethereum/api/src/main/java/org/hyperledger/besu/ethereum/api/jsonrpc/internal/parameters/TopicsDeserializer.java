@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.collect.Lists;
-import org.apache.tuweni.bytes.Bytes32;
 
 public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
   public TopicsDeserializer() {
@@ -44,7 +43,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
     final List<List<LogTopic>> topics = Lists.newArrayList();
 
     if (!topicsNode.isArray()) {
-      topics.add(singletonList(LogTopic.wrap(Bytes32.fromHexString(topicsNode.textValue()))));
+      topics.add(singletonList(LogTopic.fromHexString(topicsNode.textValue())));
     } else {
       for (JsonNode child : topicsNode) {
         if (child.isArray()) {
@@ -53,7 +52,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
             if (subChild.isNull()) {
               childItems.add(null);
             } else {
-              childItems.add(LogTopic.wrap(Bytes32.fromHexString(subChild.textValue())));
+              childItems.add(LogTopic.fromHexString(subChild.textValue()));
             }
           }
           topics.add(childItems);
@@ -61,7 +60,7 @@ public class TopicsDeserializer extends StdDeserializer<List<List<LogTopic>>> {
           if (child.isNull()) {
             topics.add(singletonList(null));
           } else {
-            topics.add(singletonList(LogTopic.wrap(Bytes32.fromHexString(child.textValue()))));
+            topics.add(singletonList(LogTopic.fromHexString(child.textValue())));
           }
         }
       }
