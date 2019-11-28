@@ -156,7 +156,7 @@ public class BlockDataGenerator {
       MutableAccount account = updater.getOrCreate(address()).getMutable();
       if (random.nextFloat() < percentContractAccounts) {
         // Some percentage of accounts are contract accounts
-        account.setCode(byteValues(5, 50));
+        account.setCode(bytesValue(5, 50));
         account.setVersion(Account.DEFAULT_VERSION);
         if (random.nextFloat() < percentContractAccountsWithNonEmptyStorage) {
           // Add some storage for contract accounts
@@ -386,26 +386,26 @@ public class BlockDataGenerator {
   public Log log(final int topicCount) {
     final List<LogTopic> topics =
         Stream.generate(this::logTopic).limit(topicCount).collect(Collectors.toList());
-    return new Log(address(), new UnformattedDataWrapper(byteValues(5, 15)), topics);
+    return new Log(address(), new UnformattedDataWrapper(bytesValue(5, 15)), topics);
   }
 
   private LogTopic logTopic() {
-    return LogTopic.wrap(byteValues(Bytes32.SIZE));
+    return LogTopic.wrap(bytesValue(Bytes32.SIZE));
   }
 
   private Bytes32 bytes32() {
     return Bytes32.wrap(bytes(Bytes32.SIZE));
   }
 
-  public Bytes byteValues(final int size) {
+  public Bytes bytesValue(final int size) {
     return Bytes.wrap(bytes(size));
   }
 
-  public Bytes byteValues() {
-    return byteValues(1, 20);
+  public Bytes bytesValue() {
+    return bytesValue(1, 20);
   }
 
-  public Bytes byteValues(final int minSize, final int maxSize) {
+  public Bytes bytesValue(final int minSize, final int maxSize) {
     checkArgument(minSize >= 0);
     checkArgument(maxSize >= 0);
     checkArgument(maxSize > minSize);
@@ -438,7 +438,7 @@ public class BlockDataGenerator {
   }
 
   public Address address() {
-    return Address.wrap(byteValues(Address.SIZE));
+    return Address.wrap(bytesValue(Address.SIZE));
   }
 
   public LogsBloomFilter logsBloom() {

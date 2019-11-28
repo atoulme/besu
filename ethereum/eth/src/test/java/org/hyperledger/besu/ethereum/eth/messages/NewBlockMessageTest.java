@@ -53,7 +53,7 @@ public class NewBlockMessageTest {
     final BytesValueRLPOutput tmp = new BytesValueRLPOutput();
     tmp.startList();
     blockForInsertion.writeTo(tmp);
-    tmp.writeBytes(totalDifficulty.toMinimalBytes());
+    tmp.writeUInt256Scalar(totalDifficulty);
     tmp.endList();
 
     final RawMessage rawMsg = new RawMessage(EthPV62.NEW_BLOCK, tmp.encoded());

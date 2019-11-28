@@ -180,9 +180,7 @@ public abstract class RLP {
       }
       offset = 1 + sizeLength;
       size =
-          (int)
-              RLPDecodingHelpers.extractSize(
-                  (index) -> encodedValue.get((int) index), 1, sizeLength);
+          (int) RLPDecodingHelpers.extractSize((index) -> encodedValue.get(index), 1, sizeLength);
     }
     if (offset + size != encodedValue.size()) {
       throw new RLPException(

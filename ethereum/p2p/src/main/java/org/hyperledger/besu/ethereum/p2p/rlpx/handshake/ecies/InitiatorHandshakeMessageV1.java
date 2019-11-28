@@ -32,7 +32,7 @@ import org.apache.tuweni.bytes.MutableBytes;
  *
  * <h3>Message structure</h3>
  *
- * <p>The following describes the message structure:
+ * The following describes the message structure:
  *
  * <pre>
  *   authInitiator -&gt; E(remote-pubk,

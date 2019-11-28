@@ -36,7 +36,7 @@ import org.apache.tuweni.units.bigints.UInt256Value;
  *   Bytes ::= a binary value (comprised of an arbitrary number of bytes).
  * </pre>
  *
- * <p>In other words, RLP encodes binary data organized in arbitrary nested lists.
+ * In other words, RLP encodes binary data organized in arbitrary nested lists.
  *
  * <p>A {@link RLPOutput} thus provides methods to write both lists and binary values. A list is
  * started by calling {@link #startList()} and ended by {@link #endList()}. Lists can be nested in

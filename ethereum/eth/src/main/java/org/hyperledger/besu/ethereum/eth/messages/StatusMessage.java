@@ -127,7 +127,7 @@ public final class StatusMessage extends AbstractMessageData {
 
       out.writeIntScalar(protocolVersion);
       out.writeBigIntegerScalar(networkId);
-      out.writeBytes(totalDifficulty.toBytes().trimLeadingZeros());
+      out.writeUInt256Scalar(totalDifficulty);
       out.writeBytes(bestHash);
       out.writeBytes(genesisHash);
 
