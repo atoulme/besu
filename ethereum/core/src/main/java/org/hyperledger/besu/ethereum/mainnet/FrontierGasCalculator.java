@@ -445,8 +445,7 @@ public class FrontierGasCalculator implements GasCalculator {
       final Gas wordGasCost,
       final UInt256 offset,
       final UInt256 length) {
-    final int mod = length.mod(Bytes32.SIZE).isZero() ? 0 : 1;
-    final UInt256 numWords = length.divide(Bytes32.SIZE).add(UInt256.valueOf(mod));
+    final UInt256 numWords = length.divideCeil(Bytes32.SIZE);
 
     final Gas copyCost = wordGasCost.times(Gas.of(numWords)).plus(baseGasCost);
     final Gas memoryCost = memoryExpansionGasCost(frame, offset, length);

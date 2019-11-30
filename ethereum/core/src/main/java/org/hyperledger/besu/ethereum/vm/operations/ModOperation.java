@@ -19,7 +19,6 @@ import org.hyperledger.besu.ethereum.vm.AbstractOperation;
 import org.hyperledger.besu.ethereum.vm.GasCalculator;
 import org.hyperledger.besu.ethereum.vm.MessageFrame;
 
-import org.apache.tuweni.bytes.Bytes32;
 import org.apache.tuweni.units.bigints.UInt256;
 
 public class ModOperation extends AbstractOperation {
@@ -38,11 +37,7 @@ public class ModOperation extends AbstractOperation {
     final UInt256 value0 = UInt256.fromBytes(frame.popStackItem());
     final UInt256 value1 = UInt256.fromBytes(frame.popStackItem());
 
-    if (value1.isZero()) {
-      frame.pushStackItem(Bytes32.ZERO);
-    } else {
-      final UInt256 result = value0.mod(value1);
-      frame.pushStackItem(result.toBytes());
-    }
+    final UInt256 result = value0.mod0(value1);
+    frame.pushStackItem(result.toBytes());
   }
 }
