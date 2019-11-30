@@ -37,8 +37,7 @@ public class ConstantinopleGasCalculator extends SpuriousDragonGasCalculator {
   @Override
   public Gas create2OperationGasCost(final MessageFrame frame) {
     final UInt256 initCodeLength = UInt256.fromBytes(frame.getStackItem(2));
-    final int mod = initCodeLength.mod(Bytes32.SIZE).isZero() ? 0 : 1;
-    final UInt256 numWords = initCodeLength.divide(Bytes32.SIZE).add(UInt256.valueOf(mod));
+    final UInt256 numWords = initCodeLength.divideCeil(Bytes32.SIZE);
     final Gas initCodeHashCost = SHA3_OPERATION_WORD_GAS_COST.times(Gas.of(numWords));
     return createOperationGasCost(frame).plus(initCodeHashCost);
   }
