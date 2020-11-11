@@ -286,9 +286,11 @@ public class JsonRpcHttpService {
   }
 
   private void createSpan(final RoutingContext routingContext) {
+    String path = routingContext.currentRoute().getPath();
+
     Span serverSpan =
         tracer
-            .spanBuilder(routingContext.currentRoute().getPath())
+            .spanBuilder(path == null ? "" : path)
             .setSpanKind(Span.Kind.SERVER)
             .startSpan();
     try {
