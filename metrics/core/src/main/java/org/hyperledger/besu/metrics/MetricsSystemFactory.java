@@ -17,6 +17,8 @@ package org.hyperledger.besu.metrics;
 import static org.hyperledger.besu.metrics.MetricsProtocol.OPENTELEMETRY;
 import static org.hyperledger.besu.metrics.MetricsProtocol.PROMETHEUS;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.noop.NoOpMetricsSystem;
 import org.hyperledger.besu.metrics.opentelemetry.OpenTelemetrySystem;
 import org.hyperledger.besu.metrics.prometheus.MetricsConfiguration;
@@ -24,6 +26,8 @@ import org.hyperledger.besu.metrics.prometheus.PrometheusMetricsSystem;
 
 /** Creates a new metric system based on configuration. */
 public class MetricsSystemFactory {
+
+  private static final Logger LOG = LogManager.getLogger();
 
   private MetricsSystemFactory() {}
 
@@ -34,6 +38,7 @@ public class MetricsSystemFactory {
    * @return a new metric system
    */
   public static ObservableMetricsSystem create(final MetricsConfiguration metricsConfiguration) {
+    LOG.trace("Creating a metric system with {}", metricsConfiguration.getProtocol());
     if (!metricsConfiguration.isEnabled() && !metricsConfiguration.isPushEnabled()) {
       return new NoOpMetricsSystem();
     }
