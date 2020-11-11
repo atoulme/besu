@@ -15,6 +15,8 @@
  */
 package org.hyperledger.besu.metrics.opentelemetry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.MetricsService;
 import org.hyperledger.besu.metrics.prometheus.MetricsConfiguration;
 
@@ -27,12 +29,15 @@ import io.opentelemetry.sdk.metrics.export.IntervalMetricReader;
 
 public class MetricsOtelGrpcPushService implements MetricsService {
 
+  private static final Logger LOG = LogManager.getLogger();
+
   private final MetricsConfiguration configuration;
   private final OpenTelemetrySystem metricsSystem;
   private IntervalMetricReader periodicReader;
 
   public MetricsOtelGrpcPushService(
       final MetricsConfiguration configuration, final OpenTelemetrySystem metricsSystem) {
+    LOG.trace("Starting OpenTelemetry push service");
     this.configuration = configuration;
     this.metricsSystem = metricsSystem;
   }
