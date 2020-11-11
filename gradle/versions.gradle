@@ -56,7 +56,7 @@ dependencyManagement {
     dependency 'io.opentelemetry:opentelemetry-api:0.10.0'
     dependency 'io.opentelemetry:opentelemetry-sdk:0.10.0'
     dependency 'io.opentelemetry:opentelemetry-sdk-tracing:0.10.0'
-    dependency 'io.opentelemetry:opentelemetry-exporters-otlp:0.10.0'
+    dependency 'io.opentelemetry:opentelemetry-exporters-otlp:0.9.1'
     dependency 'io.opentelemetry:opentelemetry-extension-runtime-metrics:0.10.0'
 
     dependency 'io.prometheus:simpleclient:0.9.0'
