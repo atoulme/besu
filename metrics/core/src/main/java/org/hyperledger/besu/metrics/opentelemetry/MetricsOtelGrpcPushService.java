@@ -23,13 +23,19 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import io.opentelemetry.exporters.otlp.OtlpGrpcMetricExporter;
+import io.opentelemetry.exporters.otlp.OtlpGrpcSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.metrics.export.IntervalMetricReader;
+import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.export.BatchSpanProcessor;
 
 public class MetricsOtelGrpcPushService implements MetricsService {
 
   private final MetricsConfiguration configuration;
   private final OpenTelemetrySystem metricsSystem;
   private IntervalMetricReader periodicReader;
+  private SpanProcessor spanProcessor;
 
   public MetricsOtelGrpcPushService(
       final MetricsConfiguration configuration, final OpenTelemetrySystem metricsSystem) {
@@ -49,6 +55,14 @@ public class MetricsOtelGrpcPushService implements MetricsService {
                 Collections.singleton(metricsSystem.getMeterSdkProvider().getMetricProducer()))
             .setMetricExporter(exporter);
     this.periodicReader = builder.build();
+    this.spanProcessor =
+        BatchSpanProcessor.newBuilder(
+                OtlpGrpcSpanExporter.newBuilder()
+                    .readSystemProperties()
+                    .readEnvironmentVariables()
+                    .build())
+            .build();
+    OpenTelemetrySdk.getTracerManagement().addSpanProcessor(spanProcessor);
     return CompletableFuture.completedFuture(null);
   }
 
@@ -56,6 +70,12 @@ public class MetricsOtelGrpcPushService implements MetricsService {
   public CompletableFuture<?> stop() {
     if (periodicReader != null) {
       periodicReader.shutdown();
+    }
+    if (spanProcessor != null) {
+      CompletableResultCode result = spanProcessor.shutdown();
+      CompletableFuture<?> future = new CompletableFuture<>();
+      result.whenComplete(() -> future.complete(null));
+      return future;
     }
     return CompletableFuture.completedFuture(null);
   }

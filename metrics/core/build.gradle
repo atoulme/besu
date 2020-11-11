@@ -41,6 +41,7 @@ dependencies {
   implementation 'io.grpc:grpc-netty'
   implementation 'io.opentelemetry:opentelemetry-api'
   implementation 'io.opentelemetry:opentelemetry-sdk'
+  implementation 'io.opentelemetry:opentelemetry-sdk-tracing'
   implementation 'io.opentelemetry:opentelemetry-extension-runtime-metrics'
   implementation 'io.opentelemetry:opentelemetry-exporters-otlp'
 

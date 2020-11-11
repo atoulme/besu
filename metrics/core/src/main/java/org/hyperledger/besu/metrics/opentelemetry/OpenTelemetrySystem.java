@@ -52,6 +52,7 @@ import io.opentelemetry.sdk.metrics.MeterSdkProvider;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceAttributes;
+import io.opentelemetry.sdk.trace.TracerSdkProvider;
 
 /** Metrics system relying on the native OpenTelemetry format. */
 public class OpenTelemetrySystem implements ObservableMetricsSystem {
@@ -70,6 +71,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
   private final Map<String, LabelledMetric<OperationTimer>> cachedTimers =
       new ConcurrentHashMap<>();
   private final MeterSdkProvider meterSdkProvider;
+  private final TracerSdkProvider tracerSdkProvider;
 
   public OpenTelemetrySystem(
       final Set<MetricCategory> enabledCategories,
@@ -85,6 +87,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
                         .setAttribute(ResourceAttributes.SERVICE_NAME, jobName)
                         .build()));
     this.meterSdkProvider = MeterSdkProvider.builder().setResource(resource).build();
+    this.tracerSdkProvider = TracerSdkProvider.builder().setResource(resource).build();
   }
 
   MeterSdkProvider getMeterSdkProvider() {
