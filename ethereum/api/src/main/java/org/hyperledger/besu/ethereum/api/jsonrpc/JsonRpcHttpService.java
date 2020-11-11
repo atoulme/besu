@@ -285,7 +285,7 @@ public class JsonRpcHttpService {
     return router;
   }
 
-  private void createSpan(RoutingContext routingContext) {
+  private void createSpan(final RoutingContext routingContext) {
     Span serverSpan =
         tracer
             .spanBuilder(routingContext.currentRoute().getPath())
