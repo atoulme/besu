@@ -14,7 +14,6 @@
  */
 package org.hyperledger.besu.metrics.opentelemetry;
 
-import io.opentelemetry.api.metrics.LongCounter;
 import org.hyperledger.besu.plugin.services.metrics.Counter;
 import org.hyperledger.besu.plugin.services.metrics.LabelledMetric;
 

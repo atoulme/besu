@@ -52,7 +52,6 @@ import io.opentelemetry.sdk.metrics.MeterSdkProvider;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.resources.ResourceAttributes;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
 
 /** Metrics system relying on the native OpenTelemetry format. */
 public class OpenTelemetrySystem implements ObservableMetricsSystem {
@@ -82,9 +81,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
         Resource.getDefault()
             .merge(
                 Resource.create(
-                    Attributes.builder()
-                        .put(ResourceAttributes.SERVICE_NAME, jobName)
-                        .build()));
+                    Attributes.builder().put(ResourceAttributes.SERVICE_NAME, jobName).build()));
     this.meterSdkProvider = MeterSdkProvider.builder().setResource(resource).build();
   }
 
