@@ -53,6 +53,7 @@ dependencyManagement {
 
     dependency group: 'io.opentelemetry.instrumentation.auto', name: 'opentelemetry-javaagent', version: '0.8.0', classifier: 'all'
 
+    dependency 'io.grpc:grpc-census:1.33.1'
     dependency 'io.opentelemetry:opentelemetry-api:0.10.0'
     dependency 'io.opentelemetry:opentelemetry-sdk:0.10.0'
     dependency 'io.opentelemetry:opentelemetry-sdk-tracing:0.10.0'
