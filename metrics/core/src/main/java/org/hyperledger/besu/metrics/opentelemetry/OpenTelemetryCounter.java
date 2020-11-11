@@ -14,14 +14,15 @@
  */
 package org.hyperledger.besu.metrics.opentelemetry;
 
+import io.opentelemetry.api.metrics.LongCounter;
 import org.hyperledger.besu.plugin.services.metrics.Counter;
 import org.hyperledger.besu.plugin.services.metrics.LabelledMetric;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.opentelemetry.common.Labels;
-import io.opentelemetry.metrics.LongCounter;
+import io.opentelemetry.api.common.Labels;
+import io.opentelemetry.api.metrics.LongCounter;
 
 public class OpenTelemetryCounter implements LabelledMetric<Counter> {
 

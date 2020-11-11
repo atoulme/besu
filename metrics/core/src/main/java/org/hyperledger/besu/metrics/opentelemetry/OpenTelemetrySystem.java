@@ -40,14 +40,14 @@ import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableSet;
-import io.opentelemetry.common.Attributes;
-import io.opentelemetry.common.Labels;
-import io.opentelemetry.metrics.DoubleValueObserver;
-import io.opentelemetry.metrics.DoubleValueRecorder;
-import io.opentelemetry.metrics.LongCounter;
-import io.opentelemetry.metrics.LongSumObserver;
-import io.opentelemetry.metrics.LongUpDownSumObserver;
-import io.opentelemetry.metrics.Meter;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.common.Labels;
+import io.opentelemetry.api.metrics.DoubleValueObserver;
+import io.opentelemetry.api.metrics.DoubleValueRecorder;
+import io.opentelemetry.api.metrics.LongCounter;
+import io.opentelemetry.api.metrics.LongSumObserver;
+import io.opentelemetry.api.metrics.LongUpDownSumObserver;
+import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.sdk.metrics.MeterSdkProvider;
 import io.opentelemetry.sdk.metrics.data.MetricData;
 import io.opentelemetry.sdk.resources.Resource;
@@ -71,7 +71,6 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
   private final Map<String, LabelledMetric<OperationTimer>> cachedTimers =
       new ConcurrentHashMap<>();
   private final MeterSdkProvider meterSdkProvider;
-  private final TracerSdkProvider tracerSdkProvider;
 
   public OpenTelemetrySystem(
       final Set<MetricCategory> enabledCategories,
@@ -83,11 +82,10 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
         Resource.getDefault()
             .merge(
                 Resource.create(
-                    Attributes.newBuilder()
-                        .setAttribute(ResourceAttributes.SERVICE_NAME, jobName)
+                    Attributes.builder()
+                        .put(ResourceAttributes.SERVICE_NAME, jobName)
                         .build()));
     this.meterSdkProvider = MeterSdkProvider.builder().setResource(resource).build();
-    this.tracerSdkProvider = TracerSdkProvider.builder().setResource(resource).build();
   }
 
   MeterSdkProvider getMeterSdkProvider() {
