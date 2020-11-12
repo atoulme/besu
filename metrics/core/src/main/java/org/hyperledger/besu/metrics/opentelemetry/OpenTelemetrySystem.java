@@ -80,7 +80,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
       final Set<MetricCategory> enabledCategories,
       final boolean timersEnabled,
       final String jobName) {
-    LOG.trace("Starting OpenTelemetry metrics system");
+    LOG.info("Starting OpenTelemetry metrics system");
     this.enabledCategories = ImmutableSet.copyOf(enabledCategories);
     this.timersEnabled = timersEnabled;
     Resource resource =

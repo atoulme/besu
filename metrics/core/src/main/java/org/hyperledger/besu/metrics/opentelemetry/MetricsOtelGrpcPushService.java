@@ -43,13 +43,14 @@ public class MetricsOtelGrpcPushService implements MetricsService {
 
   public MetricsOtelGrpcPushService(
       final MetricsConfiguration configuration, final OpenTelemetrySystem metricsSystem) {
-    LOG.trace("Starting OpenTelemetry push service");
+
     this.configuration = configuration;
     this.metricsSystem = metricsSystem;
   }
 
   @Override
   public CompletableFuture<?> start() {
+    LOG.info("Starting OpenTelemetry push service");
     OtlpGrpcMetricExporter exporter = OtlpGrpcMetricExporter.getDefault();
     IntervalMetricReader.Builder builder =
         IntervalMetricReader.builder()
