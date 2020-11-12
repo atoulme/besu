@@ -14,6 +14,8 @@
  */
 package org.hyperledger.besu.metrics;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.opentelemetry.MetricsOtelGrpcPushService;
 import org.hyperledger.besu.metrics.opentelemetry.OpenTelemetrySystem;
 import org.hyperledger.besu.metrics.prometheus.MetricsConfiguration;
@@ -36,6 +38,7 @@ public interface MetricsService {
       final Vertx vertx,
       final MetricsConfiguration configuration,
       final MetricsSystem metricsSystem) {
+    LogManager.getLogger().trace("Creating metrics service {}", configuration.getProtocol());
     if (configuration.getProtocol() == MetricsProtocol.PROMETHEUS) {
       if (configuration.isEnabled()) {
         return Optional.of(new MetricsHttpService(vertx, configuration, metricsSystem));

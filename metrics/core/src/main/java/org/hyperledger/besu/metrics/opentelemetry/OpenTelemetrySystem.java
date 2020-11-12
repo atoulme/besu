@@ -14,6 +14,8 @@
  */
 package org.hyperledger.besu.metrics.opentelemetry;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.BesuMetricCategory;
 import org.hyperledger.besu.metrics.ObservableMetricsSystem;
 import org.hyperledger.besu.metrics.Observation;
@@ -55,6 +57,9 @@ import io.opentelemetry.sdk.resources.ResourceAttributes;
 
 /** Metrics system relying on the native OpenTelemetry format. */
 public class OpenTelemetrySystem implements ObservableMetricsSystem {
+
+  private static final Logger LOG = LogManager.getLogger();
+
   private static final String TYPE_LABEL_KEY = "type";
   private static final String AREA_LABEL_KEY = "area";
   private static final String POOL_LABEL_KEY = "pool";
@@ -75,6 +80,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
       final Set<MetricCategory> enabledCategories,
       final boolean timersEnabled,
       final String jobName) {
+    LOG.trace("Starting OpenTelemetry metrics system");
     this.enabledCategories = ImmutableSet.copyOf(enabledCategories);
     this.timersEnabled = timersEnabled;
     Resource resource =
@@ -151,6 +157,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
       final String name,
       final String help,
       final String... labelNames) {
+    LOG.trace("Creating a counter");
     return cachedCounters.computeIfAbsent(
         name,
         (k) -> {
@@ -171,6 +178,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
       final String name,
       final String help,
       final String... labelNames) {
+    LOG.trace("Creating a timer");
     return cachedTimers.computeIfAbsent(
         name,
         (k) -> {
@@ -192,6 +200,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
       final String name,
       final String help,
       final DoubleSupplier valueSupplier) {
+    LOG.trace("Creating a gauge");
     if (isCategoryEnabled(category)) {
       final Meter meter = meterSdkProvider.get(category.getName());
       DoubleValueObserver observer =
