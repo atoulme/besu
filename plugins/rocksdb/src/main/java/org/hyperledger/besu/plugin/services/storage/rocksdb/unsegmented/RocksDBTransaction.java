@@ -19,9 +19,9 @@ import org.hyperledger.besu.plugin.services.metrics.OperationTimer;
 import org.hyperledger.besu.plugin.services.storage.KeyValueStorageTransaction;
 import org.hyperledger.besu.plugin.services.storage.rocksdb.RocksDBMetrics;
 
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.StatusCanonicalCode;
-import io.opentelemetry.trace.Tracer;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.api.trace.Tracer;
 import org.rocksdb.RocksDBException;
 import org.rocksdb.Transaction;
 import org.rocksdb.WriteOptions;
@@ -51,7 +51,6 @@ public class RocksDBTransaction implements KeyValueStorageTransaction {
       innerTx.put(key, value);
     } catch (final RocksDBException e) {
       span.recordException(e);
-      span.setStatus(StatusCanonicalCode.ERROR);
       throw new StorageException(e);
     } finally {
       span.end();
@@ -65,7 +64,7 @@ public class RocksDBTransaction implements KeyValueStorageTransaction {
       innerTx.delete(key);
     } catch (final RocksDBException e) {
       span.recordException(e);
-      span.setStatus(StatusCanonicalCode.ERROR);
+      span.setStatus(StatusCode.ERROR);
       throw new StorageException(e);
     } finally {
       span.end();
@@ -79,7 +78,6 @@ public class RocksDBTransaction implements KeyValueStorageTransaction {
       innerTx.commit();
     } catch (final RocksDBException e) {
       span.recordException(e);
-      span.setStatus(StatusCanonicalCode.ERROR);
       throw new StorageException(e);
     } finally {
       close();
@@ -95,7 +93,6 @@ public class RocksDBTransaction implements KeyValueStorageTransaction {
       metrics.getRollbackCount().inc();
     } catch (final RocksDBException e) {
       span.recordException(e);
-      span.setStatus(StatusCanonicalCode.ERROR);
       throw new StorageException(e);
     } finally {
       close();

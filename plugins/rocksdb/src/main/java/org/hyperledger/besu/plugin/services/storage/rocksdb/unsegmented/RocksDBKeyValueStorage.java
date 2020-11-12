@@ -16,7 +16,6 @@ package org.hyperledger.besu.plugin.services.storage.rocksdb.unsegmented;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
-import io.opentelemetry.trace.StatusCanonicalCode;
 import org.hyperledger.besu.plugin.services.MetricsSystem;
 import org.hyperledger.besu.plugin.services.exception.StorageException;
 import org.hyperledger.besu.plugin.services.metrics.OperationTimer;
@@ -35,9 +34,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.rocksdb.BlockBasedTableConfig;
@@ -74,7 +73,7 @@ public class RocksDBKeyValueStorage implements KeyValueStorage {
 
     try {
       final Statistics stats = new Statistics();
-      this.tracer = OpenTelemetry.getTracer("io.hyperledger.besu.rocksdbkv", "1.0.0");
+      this.tracer = OpenTelemetry.getGlobalTracer("io.hyperledger.besu.rocksdbkv", "1.0.0");
       options =
           new Options()
               .setCreateIfMissing(true)
@@ -125,7 +124,6 @@ public class RocksDBKeyValueStorage implements KeyValueStorage {
       return Optional.ofNullable(db.get(key));
     } catch (final RocksDBException e) {
       span.recordException(e);
-      span.setStatus(StatusCanonicalCode.ERROR);
       throw new StorageException(e);
     } finally {
       span.end();
@@ -151,7 +149,6 @@ public class RocksDBKeyValueStorage implements KeyValueStorage {
       db.delete(tryDeleteOptions, key);
       return true;
     } catch (RocksDBException e) {
-      span.setStatus(StatusCanonicalCode.ERROR);
       span.recordException(e);
       if (e.getStatus().getCode() == Status.Code.Incomplete) {
         return false;

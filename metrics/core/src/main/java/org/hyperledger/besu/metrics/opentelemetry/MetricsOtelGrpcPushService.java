@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import io.opentelemetry.exporters.otlp.OtlpGrpcMetricExporter;
-import io.opentelemetry.exporters.otlp.OtlpGrpcSpanExporter;
+import io.opentelemetry.exporter.otlp.OtlpGrpcMetricExporter;
+import io.opentelemetry.exporter.otlp.OtlpGrpcSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.metrics.export.IntervalMetricReader;
@@ -62,13 +62,13 @@ public class MetricsOtelGrpcPushService implements MetricsService {
             .setMetricExporter(exporter);
     this.periodicReader = builder.build();
     this.spanProcessor =
-        BatchSpanProcessor.newBuilder(
-                OtlpGrpcSpanExporter.newBuilder()
+        BatchSpanProcessor.builder(
+                OtlpGrpcSpanExporter.builder()
                     .readSystemProperties()
                     .readEnvironmentVariables()
                     .build())
             .build();
-    OpenTelemetrySdk.getTracerManagement().addSpanProcessor(spanProcessor);
+    OpenTelemetrySdk.get().getTracerManagement().addSpanProcessor(spanProcessor);
     return CompletableFuture.completedFuture(null);
   }
 

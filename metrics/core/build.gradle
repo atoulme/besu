@@ -38,15 +38,12 @@ dependencies {
   implementation project(':plugin-api')
 
   implementation 'com.google.guava:guava'
-  implementation 'io.grpc:grpc-census'
   implementation 'io.grpc:grpc-netty-shaded'
-  implementation 'io.opencensus:opencensus-api'
-  implementation 'io.opencensus:opencensus-impl'
   implementation 'io.opentelemetry:opentelemetry-api'
   implementation 'io.opentelemetry:opentelemetry-sdk'
   implementation 'io.opentelemetry:opentelemetry-sdk-tracing'
   implementation 'io.opentelemetry:opentelemetry-extension-runtime-metrics'
-  implementation 'io.opentelemetry:opentelemetry-exporters-otlp'
+  implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
 
   implementation 'io.prometheus:simpleclient'
   implementation 'io.prometheus:simpleclient_common'

@@ -66,10 +66,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.StatusCanonicalCode;
-import io.opentelemetry.trace.Tracer;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
@@ -174,7 +173,7 @@ public class JsonRpcHttpService {
     this.authenticationService = authenticationService;
     this.livenessService = livenessService;
     this.readinessService = readinessService;
-    this.tracer = OpenTelemetry.getTracer("io.hyperledger.besu.jsonrpc", "1.0.0");
+    this.tracer = OpenTelemetry.getGlobalTracer("io.hyperledger.besu.jsonrpc", "1.0.0");
   }
 
   private void validateConfig(final JsonRpcConfiguration config) {
@@ -289,18 +288,19 @@ public class JsonRpcHttpService {
   private void createSpan(final RoutingContext routingContext) {
     String path = routingContext.currentRoute().getPath();
 
-    final Span serverSpan =
-        tracer.spanBuilder(path == null ? "" : path).setSpanKind(Span.Kind.SERVER).startSpan();
-    routingContext.addBodyEndHandler(event -> serverSpan.end());
-    routingContext.addEndHandler(
-        event -> {
-          if (event.failed()) {
-            serverSpan.recordException(event.cause());
-            serverSpan.setStatus(StatusCanonicalCode.ERROR);
-          }
-          serverSpan.end();
-        });
-    routingContext.next();
+    Span serverSpan =
+        tracer
+            .spanBuilder(path == null ? "" : path)
+            .setSpanKind(Span.Kind.SERVER)
+            .startSpan();
+    try {
+      routingContext.next();
+    } catch (Throwable t) {
+      serverSpan.recordException(t);
+      throw t;
+    } finally {
+      serverSpan.end();
+    }
   }
 
   private HttpServerOptions getHttpServerOptions() {
