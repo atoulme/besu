@@ -39,7 +39,7 @@ dependencies {
 
   implementation 'com.google.guava:guava'
   implementation 'io.grpc:grpc-census'
-  implementation 'io.grpc:grpc-netty'
+  implementation 'io.grpc:grpc-netty-shaded'
   implementation 'io.opencensus:opencensus-impl'
   implementation 'io.opentelemetry:opentelemetry-api'
   implementation 'io.opentelemetry:opentelemetry-sdk'

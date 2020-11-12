@@ -32,10 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.StatusCode;
-import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.trace.Span;
+import io.opentelemetry.trace.StatusCanonicalCode;
+import io.opentelemetry.trace.Tracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +50,7 @@ public abstract class AbstractBlockProcessor implements BlockProcessor {
   private static final Logger LOG = LogManager.getLogger();
 
   private static final Tracer tracer =
-      OpenTelemetry.getGlobalTracer("io.hyperledger.besu.block", "1.0.0");
+      OpenTelemetry.getTracer("io.hyperledger.besu.block", "1.0.0");
 
   static final int MAX_GENERATION = 6;
 
@@ -138,7 +138,8 @@ public abstract class AbstractBlockProcessor implements BlockProcessor {
               remainingGasBudget,
               blockHeader.getHash().toHexString(),
               transaction.getHash().toHexString());
-          globalProcessBlock.setStatus(StatusCode.ERROR, "Block processing error with gas limit");
+          globalProcessBlock.setStatus(
+              StatusCanonicalCode.ERROR, "Block processing error with gas limit");
           return AbstractBlockProcessor.Result.failed();
         }
 
@@ -165,7 +166,7 @@ public abstract class AbstractBlockProcessor implements BlockProcessor {
               result.getValidationResult().getInvalidReason(),
               blockHeader.getHash().toHexString(),
               transaction.getHash().toHexString());
-          globalProcessBlock.setStatus(StatusCode.ERROR, "Invalid transaction");
+          globalProcessBlock.setStatus(StatusCanonicalCode.ERROR, "Invalid transaction");
           return AbstractBlockProcessor.Result.failed();
         }
 
@@ -180,7 +181,7 @@ public abstract class AbstractBlockProcessor implements BlockProcessor {
 
       if (!rewardCoinbase(worldState, blockHeader, ommers, skipZeroBlockRewards)) {
         // no need to log, rewardCoinbase logs the error.
-        globalProcessBlock.setStatus(StatusCode.ERROR, "Coinbase reward error");
+        globalProcessBlock.setStatus(StatusCanonicalCode.ERROR, "Coinbase reward error");
         return AbstractBlockProcessor.Result.failed();
       }
 

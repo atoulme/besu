@@ -56,13 +56,13 @@ public class MetricsOtelGrpcPushService implements MetricsService {
             .setMetricExporter(exporter);
     this.periodicReader = builder.build();
     this.spanProcessor =
-        BatchSpanProcessor.builder(
+        BatchSpanProcessor.newBuilder(
                 OtlpGrpcSpanExporter.newBuilder()
                     .readSystemProperties()
                     .readEnvironmentVariables()
                     .build())
             .build();
-    OpenTelemetrySdk.get().getTracerManagement().addSpanProcessor(spanProcessor);
+    OpenTelemetrySdk.getTracerManagement().addSpanProcessor(spanProcessor);
     return CompletableFuture.completedFuture(null);
   }
 
