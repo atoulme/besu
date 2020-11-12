@@ -50,6 +50,7 @@ dependencyManagement {
 
     dependency 'io.kubernetes:client-java:5.0.0'
 
+    dependency 'io.opencensus:opencensus-api:0.28.2'
     dependency 'io.opencensus:opencensus-impl:0.28.2'
 
     dependency 'io.pkts:pkts-core:3.0.7'
