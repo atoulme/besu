@@ -14,8 +14,6 @@
  */
 package org.hyperledger.besu.metrics;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.opentelemetry.MetricsOtelGrpcPushService;
 import org.hyperledger.besu.metrics.opentelemetry.OpenTelemetrySystem;
 import org.hyperledger.besu.metrics.prometheus.MetricsConfiguration;
@@ -27,6 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import io.vertx.core.Vertx;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Service responsible for exposing metrics to the outside, either through a port and network

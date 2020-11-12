@@ -17,12 +17,13 @@ package org.hyperledger.besu.metrics;
 import static org.hyperledger.besu.metrics.MetricsProtocol.OPENTELEMETRY;
 import static org.hyperledger.besu.metrics.MetricsProtocol.PROMETHEUS;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hyperledger.besu.metrics.noop.NoOpMetricsSystem;
 import org.hyperledger.besu.metrics.opentelemetry.OpenTelemetrySystem;
 import org.hyperledger.besu.metrics.prometheus.MetricsConfiguration;
 import org.hyperledger.besu.metrics.prometheus.PrometheusMetricsSystem;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /** Creates a new metric system based on configuration. */
 public class MetricsSystemFactory {

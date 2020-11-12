@@ -21,7 +21,6 @@ import static org.apache.tuweni.net.tls.VertxTrustOptions.whitelistClients;
 import static org.hyperledger.besu.ethereum.api.jsonrpc.internal.response.JsonRpcError.INVALID_PARAMS;
 import static org.hyperledger.besu.ethereum.api.jsonrpc.internal.response.JsonRpcError.INVALID_REQUEST;
 
-import io.opentelemetry.api.trace.StatusCode;
 import org.hyperledger.besu.ethereum.api.handlers.HandlerFactory;
 import org.hyperledger.besu.ethereum.api.handlers.TimeoutOptions;
 import org.hyperledger.besu.ethereum.api.jsonrpc.authentication.AuthenticationService;
@@ -69,6 +68,7 @@ import com.google.common.collect.Iterables;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.api.trace.Tracer;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
@@ -290,16 +290,17 @@ public class JsonRpcHttpService {
     String path = routingContext.request().path();
 
     final Span serverSpan =
-            tracer.spanBuilder(path == null ? "" : path).setSpanKind(Span.Kind.SERVER).startSpan();
+        tracer.spanBuilder(path == null ? "" : path).setSpanKind(Span.Kind.SERVER).startSpan();
+    routingContext.put("span", serverSpan);
     routingContext.addBodyEndHandler(event -> serverSpan.end());
     routingContext.addEndHandler(
-            event -> {
-              if (event.failed()) {
-                serverSpan.recordException(event.cause());
-                serverSpan.setStatus(StatusCode.ERROR);
-              }
-              serverSpan.end();
-            });
+        event -> {
+          if (event.failed()) {
+            serverSpan.recordException(event.cause());
+            serverSpan.setStatus(StatusCode.ERROR);
+          }
+          serverSpan.end();
+        });
     routingContext.next();
   }
 
