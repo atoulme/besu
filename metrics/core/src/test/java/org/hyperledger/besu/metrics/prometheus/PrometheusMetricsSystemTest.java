@@ -14,11 +14,9 @@
  */
 package org.hyperledger.besu.metrics.prometheus;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hyperledger.besu.metrics.BesuMetricCategory.DEFAULT_METRIC_CATEGORIES;
 import static org.hyperledger.besu.metrics.BesuMetricCategory.NETWORK;
 import static org.hyperledger.besu.metrics.BesuMetricCategory.PEERS;
@@ -49,7 +47,7 @@ public class PrometheusMetricsSystemTest {
           .thenComparing((o1, o2) -> o1.getLabels().equals(o2.getLabels()) ? 0 : 1);
 
   private final ObservableMetricsSystem metricsSystem =
-      new PrometheusMetricsSystem(DEFAULT_METRIC_CATEGORIES, true);
+      new PrometheusMetricsSystem(DEFAULT_METRIC_CATEGORIES, true, "foo");
 
   @Test
   public void shouldCreateObservationFromCounter() {
@@ -57,11 +55,11 @@ public class PrometheusMetricsSystemTest {
 
     counter.inc();
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 1d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 1L, emptyList()));
 
     counter.inc();
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 2d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 2L, emptyList()));
   }
 
   @Test
@@ -74,11 +72,11 @@ public class PrometheusMetricsSystemTest {
 
     counter1.labels().inc();
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 1d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 1L, emptyList()));
 
     counter2.labels().inc();
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 2d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 2L, emptyList()));
   }
 
   @Test
@@ -92,8 +90,8 @@ public class PrometheusMetricsSystemTest {
 
     assertThat(metricsSystem.streamObservations())
         .containsExactlyInAnyOrder(
-            new Observation(PEERS, "connected", 2d, singletonList("value1")),
-            new Observation(PEERS, "connected", 1d, singletonList("value2")));
+            new Observation(PEERS, "connected", 2L, singletonList("value1")),
+            new Observation(PEERS, "connected", 1L, singletonList("value2")));
   }
 
   @Test
@@ -102,31 +100,25 @@ public class PrometheusMetricsSystemTest {
 
     counter.inc(5);
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 5d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 5L, emptyList()));
 
     counter.inc(6);
     assertThat(metricsSystem.streamObservations())
-        .containsExactly(new Observation(PEERS, "connected", 11d, emptyList()));
+        .containsExactly(new Observation(PEERS, "connected", 11L, emptyList()));
   }
 
   @Test
   public void shouldCreateObservationsFromTimer() {
     final OperationTimer timer = metricsSystem.createTimer(RPC, "request", "Some help");
 
-    final OperationTimer.TimingContext context = timer.startTimer();
-    context.stopTimer();
+    for (int i = 0; i < 10; i++) {
+      final OperationTimer.TimingContext context = timer.startTimer();
+      context.stopTimer();
+    }
 
     assertThat(metricsSystem.streamObservations())
         .usingElementComparator(IGNORE_VALUES)
-        .containsExactlyInAnyOrder(
-            new Observation(RPC, "request", null, asList("quantile", "0.2")),
-            new Observation(RPC, "request", null, asList("quantile", "0.5")),
-            new Observation(RPC, "request", null, asList("quantile", "0.8")),
-            new Observation(RPC, "request", null, asList("quantile", "0.95")),
-            new Observation(RPC, "request", null, asList("quantile", "0.99")),
-            new Observation(RPC, "request", null, asList("quantile", "1.0")),
-            new Observation(RPC, "request", null, singletonList("sum")),
-            new Observation(RPC, "request", null, singletonList("count")));
+        .containsExactlyInAnyOrder(new Observation(RPC, "request", null, Collections.emptyList()));
   }
 
   @Test
@@ -149,20 +141,13 @@ public class PrometheusMetricsSystemTest {
     assertThat(metricsSystem.streamObservations())
         .usingElementComparator(IGNORE_VALUES) // We don't know how long it will actually take.
         .containsExactlyInAnyOrder(
-            new Observation(RPC, "request", null, asList("method", "quantile", "0.2")),
-            new Observation(RPC, "request", null, asList("method", "quantile", "0.5")),
-            new Observation(RPC, "request", null, asList("method", "quantile", "0.8")),
-            new Observation(RPC, "request", null, asList("method", "quantile", "0.95")),
-            new Observation(RPC, "request", null, asList("method", "quantile", "0.99")),
-            new Observation(RPC, "request", null, asList("method", "quantile", "1.0")),
-            new Observation(RPC, "request", null, asList("method", "sum")),
-            new Observation(RPC, "request", null, asList("method", "count")));
+            new Observation(RPC, "request", null, Collections.singletonList("method")));
   }
 
   @Test
   public void shouldNotCreateObservationsFromTimerWhenTimersDisabled() {
     final ObservableMetricsSystem metricsSystem =
-        new PrometheusMetricsSystem(Collections.emptySet(), false);
+        new PrometheusMetricsSystem(Collections.emptySet(), false, "foo");
     final LabelledMetric<OperationTimer> timer =
         metricsSystem.createLabelledTimer(RPC, "request", "Some help", "methodName");
 
@@ -178,16 +163,6 @@ public class PrometheusMetricsSystemTest {
 
     assertThat(metricsSystem.streamObservations())
         .containsExactlyInAnyOrder(new Observation(JVM, "myValue", 7d, emptyList()));
-  }
-
-  @Test
-  public void shouldNotAllowDuplicateGaugeCreation() {
-    // Gauges have a reference to the source of their data so creating it twice will still only
-    // pull data from the first instance, possibly leaking memory and likely returning the wrong
-    // results.
-    metricsSystem.createGauge(JVM, "myValue", "Help", () -> 7d);
-    assertThatThrownBy(() -> metricsSystem.createGauge(JVM, "myValue", "Help", () -> 7d))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test
@@ -215,7 +190,7 @@ public class PrometheusMetricsSystemTest {
 
     counterR.labels("op").inc();
     assertThat(localMetricSystem.streamObservations())
-        .containsExactly(new Observation(RPC, "name", 1.0, singletonList("op")));
+        .containsExactly(new Observation(RPC, "name", 1L, singletonList("op")));
   }
 
   @Test

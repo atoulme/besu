@@ -46,8 +46,10 @@ public class MetricsSystemFactory {
     if (PROMETHEUS.equals(metricsConfiguration.getProtocol())) {
       final PrometheusMetricsSystem metricsSystem =
           new PrometheusMetricsSystem(
-              metricsConfiguration.getMetricCategories(), metricsConfiguration.isTimersEnabled());
-      metricsSystem.init();
+              metricsConfiguration.getMetricCategories(),
+              metricsConfiguration.isTimersEnabled(),
+              metricsConfiguration.getPrometheusJob());
+      metricsSystem.initDefaults();
       return metricsSystem;
     } else if (OPENTELEMETRY.equals(metricsConfiguration.getProtocol())) {
       final OpenTelemetrySystem metricsSystem =

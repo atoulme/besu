@@ -91,7 +91,7 @@ public class OpenTelemetrySystem implements ObservableMetricsSystem {
     this.meterSdkProvider = MeterSdkProvider.builder().setResource(resource).build();
   }
 
-  MeterSdkProvider getMeterSdkProvider() {
+  protected MeterSdkProvider getMeterSdkProvider() {
     return meterSdkProvider;
   }
 

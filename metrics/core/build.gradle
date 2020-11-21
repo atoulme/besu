@@ -44,6 +44,7 @@ dependencies {
   implementation 'io.opentelemetry:opentelemetry-sdk-tracing'
   implementation 'io.opentelemetry:opentelemetry-extension-runtime-metrics'
   implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+  implementation 'io.opentelemetry:opentelemetry-exporter-prometheus'
 
   implementation 'io.prometheus:simpleclient'
   implementation 'io.prometheus:simpleclient_common'
